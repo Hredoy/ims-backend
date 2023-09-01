@@ -3,9 +3,11 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Cms_page_content_model extends CI_Model {
+class Cms_page_content_model extends CI_Model
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->current_session = $this->setting_model->getCurrentSession();
         $this->load->config('ci-blog');
@@ -17,7 +19,8 @@ class Cms_page_content_model extends CI_Model {
      * @param int $id
      * @return mixed
      */
-    public function get($id = null) {
+    public function get($id = null)
+    {
         $this->db->select()->from('front_cms_page_contents');
         if ($id != null) {
             $this->db->where('id', $id);
@@ -32,7 +35,8 @@ class Cms_page_content_model extends CI_Model {
         }
     }
 
-    public function getContentByPage($page_id = null) {
+    public function getContentByPage($page_id = null)
+    {
         $this->db->select()->from('front_cms_page_contents');
         $this->db->where('page_id', $page_id);
         $query = $this->db->get();
@@ -43,7 +47,8 @@ class Cms_page_content_model extends CI_Model {
      * This function will delete the record based on the id
      * @param $id
      */
-    public function remove($id) {
+    public function remove($id)
+    {
         $this->db->where('id', $id);
         $this->db->delete('front_cms_page_contents');
     }
@@ -54,7 +59,8 @@ class Cms_page_content_model extends CI_Model {
      * else an insert. One function doing both add and edit.
      * @param $data
      */
-    public function add($data) {
+    public function add($data)
+    {
         if (isset($data['id'])) {
             $this->db->where('id', $data['id']);
             $this->db->update('front_cms_page_contents', $data);
@@ -64,12 +70,14 @@ class Cms_page_content_model extends CI_Model {
         }
     }
 
-    public function batch_insert($data) {
+    public function batch_insert($data)
+    {
 
         $this->db->insert_batch('front_cms_page_contents', $data);
     }
 
-    public function insertOrUpdate($data) {
+    public function insertOrUpdate($data)
+    {
         $this->db->where('page_id', $data['page_id']);
         $q = $this->db->get('front_cms_page_contents');
 
@@ -82,9 +90,9 @@ class Cms_page_content_model extends CI_Model {
         }
     }
 
-    public function deleteByPageID($page_id) {
+    public function deleteByPageID($page_id)
+    {
         $this->db->where('page_id', $page_id);
         $this->db->delete('front_cms_page_contents');
     }
-
 }

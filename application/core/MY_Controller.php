@@ -3,11 +3,13 @@
 define('THEMES_DIR', 'themes');
 define('BASE_URI', str_replace('index.php', '', $_SERVER['SCRIPT_NAME']));
 
-class MY_Controller extends CI_Controller {
+class MY_Controller extends CI_Controller
+{
 
     protected $langs = array();
 
-    public function __construct() {
+    public function __construct()
+    {
 
         parent::__construct();
         $this->config->load('license');
@@ -42,27 +44,29 @@ class MY_Controller extends CI_Controller {
 
         $this->load->language($lang_array, $language);
     }
-
 }
 
-class Admin_Controller extends MY_Controller {
+class Admin_Controller extends MY_Controller
+{
 
     protected $aaaa = false;
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->auth->is_logged_in();
         $this->check_license();
         $this->load->library('rbac');
         $this->config->load('app-config');
-        $this->load->model(array('batchsubject_model', 'examgroup_model', 'examsubject_model', 'examgroupstudent_model', 'feereminder_model','filetype_model'));
+        $this->load->model(array('batchsubject_model', 'examgroup_model', 'examsubject_model', 'examgroupstudent_model', 'feereminder_model', 'filetype_model'));
 
         $this->config->load('ci-blog');
         $this->config->load('custom_filed-config');
     }
 
-    public function check_license() {
-		return true;
+    public function check_license()
+    {
+        return true;
         $license = $this->config->item('SSLK');
 
         if (!empty($license)) {
@@ -85,7 +89,8 @@ class Admin_Controller extends MY_Controller {
         }
     }
 
-    public function update_ss_routine() {
+    public function update_ss_routine()
+    {
 
         $license = $this->config->item('SSLK');
         $fname = APPPATH . 'config/license.php';
@@ -94,46 +99,48 @@ class Admin_Controller extends MY_Controller {
         $file_contents = str_replace('$config[\'SSLK\'] = \'' . $license . '\'', '$config[\'SSLK\'] = \'\'', $content);
         $update_handle = fopen($fname, 'w') or die("can't open file");
         if (fwrite($update_handle, $file_contents)) {
-            
         }
         fclose($update_handle);
 
         $this->config->set_item('SSLK', '');
     }
-
 }
 
-class Student_Controller extends MY_Controller {
+class Student_Controller extends MY_Controller
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->load->library('studentmodule_lib');
         $this->config->load('app-config');
         $this->auth->is_logged_in_user('student');
     }
-
 }
 
-class Public_Controller extends MY_Controller {
+class Public_Controller extends MY_Controller
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
     }
-
 }
 
-class Parent_Controller extends MY_Controller {
+class Parent_Controller extends MY_Controller
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->auth->is_logged_in_user('parent');
         $this->config->load('app-config');
         $this->load->library('parentmodule_lib');
     }
-
 }
 
-class Front_Controller extends CI_Controller {
+class Front_Controller extends CI_Controller
+{
 
     protected $data = array();
     protected $school_details = array();
@@ -142,7 +149,8 @@ class Front_Controller extends CI_Controller {
     protected $theme_path = '';
     protected $front_setting = '';
 
-    public function __construct() {
+    public function __construct()
+    {
 
         parent::__construct();
 
@@ -171,7 +179,7 @@ class Front_Controller extends CI_Controller {
         }
 
         $this->theme_path = $this->front_setting->theme;
-//================
+        //================
         $language = ($this->school_details->language);
         $this->load->helper('directory');
         $lang_array = array('form_validation_lang');
@@ -181,12 +189,13 @@ class Front_Controller extends CI_Controller {
         }
 
         $this->load->language($lang_array, $language);
-//===============
+        //===============
 
         $this->load->config('ci-blog');
     }
 
-    protected function load_theme($content = null, $layout = true) {
+    protected function load_theme($content = null, $layout = true)
+    {
 
         $this->data['main_menus'] = '';
         $this->data['school_setting'] = $this->school_details;
@@ -221,7 +230,8 @@ class Front_Controller extends CI_Controller {
         // }
     }
 
-    protected function load_theme_form($content = null, $layout = true) {
+    protected function load_theme_form($content = null, $layout = true)
+    {
 
         $this->data['main_menus'] = '';
         $this->data['school_setting'] = $this->school_details;
@@ -253,7 +263,8 @@ class Front_Controller extends CI_Controller {
         // }
     }
 
-    private function check_installation() {
+    private function check_installation()
+    {
 
         if ($this->uri->segment(1) !== 'install') {
             $this->load->config('migration');
@@ -267,5 +278,4 @@ class Front_Controller extends CI_Controller {
             }
         }
     }
-
 }

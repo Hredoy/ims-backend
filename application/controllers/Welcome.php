@@ -10,8 +10,9 @@ class Welcome extends Front_Controller
         parent::__construct();
         $this->load->config('form-builder');
         $this->load->config('app-config');
+        $this->load->library('pagination');
         $this->load->library(array('mailer', 'form_builder'));
-        $this->load->model(array('frontcms_setting_model', 'complaint_Model', 'Visitors_model', 'onlinestudent_model','filetype_model'));
+        $this->load->model(array('frontcms_setting_model', 'complaint_Model', 'Visitors_model', 'onlinestudent_model', 'filetype_model'));
         $this->blood_group = $this->config->item('bloodgroup');
         $this->load->library('Ajax_pagination');
         $this->load->library('module_lib');
@@ -39,7 +40,6 @@ class Welcome extends Front_Controller
         if (!empty($result)) {
             $this->data['banner_images'] = $this->cms_program_model->front_cms_program_photos($result[0]['id']);
         }
-
         $this->load_theme('home');
     }
 
@@ -104,7 +104,6 @@ class Welcome extends Front_Controller
                 }
 
                 if ($this->form_validation->run() == false) {
-
                 } else {
                     $setting = $this->frontcms_setting_model->get();
 
@@ -209,6 +208,7 @@ class Welcome extends Front_Controller
     {
 
         if ($this->module_lib->hasActive('online_admission')) {
+
             $this->data['active_menu'] = 'online-admission';
             $page                      = array('title' => 'Online Admission Form', 'meta_title' => 'online admission form', 'meta_keyword' => 'online admission form', 'meta_description' => 'online admission form');
 
@@ -238,11 +238,13 @@ class Welcome extends Front_Controller
                 $this->form_validation->set_rules('captcha', 'Captcha', 'trim|required|callback_check_captcha');
             }
             $this->form_validation->set_rules(
-            'email', $this->lang->line('email'), array(
-                'valid_email','required',
-                array('check_student_email_exists', array($this->student_model, 'check_student_email_exists')),
-            )
-        ); 
+                'email',
+                $this->lang->line('email'),
+                array(
+                    'valid_email', 'required',
+                    array('check_student_email_exists', array($this->student_model, 'check_student_email_exists')),
+                )
+            );
             $this->form_validation->set_rules('firstname', $this->lang->line('first_name'), 'trim|required|xss_clean');
             $this->form_validation->set_rules('guardian_is', $this->lang->line('guardian'), 'trim|required|xss_clean');
             $this->form_validation->set_rules('gender', $this->lang->line('gender'), 'trim|required|xss_clean');
@@ -255,7 +257,7 @@ class Welcome extends Front_Controller
             if ($this->form_validation->run() == false) {
 
                 $this->load_theme('pages/admission');
-            } else { 
+            } else {
                 //==============
                 $document_validate = true;
                 $image_validate    = $this->config->item('file_validate');
@@ -320,7 +322,7 @@ class Welcome extends Front_Controller
                         'guardian_address'    => $this->input->post('guardian_address'),
                         'admission_date'      => date('Y/m/d'),
                         'measurement_date'    => date('Y/m/d'),
-                    ); 
+                    );
                     if (isset($_FILES["document"]) && !empty($_FILES['document']['name'])) {
                         $time     = md5($_FILES["document"]['name'] . microtime());
                         $fileInfo = pathinfo($_FILES["document"]["name"]);
@@ -344,12 +346,61 @@ class Welcome extends Front_Controller
 
     public function check_captcha($captcha)
     {
-        if ($captcha != $this->session->userdata('captchaCode')):
+        if ($captcha != $this->session->userdata('captchaCode')) :
             $this->form_validation->set_message('check_captcha', $this->lang->line('incorrect_captcha'));
             return false;
-        else:
+        else :
             return true;
         endif;
     }
 
+    public function notice($id)
+    {
+        $this->data['page_side_bar']  = false;
+        $data = $this->db->get_where('send_notification', ['id' => $id])->row_array();
+        $this->data['data'] = $data;
+        $this->data['page'] = "Notice";
+        $this->load_theme('pages/noticeView');
+    }
+
+    public function allNotice()
+    {
+        $data = $this->db->get('send_notification')->result();
+
+        $this->data['page_side_bar']  = false;
+        $this->data['datas'] = $data;
+        $this->data['page'] = "notice";
+        $this->load_theme('pages/noticeList');
+    }
+
+    public function blogList($id)
+    {
+        $this->data['category'] = $this->db->get_where('blogCategory', ['id' => $id])->row();
+        $this->data['posts'] = $this->db->get_where('blog', ['category_id' => $id])->result();
+
+        $this->data['page_side_bar']  = false;
+        $this->data['page'] = "notice";
+        $this->load_theme('pages/blogList');
+    }
+
+
+    public function blog($id)
+    {
+        $this->db->select('blog.*, blogCategory.name as category_name');
+        $this->db->join('blogCategory', 'blogCategory.id = blog.category_id', 'inner');
+        $this->db->where('blog.id', $id);
+        $this->data['posts']  = $this->db->get('blog')->row();
+        $this->data['page_side_bar']  = false;
+        $this->data['page'] = "notice";
+        $this->load_theme('pages/blog');
+    }
+
+    public function academicMessage($id)
+    {
+        $this->db->where('id', $id);
+        $this->data['msg']  = $this->db->get('academic_messages')->row();
+        $this->data['page_side_bar']  = false;
+        $this->data['page'] = "notice";
+        $this->load_theme('pages/academicMessage');
+    }
 }

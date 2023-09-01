@@ -40,7 +40,16 @@ class Cms_program_model extends MY_Model
         $this->db->select('*');
         $this->db->from('front_cms_programs');
         $this->db->order_by('created_at', 'desc');
-        $this->db->where('type', $category);
+        if ($category == "video") {
+            $this->db->where('type', 'gallery');
+            $this->db->where('content_type', 2);
+        } else if ($category == "gallery") {
+            $this->db->where('type', 'gallery');
+            $this->db->where('content_type', 1);
+        } else {
+            $this->db->where('type', $category);
+        }
+
         if (array_key_exists("start", $params) && array_key_exists("limit", $params)) {
             $this->db->limit($params['limit'], $params['start']);
         } elseif (!array_key_exists("start", $params) && array_key_exists("limit", $params)) {
@@ -48,7 +57,6 @@ class Cms_program_model extends MY_Model
         }
 
         $query = $this->db->get();
-
         return ($query->num_rows() > 0) ? $query->result_array() : false;
     }
 
@@ -368,7 +376,6 @@ class Cms_program_model extends MY_Model
             $record_id = $banner_content_record[0]['id'];
             $this->log($message, $record_id, $action);
         } else {
-
         }
 
         //=======================
@@ -382,5 +389,4 @@ class Cms_program_model extends MY_Model
             return true;
         }
     }
-
 }

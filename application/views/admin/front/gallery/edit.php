@@ -10,7 +10,7 @@
     <!-- Main content -->
     <section class="content">
         <div class="row">
-            <form id="form1" action="<?php echo site_url('admin/front/gallery/edit/' . $result['slug']) ?>"  id="employeeform" name="employeeform" method="post" accept-charset="utf-8">
+            <form id="form1" action="<?php echo site_url('admin/front/gallery/edit/' . $result['slug']) ?>" id="employeeform" name="employeeform" method="post" accept-charset="utf-8">
                 <div class="col-md-9">
                     <!-- Horizontal Form -->
                     <div class="box box-primary">
@@ -29,8 +29,8 @@
                             if (isset($error_message)) {
                                 echo "<div class='alert alert-danger'>" . $error_message . "</div>";
                             }
-                            ?>      
-                            <?php echo $this->customlib->getCSRF(); ?>  
+                            ?>
+                            <?php echo $this->customlib->getCSRF(); ?>
 
 
                             <div class="form-group">
@@ -40,10 +40,16 @@
 
                             <div class="form-group">
                                 <label for="exampleInputEmail1"><?php echo $this->lang->line('title'); ?></label>
-                                <input id="title" name="title" placeholder="" type="text" class="form-control"  value="<?php echo set_value('title', $result['title']); ?>" />
+                                <input id="title" name="title" placeholder="" type="text" class="form-control" value="<?php echo set_value('title', $result['title']); ?>" />
                                 <span class="text-danger"><?php echo form_error('title'); ?></span>
                             </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1"><?php echo $this->lang->line('type'); ?></label><small class="req"> *</small>
+                                <input id="contentType" name="contentType" placeholder="" type="radio" value='1' <?php if ((int)$result['content_type'] === 1) echo 'checked' ?> /> Photo
+                                <input id="contentType" name="contentType" placeholder="" type="radio" value='2' <?php if ((int)$result['content_type'] == 2) echo 'checked' ?> /> Video
 
+                                <span class="text-danger"><?php echo form_error('type'); ?></span>
+                            </div>
 
                             <div class="dividerhr"></div>
 
@@ -52,18 +58,18 @@
                                 <button type="button" class="btn btn-primary btn-sm pull-right" id="media_images" data-toggle="modal" data-target="#mediaModal"><i class="fa fa-plus"></i>
                                     <?php echo $this->lang->line('add_media'); ?>
                                 </button>
-                            </div>        
-                            <div class="form-group">    
-                                <textarea id="editor1" name="description" placeholder="" type="text" class="form-control ss" >
+                            </div>
+                            <div class="form-group">
+                                <textarea id="editor1" name="description" placeholder="" type="text" class="form-control ss">
                                     <?php echo set_value('description', $result['description']); ?>
-                                </textarea>   
+                                </textarea>
                                 <span class="text-danger"><?php echo form_error('description'); ?></span>
                             </div>
                             <div class="dividerhr"></div>
 
                             <div class="formgroup10">
                                 <label><?php echo $this->lang->line('gallery_images'); ?></label>
-                                <button type="button" class="btn btn-primary btn-sm pull-right gallery_image" id="gallery_images"><i class="fa fa-plus"></i>  <?php echo $this->lang->line('add_images'); ?></button>
+                                <button type="button" class="btn btn-primary btn-sm pull-right gallery_image" id="gallery_images"><i class="fa fa-plus"></i> <?php echo $this->lang->line('add_images'); ?></button>
                             </div><!-- /.box-header -->
                             <div class="mediarow">
                                 <div class="row">
@@ -72,22 +78,22 @@
                                         <?php
                                         if (!empty($result['page_contents'])) {
                                             foreach ($result['page_contents'] as $page_content_key => $page_content_value) {
-                                                ?>
+                                        ?>
                                                 <div class='col-sm-3 col-md-2 col-xs-6 img_div_modal gallery_img div_record_<?php echo $page_content_value->id; ?>'>
                                                     <div class='fadeoverlay'>
                                                         <img class='img-responsive' data-fid='<?php echo $page_content_value->id; ?>' data-content_name='<?php echo $page_content_value->img_name; ?>' data-is_image='' data-img='<?php echo $page_content_value->dir_path . $page_content_value->img_name; ?>' src='<?php echo base_url($page_content_value->thumb_path . $page_content_value->img_name); ?>'>
                                                         <input type='hidden' value='<?php echo $page_content_value->id; ?>' name='gallery_images[]'>
                                                         <?php
                                                         if ($page_content_value->file_type == 'video') {
-                                                            ?>
+                                                        ?>
 
                                                             <i class='fa fa-youtube-play videoicon'></i>
-                                                            <?php
+                                                        <?php
                                                         } else {
-                                                            ?>
+                                                        ?>
                                                             <i class='fa fa-picture-o videoicon'></i>
 
-                                                            <?php
+                                                        <?php
                                                         }
                                                         ?>
 
@@ -99,21 +105,21 @@
                                                     </div>
                                                 </div>
 
-                                                <?php
+                                        <?php
                                             }
                                         }
                                         ?>
 
-                                    </div> 
+                                    </div>
 
 
                                 </div>
-                            </div>  
+                            </div>
                         </div>
 
                     </div>
                     <!-- page image -->
-                    <div class="panel box box-primary collapsed-box">     
+                    <div class="panel box box-primary collapsed-box">
                         <div class="box-header with-border">
                             <a class="btn boxplus" data-widget="collapse" data-original-title="Collapse"><?php echo $this->lang->line('seo_detail'); ?><i class="fa fa-plus"></i>
                             </a>
@@ -122,19 +128,19 @@
                         <div class="box-body">
                             <div class="form-group">
                                 <label for="exampleInputEmail1"><?php echo $this->lang->line('meta_title'); ?></label>
-                                <input id="meta_title" name="meta_title" placeholder="" type="text" class="form-control"  value="<?php echo set_value('meta_title', $result['meta_title']); ?>" />
+                                <input id="meta_title" name="meta_title" placeholder="" type="text" class="form-control" value="<?php echo set_value('meta_title', $result['meta_title']); ?>" />
                                 <span class="text-danger"><?php echo form_error('meta_title'); ?></span>
-                            </div> 
+                            </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1"><?php echo $this->lang->line('meta_keyword'); ?></label>
-                                <input id="meta_keywords" name="meta_keywords" placeholder="" type="text" class="form-control"  value="<?php echo set_value('meta_keywords', $result['meta_keyword']); ?>" />
+                                <input id="meta_keywords" name="meta_keywords" placeholder="" type="text" class="form-control" value="<?php echo set_value('meta_keywords', $result['meta_keyword']); ?>" />
                                 <span class="text-danger"><?php echo form_error('meta_keywords'); ?></span>
-                            </div> 
+                            </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1"><?php echo $this->lang->line('meta_description'); ?></label>
-                                <textarea id="editor1" name="meta_description" placeholder="" type="text" class="form-control" ><?php echo set_value('meta_description', $result['meta_description']); ?></textarea>
+                                <textarea id="editor1" name="meta_description" placeholder="" type="text" class="form-control"><?php echo set_value('meta_description', $result['meta_description']); ?></textarea>
                                 <span class="text-danger"><?php echo form_error('meta_description'); ?></span>
-                            </div> 
+                            </div>
 
                         </div><!-- /.box-body -->
                     </div>
@@ -157,12 +163,12 @@
                             <div class="form-group">
                                 <label for="exampleInputEmail1"><?php echo $this->lang->line('sidebar'); ?></label>
                                 <div class="material-switch pull-right">
-                                    <input id="sidebar" name="sidebar" type="checkbox" class="chk"  value="1" <?php echo set_checkbox('sidebar', 1, $result['sidebar'] == 1); ?>/>
+                                    <input id="sidebar" name="sidebar" type="checkbox" class="chk" value="1" <?php echo set_checkbox('sidebar', 1, $result['sidebar'] == 1); ?> />
                                     <label for="sidebar" class="label-success"></label>
                                 </div>
-                            </div>                      
+                            </div>
                         </div><!-- /.box-body -->
-                    </div><!-- /.box -->              
+                    </div><!-- /.box -->
                     <!-- page image -->
                     <!-- page image -->
                     <div class="box box-primary">
@@ -182,7 +188,7 @@
                                 <div class="input-group input-group-sm">
                                     <input class="form-control iframe-btn" placeholder="<?php echo $this->lang->line('select_image'); ?>" type="text" name="image" id="image" value="<?php echo $result['feature_image']; ?>">
                                     <span class="input-group-btn">
-                                        <a href="#" class="btn cfees feature_image_btn" id="feature_image" data-toggle="tooltip" data-title="<?php echo $this->lang->line('select_image'); ?>" type="button" ><i class="fa fa-folder-open"></i></a>
+                                        <a href="#" class="btn cfees feature_image_btn" id="feature_image" data-toggle="tooltip" data-title="<?php echo $this->lang->line('select_image'); ?>" type="button"><i class="fa fa-folder-open"></i></a>
                                         <a href="#" class="btn removegraybtn delete_media" id="image" data-toggle="tooltip" data-title="<?php echo $this->lang->line('delete'); ?>" type="button"><i class="fa fa-trash"></i></a>
 
                                     </span>
@@ -194,7 +200,7 @@
                                 }
                                 ?>
                                 <div id="image_preview" class="thumbnail" style="margin-top: 10px; <?php echo $image_display; ?>">
-                                    <img src="<?php echo $result['feature_image']; ?>" class="img-responsive feature_image_url" >
+                                    <img src="<?php echo $result['feature_image']; ?>" class="img-responsive feature_image_url">
                                 </div>
                             </div>
                         </div><!-- /.box-body -->
@@ -213,28 +219,27 @@
     </section><!-- /.content -->
 </div><!-- /.content-wrapper -->
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         var popup_target = 'media_images';
-    
-        CKEDITOR.replace('editor1',
-                {
-                    allowedContent: true
-                });
+
+        CKEDITOR.replace('editor1', {
+            allowedContent: true
+        });
 
         $('#mediaModal').modal({
             backdrop: 'static',
             keyboard: false,
             show: false
         });
-        $(document).on('click', '.feature_image_btn', function (event) {
+        $(document).on('click', '.feature_image_btn', function(event) {
             $("#mediaModal").modal('toggle', $(this));
         });
 
-        $(document).on('click', '.gallery_image', function (event) {
+        $(document).on('click', '.gallery_image', function(event) {
             $("#mediaModal").modal('toggle', $(this));
         });
 
-        $('#mediaModal').on('show.bs.modal', function (event) {
+        $('#mediaModal').on('show.bs.modal', function(event) {
             var a = $(event.relatedTarget) // Button that triggered the modal
             popup_target = a[0].id;
             var button = $(event.relatedTarget) // Button that triggered the modal
@@ -246,17 +251,17 @@
                 url: baseurl + "admin/front/media/getMedia",
                 dataType: 'text',
                 data: {},
-                beforeSend: function () {
+                beforeSend: function() {
 
                     $modalDiv.addClass('modal_loading');
                 },
-                success: function (data) {
+                success: function(data) {
                     $('.modal-media-body').html(data);
                 },
-                error: function (xhr) { // if error occured
+                error: function(xhr) { // if error occured
                     $modalDiv.removeClass('modal_loading');
                 },
-                complete: function () {
+                complete: function() {
                     $modalDiv.removeClass('modal_loading');
                 },
             });
@@ -267,18 +272,18 @@
             trigger: 'hover',
             container: 'body',
             html: true,
-            content: function () {
+            content: function() {
                 return $(this).closest('td').find('.fee_detail_popover').html();
             }
         });
 
-        $(document).on('click', '.img_div_modal', function (event) {
+        $(document).on('click', '.img_div_modal', function(event) {
             $('.img_div_modal div.fadeoverlay').removeClass('active');
             $(this).closest('.img_div_modal').find('.fadeoverlay').addClass('active');
 
         });
 
-        $(document).on('click', '.add_media', function (event) {
+        $(document).on('click', '.add_media', function(event) {
             var content_html = $('div#media_div').find('.fadeoverlay.active').find('img').data('img');
             var content_id = $('div#media_div').find('.fadeoverlay.active').find('img').data('fid');
             var is_image = $('div#media_div').find('.fadeoverlay.active').find('img').data('is_image');
@@ -326,7 +331,7 @@
             }
 
         });
-        $(document).on("click", ".pagination li a", function (event) {
+        $(document).on("click", ".pagination li a", function(event) {
             event.preventDefault();
             var page = $(this).data("ci-pagination-page");
             load_country_data(page);
@@ -351,7 +356,7 @@
         $('#image_preview').css("display", "block");
     }
 
-    $(document).on('click', '.delete_media', function () {
+    $(document).on('click', '.delete_media', function() {
         $('.feature_image_url').attr('src', '');
         $('#image').val('');
         $('#image_preview').css("display", "none");
@@ -361,8 +366,7 @@
         // Get the editor instance that we want to interact with.
         var editor = CKEDITOR.instances.editor1;
         // Check the active editing mode.
-        if (editor.mode == 'wysiwyg')
-        {
+        if (editor.mode == 'wysiwyg') {
             editor.insertHtml(content_html);
         } else
             alert('You must be in WYSIWYG mode!');
@@ -389,11 +393,10 @@
         $(output).appendTo(".gallery_content");
     }
 
-    $(document).on('click', '.delete_gallery_img', function () {
+    $(document).on('click', '.delete_gallery_img', function() {
         $(this).closest('.gallery_img').remove();
 
     });
-
 </script>
 
 <!-- Modal -->
@@ -414,5 +417,3 @@
         </div>
     </div>
 </div>
-
-

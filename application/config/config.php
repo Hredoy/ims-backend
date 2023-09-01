@@ -1,6 +1,6 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
   |--------------------------------------------------------------------------
@@ -24,7 +24,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   | a PHP script and you can easily do that on your own.
   |
  */
-$config['base_url'] = 'http://localhost/smart_school_src/';
+function get_base_url()
+{
+  $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
+  $domain = $_SERVER['HTTP_HOST'];
+  $subdirectory = '/smart_school_src/'; // If your CodeIgniter app is in a subdirectory, specify it here
+
+  return $protocol . $domain . $subdirectory;
+}
+$config['base_url'] = get_base_url();
 
 
 /*
