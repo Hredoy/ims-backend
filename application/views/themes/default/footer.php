@@ -5,7 +5,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-4 col-sm-6">
-                            <h3 class="fo-title"><?php echo $this->lang->line('links'); ?></h3>
+                            <h3 class="fo-title">গুরুত্বপুর্ণ অয়েবসাইটের লিঙ্ক</h3>
                             <ul class="f1-list">
                                 <?php
                                 foreach ($footer_menus as $footer_menu_key => $footer_menu_value) {
@@ -44,20 +44,32 @@
                         </div><!--./col-md-3-->
 
                         <div class="col-md-4 col-sm-6">
-                            <h3 class="fo-title"><?php echo $this->lang->line('follow_us'); ?></h3>
+                            <h3 class="fo-title">আমাদের অনুসরণ করুন</h3>
                             <ul class="social">
                                 <?php $this->view('/themes/default/social_media'); ?>
                             </ul>
                         </div><!--./col-md-3-->
                         <div class="col-md-4 col-sm-6">
-                            <h3 class="fo-title"><?php echo $this->lang->line('contact'); ?></h3>
-                            <ul class="co-list">
-                                <li><i class="fa fa-envelope"></i>
-                                    <a href="mailto:<?php echo $school_setting->email; ?>"><?php echo $school_setting->email; ?></a>
-                                </li>
-                                <li><i class="fa fa-phone"></i><?php echo $school_setting->phone; ?></li>
-                                <li><i class="fa fa-map-marker"></i><?php echo $school_setting->address; ?></li>
-                            </ul>
+                            <h3 class="fo-title">যোগাযোগ ও পরামর্শ</h3>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <p><strong><i class="fa fa-map-marker"></i> ক্যাম্পাস :<br>
+                                        </strong><?php echo $school_setting->address; ?></p>
+                                </div>
+                                <div class="col-sm-12">
+                                    <p><strong><i class="fa fa-phone"></i> Phone:</strong>
+                                        <a href="mailto:<?php echo $school_setting->email; ?>"> <?= $school_setting->phone ?> </a>
+                                    </p>
+                                </div>
+                                <div class="col-sm-12">
+                                    <p><strong><i class="fa fa-chrome"></i> Web :</strong> <a href="<?= base_url(); ?>"><?= site_url() ?></a><br>
+                                    </p>
+                                </div>
+                                <div class="col-sm-12">
+                                    <strong><i class="fa fa-envelope"></i> E-mail :</strong> <a href="mailto:<?= $school_setting->email ?>"><?= $school_setting->email ?></a>
+
+                                </div>
+                            </div>
                         </div><!--./col-md-3-->
                         <div class="col-md-3 col-sm-6">
                             <a class="twitter-timeline" data-tweet-limit="1" href="#"></a>

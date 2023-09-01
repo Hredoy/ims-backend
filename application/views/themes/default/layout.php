@@ -171,12 +171,12 @@
                                                         </div>
                                                         <div class="col-lg-3 col-md-4 col-sm-6">
                                                             <div class="item-all-card text-dark text-center" style="height:160px!important;">
-                                                                <a href="#"></a>
+                                                                <a href="<?= base_url('online_admission') ?>"></a>
                                                                 <div class="iteam-all-icon">
                                                                     <img src="images/school.png" alt="" width="57px" height="57px">
                                                                 </div>
                                                                 <div class="item-all-text mt-3">
-                                                                    <h5 class="mb-0">বিদ্যালয়ের বৈশিষ্ট্য</h5>
+                                                                    <h5 class="mb-0">ফলাফল</h5>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -187,7 +187,7 @@
                                                                     <img src="images/lecture.png" alt="" width="57px" height="57px">
                                                                 </div>
                                                                 <div class="item-all-text mt-3">
-                                                                    <h5 class="mb-0">পাঠদান পদ্ধতি</h5>
+                                                                    <h5 class="mb-0">শিক্ষার্তীর তথ্য</h5>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -198,7 +198,7 @@
                                                                     <img src="images/scholarship.png" alt="" width="57px" height="57px">
                                                                 </div>
                                                                 <div class="item-all-text mt-3">
-                                                                    <h5 class="mb-0">স্কলারশিপের সুযোগ</h5>
+                                                                    <h5 class="mb-0">শিক্ষক কর্মচারীর তথ্য</h5>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -209,7 +209,7 @@
                                                                     <img src="images/higher-education.png" alt="" width="57px" height="57px">
                                                                 </div>
                                                                 <div class="item-all-text mt-3">
-                                                                    <h5 class="mb-0">উচ্চ শিক্ষায় শিক্ষার্থীরা</h5>
+                                                                    <h5 class="mb-0">পাঠাগার</h5>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -220,7 +220,51 @@
                                                                     <img src="images/company.png" alt="" width="57px" height="57px">
                                                                 </div>
                                                                 <div class="item-all-text mt-3">
-                                                                    <h5 class="mb-0">সুযোগ-সুবিধা</h5>
+                                                                    <h5 class="mb-0">পরিচালনা কমিঠির তথ্য</h5>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3 col-md-4 col-sm-6">
+                                                            <div class="item-all-card text-dark text-center" style="height:160px!important;">
+                                                                <a href="#"></a>
+                                                                <div class="iteam-all-icon">
+                                                                    <img src="images/company.png" alt="" width="57px" height="57px">
+                                                                </div>
+                                                                <div class="item-all-text mt-3">
+                                                                    <h5 class="mb-0">একাডেমিক তথ্য</h5>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3 col-md-4 col-sm-6">
+                                                            <div class="item-all-card text-dark text-center" style="height:160px!important;">
+                                                                <a href="#"></a>
+                                                                <div class="iteam-all-icon">
+                                                                    <img src="images/company.png" alt="" width="57px" height="57px">
+                                                                </div>
+                                                                <div class="item-all-text mt-3">
+                                                                    <h5 class="mb-0">ক্লাস রুটিন</h5>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3 col-md-4 col-sm-6">
+                                                            <div class="item-all-card text-dark text-center" style="height:160px!important;">
+                                                                <a href="#"></a>
+                                                                <div class="iteam-all-icon">
+                                                                    <img src="images/company.png" alt="" width="57px" height="57px">
+                                                                </div>
+                                                                <div class="item-all-text mt-3">
+                                                                    <h5 class="mb-0">পরীক্ষার রুটিন</h5>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3 col-md-4 col-sm-6">
+                                                            <div class="item-all-card text-dark text-center" style="height:160px!important;">
+                                                                <a href="#"></a>
+                                                                <div class="iteam-all-icon">
+                                                                    <img src="images/company.png" alt="" width="57px" height="57px">
+                                                                </div>
+                                                                <div class="item-all-text mt-3">
+                                                                    <h5 class="mb-0">ফটো গ্যালারী</h5>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -290,8 +334,7 @@
                                                         </ul>
                                                     </div>
                                                     <div class="card-footer">
-                                                        <a href="<?= base_url('blog-list/' . $category->id) ?>"> <?= $category->name ?> নোটিশ
-                                                            দেখুন &gt;&gt;</a>
+                                                        <a href="<?= base_url('blog-list/' . $category->id) ?>">আরো দেখুন &gt;&gt;</a>
                                                     </div>
                                                 </div>
                                             </div>
