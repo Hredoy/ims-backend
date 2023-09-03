@@ -1,6 +1,14 @@
 <h1><?php echo $page['title']; ?></h1>
+<?php
+if (isset($page['event_start']) && $page['event_end']) {
+    ?>
+
+    <?php echo date($this->customlib->dateFront(), $this->customlib->dateyyyymmddTodateformatFront($page['event_start'])) . " - " . date($this->customlib->dateFront(), $this->customlib->dateyyyymmddTodateformatFront($page['event_end'])) ?>
+    <?php
+}
+?>
 <p><?php echo $page['description']; ?></p>
-<div class="mediarow">
+<div class="mediarow spacet50 spaceb50">
     <div class="row">
         <?php
         if (isset($page['page_contents'])) {
@@ -30,8 +38,7 @@
             echo "</div>";
         }
         ?>
-    </div>
+    </div> 
 </div>
-
 
 

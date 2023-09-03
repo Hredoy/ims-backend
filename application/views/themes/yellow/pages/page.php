@@ -4,19 +4,19 @@ if ($page_form) {
         //build start form
 
         if (validation_errors() != false) {
-            ?>
+?>
             <div class="col-md-12 alert alert-danger">
                 <?php echo validation_errors(); ?>
             </div>
-            <?php
+        <?php
         }
         if ($this->session->flashdata('msg')) {
-            ?>
+        ?>
             <div class='alert alert-success'>
                 <?php echo $this->session->flashdata('msg'); ?>
 
             </div>
-            <?php
+<?php
         }
         $form_content = $this->form_builder->open_form(array('action' => '', 'id' => 'open'));
         $defaults_object_or_array_from_db = NULL;
@@ -37,10 +37,10 @@ if ($page_form) {
 <div class="post-list spaceb50" id="postList">
     <?php
     if (!empty($page['category_content'])) {
-        ?>
+    ?>
         <?php
         foreach ($page['category_content'] as $page_content_key => $page_content_value) {
-            ?>
+        ?>
 
 
             <?php
@@ -49,13 +49,13 @@ if ($page_form) {
                 $numOfCols = 3;
                 $rowCount = 0;
                 $bootstrapColWidth = 12 / $numOfCols;
-                ?>
+            ?>
                 <div class="row">
                     <?php
                     if (!empty($page['category_content'][$page_content_key])) {
 
                         foreach ($page['category_content'][$page_content_key] as $key => $value) {
-                            ?>  
+                    ?>
                             <div class="col-md-<?php echo $bootstrapColWidth; ?> col-sm-<?php echo $bootstrapColWidth; ?>">
                                 <div class="cuadro_intro_hover" style="background-color:#cccccc;">
                                     <a href="<?php echo site_url($value['url']); ?>">
@@ -71,13 +71,14 @@ if ($page_form) {
                                             <div class="blur"></div>
                                             <div class="event20">
                                                 <h3 style="margin-top: 10px;"><?php echo $value['title']; ?></h3>
-                                                <p><?php echo substr($value['description'], 0, 85) . ".."; ?></p>
-                                            </div><!--./around20-->
-                                        </div>    
-                                    </a> 
+                                                <?php echo (strlen($value['description']) > 85) ? substr(html_entity_decode($value['description']), 0, 85) . '....' : $value['description']; ?>
+
+                                            </div>
+                                        </div><!--./around20-->
+                                    </a>
                                 </div><!--./eventbox-->
                             </div>
-                            <?php
+                    <?php
                             $rowCount++;
                             if ($rowCount % $numOfCols == 0)
                                 echo '</div><div class="row">';
@@ -87,16 +88,18 @@ if ($page_form) {
                 </div>
 
                 <?php
-            }elseif ($page_content_key == "notice") {
+            } elseif ($page_content_key == "notice") {
 
                 foreach ($page['category_content'][$page_content_key] as $key => $value) {
-                    ?>
-                    <div class="alert-message alert-message-default">
-                        <h4><a href="<?php echo site_url($value['url']); ?>"><?php echo $value['title']; ?></a></h4>
-                        <p><?php echo substr($value['description'], 0, 85) . ".."; ?></p>
+                ?>
+                    <div class="latestevent">
+                        <div class="alert-message alert-message-default">
+                            <h4><a href="<?php echo site_url($value['url']); ?>"><?php echo $value['title']; ?></a></h4>
+                            <?php echo (strlen($value['description']) > 85) ? substr(html_entity_decode($value['description']), 0, 85) . '....' : $value['description']; ?>
+                        </div>
                     </div>
 
-                    <?php
+                <?php
                 }
             } elseif ($page_content_key == "gallery") {
                 $numOfCols = 3;
@@ -106,38 +109,83 @@ if ($page_form) {
                 <div class="row">
                     <?php
                     foreach ($page['category_content'][$page_content_key] as $key => $value) {
-                        ?>  
-                        <div class="col-md-<?php echo $bootstrapColWidth; ?> col-sm-<?php echo $bootstrapColWidth; ?>">
-                            <div class="eventbox">
-                                <a href="<?php echo site_url($value['url']); ?>">
-                                    <?php
-                                    if ($value['feature_image'] == "") {
-                                        $feature_image = base_url('uploads/gallery/gallery_default.png');
-                                    } else {
-                                        $feature_image = $value['feature_image'];
-                                    }
-                                    ?>
-                                    <img src="<?php echo $feature_image; ?>" alt="" title="">
-                                    <div class="around20">
-                                        <h3><?php echo $value['title']; ?></h3>
+                        if ($value['content_type'] == 1) {
+                    ?>
+                            <div class="col-md-<?php echo $bootstrapColWidth; ?> col-sm-<?php echo $bootstrapColWidth; ?>">
+
+                                <div class="eventbox">
+                                    <a href="<?php echo site_url($value['url']); ?>">
                                         <?php
-                                        echo substr(strip_tags(html_entity_decode($value['description'])), 0, 50);
+                                        if ($value['feature_image'] == "") {
+                                            $feature_image = base_url('uploads/gallery/gallery_default.png');
+                                        } else {
+                                            $feature_image = $value['feature_image'];
+                                        }
                                         ?>
-                                    </div><!--./around20-->
-                                </a> 
-                            </div><!--./eventbox-->
-                        </div>
-                        <?php
-                        $rowCount++;
-                        if ($rowCount % $numOfCols == 0)
-                            echo '</div><div class="row">';
+                                        <img src="<?php echo $feature_image; ?>" alt="" title="">
+                                        <div class="evcontentfix">
+                                            <h3><?php echo $value['title']; ?></h3>
+                                            <?php
+                                            echo substr(strip_tags(html_entity_decode($value['description'])), 0, 50);
+                                            ?>
+
+                                        </div><!--./around20-->
+                                    </a>
+                                </div><!--./eventbox-->
+                            </div>
+                    <?php
+                            $rowCount++;
+                            if ($rowCount % $numOfCols == 0)
+                                echo '</div><div class="row">';
+                        }
                     }
                     ?>
                 </div>
 
-                <?php
+            <?php
+            } elseif ($page_content_key == "video") {
+                $numOfCols = 3;
+                $rowCount = 0;
+                $bootstrapColWidth = 12 / $numOfCols;
+            ?>
+                <div class="row">
+                    <?php
+                    foreach ($page['category_content'][$page_content_key] as $key => $value) {
+                        if ($value['content_type'] == 2) {
+                    ?>
+                            <div class="col-md-<?php echo $bootstrapColWidth; ?> col-sm-<?php echo $bootstrapColWidth; ?>">
+
+                                <div class="eventbox">
+                                    <a href="<?php echo site_url($value['url']); ?>">
+                                        <?php
+                                        if ($value['feature_image'] == "") {
+                                            $feature_image = base_url('uploads/gallery/gallery_default.png');
+                                        } else {
+                                            $feature_image = $value['feature_image'];
+                                        }
+                                        ?>
+                                        <img src="<?php echo $feature_image; ?>" alt="" title="">
+                                        <div class="evcontentfix">
+                                            <h3><?php echo $value['title']; ?></h3>
+                                            <?php
+                                            echo substr(strip_tags(html_entity_decode($value['description'])), 0, 50);
+                                            ?>
+
+                                        </div><!--./around20-->
+                                    </a>
+                                </div><!--./eventbox-->
+                            </div>
+                    <?php
+                            $rowCount++;
+                            if ($rowCount % $numOfCols == 0)
+                                echo '</div><div class="row">';
+                        }
+                    }
+                    ?>
+                </div>
+
+    <?php
             } else {
-                
             }
         }
         echo $this->ajax_pagination->create_links(); //pagination link
@@ -153,25 +201,26 @@ if ($page_form) {
 
         $.ajax({
             type: 'POST',
-            url: '<?php echo base_url(); ?>frontend/welcome/ajaxPaginationData/' + page_num,
+            url: '<?php echo base_url(); ?>welcome/ajaxPaginationData/' + page_num,
             data: 'page=' + page_num + '&page_content_type=' + page_content_type,
-            beforeSend: function () {
+            beforeSend: function() {
                 $('.loading').show();
             },
-            success: function (html) {
+            success: function(html) {
                 $('#postList').html(html);
                 $('.loading').fadeOut("slow");
             }
         });
     }
-       function refreshCaptcha(){
+
+    function refreshCaptcha() {
         $.ajax({
             type: "POST",
             url: "<?php echo base_url('site/refreshCaptcha'); ?>",
             data: {},
-            success: function(captcha){
+            success: function(captcha) {
                 $("#captcha_image").html(captcha);
             }
         });
-    } 
+    }
 </script>
