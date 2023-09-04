@@ -10,6 +10,7 @@ class Captcha extends Admin_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->auth->is_logged_in();
         $this->load->model('captcha_model');
         $this->load->library('captchalib');
     }
@@ -36,5 +37,3 @@ class Captcha extends Admin_Controller
 
 
 }
-
-?>

@@ -54,7 +54,6 @@ class Admin_Controller extends MY_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->auth->is_logged_in();
         $this->check_license();
         $this->load->library('rbac');
         $this->config->load('app-config');

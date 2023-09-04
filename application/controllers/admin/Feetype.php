@@ -7,6 +7,7 @@ class Feetype extends Admin_Controller {
 
     function __construct() {
         parent::__construct();
+        $this->auth->is_logged_in();
     }
 
     function index() {
@@ -90,5 +91,3 @@ class Feetype extends Admin_Controller {
     }
 
 }
-
-?>

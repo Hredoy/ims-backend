@@ -4,13 +4,17 @@ if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
-class Userlog extends Admin_Controller {
+class Userlog extends Admin_Controller
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
+        $this->auth->is_logged_in();
     }
 
-    public function index() {
+    public function index()
+    {
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/userlog');
         $userlogList = $this->userlog_model->get();
@@ -23,7 +27,8 @@ class Userlog extends Admin_Controller {
         $this->load->view('layout/footer', $data);
     }
 
-    public function getDatatable() {
+    public function getDatatable()
+    {
         $userlog = $this->userlog_model->getAllRecord();
         $userlog = json_decode($userlog);
 
@@ -52,7 +57,8 @@ class Userlog extends Admin_Controller {
         echo json_encode($json_data);
     }
 
-    public function getStudentDatatable() {
+    public function getStudentDatatable()
+    {
         $userlog = $this->userlog_model->getAllRecordByRole('student');
 
         $userlog = json_decode($userlog);
@@ -82,7 +88,8 @@ class Userlog extends Admin_Controller {
         echo json_encode($json_data);
     }
 
-    public function getParentDatatable() {
+    public function getParentDatatable()
+    {
         $userlog = $this->userlog_model->getAllRecordByRole('parent');
         $userlog = json_decode($userlog);
 
@@ -110,7 +117,8 @@ class Userlog extends Admin_Controller {
         echo json_encode($json_data);
     }
 
-    public function getStaffDatatable() {
+    public function getStaffDatatable()
+    {
         $userlog = $this->userlog_model->getAllRecordByStaff();
         $userlog = json_decode($userlog);
 
@@ -137,5 +145,4 @@ class Userlog extends Admin_Controller {
         );
         echo json_encode($json_data);
     }
-
 }

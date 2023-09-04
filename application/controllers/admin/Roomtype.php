@@ -7,6 +7,7 @@ class Roomtype extends Admin_Controller {
 
     function __construct() {
         parent::__construct();
+        $this->auth->is_logged_in();
     }
 
     public function index() {
@@ -86,5 +87,3 @@ class Roomtype extends Admin_Controller {
     }
 
 }
-
-?>

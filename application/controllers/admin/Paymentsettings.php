@@ -7,6 +7,7 @@ class Paymentsettings extends Admin_Controller {
 
     function __construct() {
         parent::__construct();
+        $this->auth->is_logged_in();
     }
 
     function index() {
@@ -466,5 +467,3 @@ class Paymentsettings extends Admin_Controller {
     }
 
 }
-
-?>

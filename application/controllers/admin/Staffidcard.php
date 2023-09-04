@@ -6,6 +6,7 @@ class Staffidcard extends Admin_Controller {
 
     public function __construct() {
         parent::__construct();
+        $this->auth->is_logged_in();
     }
 
     public function index() {
@@ -393,5 +394,3 @@ class Staffidcard extends Admin_Controller {
     }
 
 }
- ?>
-

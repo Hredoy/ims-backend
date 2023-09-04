@@ -10,6 +10,7 @@ class Feereminder extends Admin_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->auth->is_logged_in();
     }
 
     public function setting()
@@ -56,5 +57,4 @@ class Feereminder extends Admin_Controller
         $this->load->view('admin/feereminder/setting', $data);
         $this->load->view('layout/footer', $data);
     }
-
 }

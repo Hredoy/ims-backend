@@ -3,15 +3,19 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Generalcall extends Admin_Controller {
+class Generalcall extends Admin_Controller
+{
 
-    function __construct() {
+    function __construct()
+    {
         parent::__construct();
+        $this->auth->is_logged_in();
         $this->load->library('form_validation');
         $this->load->model("general_call_model");
     }
 
-    public function index() {
+    public function index()
+    {
         if (!$this->rbac->hasPrivilege('phone_call_log', 'can_view')) {
             access_denied();
         }
@@ -46,7 +50,8 @@ class Generalcall extends Admin_Controller {
         }
     }
 
-    function edit($id) {
+    function edit($id)
+    {
         if (!$this->rbac->hasPrivilege('phone_call_log', 'can_edit')) {
             access_denied();
         }
@@ -78,7 +83,8 @@ class Generalcall extends Admin_Controller {
         }
     }
 
-    function details($id) {
+    function details($id)
+    {
         if (!$this->rbac->hasPrivilege('phone_call_log', 'can_view')) {
             access_denied();
         }
@@ -87,7 +93,8 @@ class Generalcall extends Admin_Controller {
         $this->load->view('admin/frontoffice/Generalmodelview', $data);
     }
 
-    function delete($id) {
+    function delete($id)
+    {
         if (!$this->rbac->hasPrivilege('phone_call_log', 'can_delete')) {
             access_denied();
         }
@@ -96,16 +103,17 @@ class Generalcall extends Admin_Controller {
         redirect('admin/generalcall');
     }
 
-    public function check_default($post_string) {
+    public function check_default($post_string)
+    {
         return $post_string == '' ? FALSE : TRUE;
     }
 
-    function test() {
+    function test()
+    {
 
         $perm = $this->rbac->module_permission('student_information');
         if ($perm['is_active'] == '1') {
             echo "gc_disable()";
         }
     }
-
 }

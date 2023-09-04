@@ -13,19 +13,18 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('class'); ?></label><small
-                                            class="req"> *</small>
+                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('class'); ?></label><small class="req"> *</small>
                                     <select autofocus="" id="class_id" name="class_id" class="form-control">
                                         <option value=""><?php echo $this->lang->line('select'); ?></option>
                                         <?php
                                         foreach ($classlist as $class) {
-                                            ?>
+                                        ?>
                                             <option value="<?php echo $class['id'] ?>" <?php
-                                            if (set_value('class_id') == $class['id']) {
-                                                echo "selected=selected";
-                                            }
-                                            ?>><?php echo $class['class'] ?></option>
-                                            <?php
+                                                                                        if (set_value('class_id') == $class['id']) {
+                                                                                            echo "selected=selected";
+                                                                                        }
+                                                                                        ?>><?php echo $class['class'] ?></option>
+                                        <?php
                                         }
                                         ?>
                                     </select>
@@ -34,8 +33,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('section'); ?></label><small
-                                            class="req"> *</small>
+                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('section'); ?></label><small class="req"> *</small>
                                     <select id="section_id" name="section_id" class="form-control">
                                         <option value=""><?php echo $this->lang->line('select'); ?></option>
                                     </select>
@@ -46,8 +44,7 @@
                         </div>
                     </div>
                     <div class="box-footer">
-                        <button type="submit" class="btn btn-primary pull-right btn-sm"
-                                name="search"><?php echo $this->lang->line('search'); ?></button>
+                        <button type="submit" class="btn btn-primary pull-right btn-sm" name="search"><?php echo $this->lang->line('search'); ?></button>
                     </div>
                 </form>
 
@@ -64,88 +61,87 @@
                 <?php
                 if (isset($timetable)) {
                 ?>
-                <div class="box-header ptbnull"></div>
-                <div class="box-body">
-                    <?php
-                    if (!empty($timetable)) {
+                    <div class="box-header ptbnull"></div>
+                    <div class="box-body">
+                        <?php
+                        if (!empty($timetable)) {
                         ?>
 
-                        <div class="table-responsive">
-                            <table class="table table-stripped">
-                                <thead>
-                                <tr>
-                                    <?php
-                                    foreach ($timetable as $tm_key => $tm_value) {
-                                        ?>
-                                        <th class="text text-center"><?php echo $this->lang->line(strtolower($tm_key)); ?>
-
-                                        </th>
-                                        <?php
-                                    }
-                                    ?>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <?php
-                                    foreach ($timetable as $tm_key => $tm_value) {
-                                        ?>
-                                        <td class="text text-center" width="14%">
-
+                            <div class="table-responsive">
+                                <table class="table table-stripped">
+                                    <thead>
+                                        <tr>
                                             <?php
-                                            if (!$timetable[$tm_key]) {
-                                                ?>
-                                                <div class="attachment-block clearfix">
-                                                    <b class="text text-center"><?php echo $this->lang->line('not'); ?>
-                                                        <br><?php echo $this->lang->line('scheduled'); ?></b><br>
-                                                </div>
-                                                <?php
-                                            } else {
-                                                foreach ($timetable[$tm_key] as $tm_k => $tm_kue) {
-                                                    ?>
-                                                    <div class="attachment-block clearfix">
+                                            foreach ($timetable as $tm_key => $tm_value) {
+                                            ?>
+                                                <th class="text text-center"><?php echo $this->lang->line(strtolower($tm_key)); ?>
 
-                                                        <b class="text-green"><?php echo $this->lang->line('subject') ?>
-                                                            : <?php
-                                                            echo $tm_kue->subject_name;
-                                                            if ($tm_kue->code != '') {
-                                                                echo " (" . $tm_kue->code . ")";
-                                                            }
-                                                            ?>
-
-                                                        </b><br>
-
-                                                        <strong class="text-green"><?php echo $tm_kue->time_from ?></strong>
-                                                        <b class="text text-center">-</b>
-                                                        <strong class="text-green"><?php echo $tm_kue->time_to; ?></strong><br>
-
-                                                        <strong class="text-green"><?php echo $this->lang->line('room_no'); ?>
-                                                            : <?php echo $tm_kue->room_no; ?></strong><br>
-
-                                                    </div>
-                                                    <?php
-                                                }
+                                                </th>
+                                            <?php
                                             }
                                             ?>
-                                        </td>
-                                        <?php
-                                    }
-                                    ?>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <?php
-                    }
-                    ?>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <?php
+                                            foreach ($timetable as $tm_key => $tm_value) {
+                                            ?>
+                                                <td class="text text-center" width="14%">
 
-                </div>
+                                                    <?php
+                                                    if (!$timetable[$tm_key]) {
+                                                    ?>
+                                                        <div class="attachment-block clearfix">
+                                                            <b class="text text-center"><?php echo $this->lang->line('not'); ?>
+                                                                <br><?php echo $this->lang->line('scheduled'); ?></b><br>
+                                                        </div>
+                                                        <?php
+                                                    } else {
+                                                        foreach ($timetable[$tm_key] as $tm_k => $tm_kue) {
+                                                        ?>
+                                                            <div class="attachment-block clearfix">
+
+                                                                <b class="text-green"><?php echo $this->lang->line('subject') ?>
+                                                                    : <?php
+                                                                        echo $tm_kue->subject_name;
+                                                                        if ($tm_kue->code != '') {
+                                                                            echo " (" . $tm_kue->code . ")";
+                                                                        }
+                                                                        ?>
+
+                                                                </b><br>
+
+                                                                <strong class="text-green"><?php echo $tm_kue->time_from ?></strong>
+                                                                <b class="text text-center">-</b>
+                                                                <strong class="text-green"><?php echo $tm_kue->time_to; ?></strong><br>
+
+                                                                <strong class="text-green"><?php echo $this->lang->line('room_no'); ?>
+                                                                    : <?php echo $tm_kue->room_no; ?></strong><br>
+
+                                                            </div>
+                                                    <?php
+                                                        }
+                                                    }
+                                                    ?>
+                                                </td>
+                                            <?php
+                                            }
+                                            ?>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <?php
+                        }
+                        ?>
+
+                    </div>
+                <?php
+                }
+                ?>
             </div>
         </div>
-        <?php
-        }
-        ?>
-
     </div>
 </div>
 
@@ -159,21 +155,18 @@
 <script src="<?php echo base_url(); ?>backend/dist/js/nprogress.js"></script>
 <!--file dropify-->
 <script src="<?php echo base_url(); ?>backend/dist/js/dropify.min.js"></script>
-<script type="text/javascript"
-        src="<?php echo base_url(); ?>backend/dist/datatables/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript"
-        src="<?php echo base_url(); ?>backend/dist/datatables/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>backend/dist/datatables/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>backend/dist/datatables/js/dataTables.buttons.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>backend/dist/datatables/js/jszip.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>backend/dist/datatables/js/pdfmake.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>backend/dist/datatables/js/vfs_fonts.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>backend/dist/datatables/js/buttons.html5.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>backend/dist/datatables/js/buttons.print.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>backend/dist/datatables/js/buttons.colVis.min.js"></script>
-<script type="text/javascript"
-        src="<?php echo base_url(); ?>backend/dist/datatables/js/dataTables.responsive.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>backend/dist/datatables/js/dataTables.responsive.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>backend/dist/datatables/js/ss.custom.js"></script>
 <script type="text/javascript">
-    $(document).on('focus', '.time', function () {
+    $(document).on('focus', '.time', function() {
         var $this = $(this);
         $this.datetimepicker({
             format: 'LT'
@@ -183,13 +176,13 @@
     var class_id = $('#class_id').val();
     var section_id = '<?php echo set_value('section_id') ?>';
     var subject_group_id = '<?php echo set_value('subject_group_id') ?>';
-    $(document).ready(function () {
+    $(document).ready(function() {
 
         $('#myTabs a:first').tab('show') // Select first tab
         getSectionByClass(class_id, section_id);
         getGroupByClassandSection(class_id, section_id, subject_group_id);
 
-        $(document).on('change', '#class_id', function (e) {
+        $(document).on('change', '#class_id', function(e) {
             $('#section_id').html("");
             var class_id = $(this).val();
             var base_url = '<?php echo base_url() ?>';
@@ -197,11 +190,13 @@
 
             $.ajax({
                 type: "GET",
-                url: base_url + "sections/getByClass",
-                data: {'class_id': class_id},
+                url: base_url + "welcome/getByClass",
+                data: {
+                    'class_id': class_id
+                },
                 dataType: "json",
-                success: function (data) {
-                    $.each(data, function (i, obj) {
+                success: function(data) {
+                    $.each(data, function(i, obj) {
                         div_data += "<option value=" + obj.section_id + ">" + obj.section + "</option>";
                     });
 
@@ -210,7 +205,7 @@
             });
         });
 
-        $(document).on('change', '#section_id', function (e) {
+        $(document).on('change', '#section_id', function(e) {
             $('#subject_group_id').html("");
             var section_id = $(this).val();
             var class_id = $('#class_id').val();
@@ -219,10 +214,13 @@
             $.ajax({
                 type: "POST",
                 url: base_url + "admin/subjectgroup/getGroupByClassandSection",
-                data: {'class_id': class_id, 'section_id': section_id},
+                data: {
+                    'class_id': class_id,
+                    'section_id': section_id
+                },
                 dataType: "json",
-                success: function (data) {
-                    $.each(data, function (i, obj) {
+                success: function(data) {
+                    $.each(data, function(i, obj) {
                         div_data += "<option value=" + obj.subject_group_id + ">" + obj.name + "</option>";
                     });
 
@@ -241,11 +239,13 @@
 
             $.ajax({
                 type: "GET",
-                url: base_url + "sections/getByClass",
-                data: {'class_id': class_id},
+                url: base_url + "welcome/getByClass",
+                data: {
+                    'class_id': class_id
+                },
                 dataType: "json",
-                success: function (data) {
-                    $.each(data, function (i, obj) {
+                success: function(data) {
+                    $.each(data, function(i, obj) {
                         var sel = "";
                         if (section_id == obj.section_id) {
                             sel = "selected";
@@ -268,11 +268,14 @@
             $.ajax({
                 type: "POST",
                 url: base_url + "admin/subjectgroup/getGroupByClassandSection",
-                data: {'class_id': class_id, 'section_id': section_id},
+                data: {
+                    'class_id': class_id,
+                    'section_id': section_id
+                },
                 dataType: "json",
-                success: function (data) {
+                success: function(data) {
                     console.log(subject_group_id);
-                    $.each(data, function (i, obj) {
+                    $.each(data, function(i, obj) {
                         var sel = "";
                         if (subject_group_id == obj.subject_group_id) {
                             sel = "selected";
@@ -288,7 +291,7 @@
 
     }
 
-    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
 
 
         var target = $(e.target).attr("href"); // activated tab
@@ -310,10 +313,10 @@
                 'subject_group_id': ajax_data.group
             },
             dataType: 'json',
-            beforeSend: function () {
+            beforeSend: function() {
                 $(target).addClass('show');
             },
-            success: function (data) {
+            success: function(data) {
                 $(target).html(data.html);
 
                 $('.staff', target).select2({
@@ -326,20 +329,20 @@
                 });
                 tot_count = data.total_count + 1;
             },
-            error: function (xhr) { // if error occured
+            error: function(xhr) { // if error occured
 
             },
-            complete: function () {
+            complete: function() {
                 $(target).removeClass('show');
             }
         });
     }
 
 
-    $(document).ready(function () {
+    $(document).ready(function() {
         var counter = 0;
 
-        $(document).on("click", ".addrow", function () {
+        $(document).on("click", ".addrow", function() {
 
             var newRow = $("<tr>");
             var cols = "";
@@ -370,13 +373,13 @@
         });
 
 
-        $(document).on("click", ".ibtnDel", function (event) {
+        $(document).on("click", ".ibtnDel", function(event) {
             $(this).closest("tr").remove();
             counter -= 1
         });
 
 
-        $(document).on('click', '.submit_subject_group', function () {
+        $(document).on('click', '.submit_subject_group', function() {
             var form_id = $(this).closest("form").attr('id');
             var target = $('.nav-tabs .active a').attr("href"); // activated tab
             var target_id = $('.nav-tabs .active a').attr("id"); // activated tab
@@ -385,8 +388,6 @@
         });
 
     });
-
-
 </script>
 
 
@@ -394,20 +395,20 @@
     <option value=""><?php echo $this->lang->line('select') ?></option>
     <?php
     foreach ($staff as $staff_key => $staff_value) {
-        ?>
+    ?>
         <option value="<?php echo $staff_value['id']; ?>"><?php echo $staff_value['name'] . " " . $staff_value['surname'] . " (" . $staff_value['employee_id'] . ")"; ?></option>
         <?php
     }
-    ?>
+        ?>
 </script>
 
 <script type="text/template" id="subject_dropdown">
     <option value=""><?php echo $this->lang->line('select') ?></option>
     <?php
     foreach ($subject as $subject_key => $subject_value) {
-        ?>
+    ?>
         <option value="<?php echo $subject_value->id; ?>"><?php echo $subject_value->name . " (" . $subject_value->code . ")"; ?></option>
         <?php
     }
-    ?>
+        ?>
 </script>

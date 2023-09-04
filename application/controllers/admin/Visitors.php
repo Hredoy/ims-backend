@@ -3,15 +3,19 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Visitors extends Admin_Controller {
+class Visitors extends Admin_Controller
+{
 
-    function __construct() {
+    function __construct()
+    {
         parent::__construct();
         $this->load->library('form_validation');
         $this->load->model("Visitors_model");
+        $this->auth->is_logged_in();
     }
 
-    function index() {
+    function index()
+    {
 
         if (!$this->rbac->hasPrivilege('visitor_book', 'can_view')) {
             access_denied();
@@ -56,7 +60,8 @@ class Visitors extends Admin_Controller {
         }
     }
 
-    public function delete($id) {
+    public function delete($id)
+    {
         if (!$this->rbac->hasPrivilege('visitor_book', 'can_delete')) {
             access_denied();
         }
@@ -64,7 +69,8 @@ class Visitors extends Admin_Controller {
         $this->Visitors_model->delete($id);
     }
 
-    public function edit($id) {
+    public function edit($id)
+    {
         if (!$this->rbac->hasPrivilege('visitor_book', 'can_edit')) {
             access_denied();
         }
@@ -107,7 +113,8 @@ class Visitors extends Admin_Controller {
         }
     }
 
-    public function details($id) {
+    public function details($id)
+    {
         if (!$this->rbac->hasPrivilege('visitor_book', 'can_view')) {
             access_denied();
         }
@@ -116,7 +123,8 @@ class Visitors extends Admin_Controller {
         $this->load->view('admin/frontoffice/Visitormodelview', $data);
     }
 
-    public function download($documents) {
+    public function download($documents)
+    {
         $this->load->helper('download');
         $filepath = "./uploads/front_office/visitors/" . $documents;
         $data = file_get_contents($filepath);
@@ -124,18 +132,20 @@ class Visitors extends Admin_Controller {
         force_download($name, $data);
     }
 
-    public function imagedelete($id, $image) {
+    public function imagedelete($id, $image)
+    {
         if (!$this->rbac->hasPrivilege('visitor_book', 'can_delete')) {
             access_denied();
         }
         $this->Visitors_model->image_delete($id, $image);
     }
 
-    public function check_default($post_string) {
+    public function check_default($post_string)
+    {
         return $post_string == "" ? FALSE : TRUE;
     }
 
-    public function handle_upload($str,$var)
+    public function handle_upload($str, $var)
     {
 
         $image_validate = $this->config->item('file_validate');
@@ -149,7 +159,7 @@ class Visitors extends Admin_Controller {
             $allowed_extension = array_map('trim', array_map('strtolower', explode(',', $result->file_extension)));
             $allowed_mime_type = array_map('trim', array_map('strtolower', explode(',', $result->file_mime)));
             $ext               = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
-            
+
             if ($files = filesize($_FILES[$var]['tmp_name'])) {
 
                 if (!in_array($file_type, $allowed_mime_type)) {
@@ -165,7 +175,6 @@ class Visitors extends Admin_Controller {
                     $this->form_validation->set_message('handle_upload', $this->lang->line('file_size_shoud_be_less_than') . number_format($image_validate['upload_size'] / 1048576, 2) . " MB");
                     return false;
                 }
-
             } else {
                 $this->form_validation->set_message('handle_upload', "File Type / Extension Error Uploading  Image");
                 return false;
@@ -174,7 +183,5 @@ class Visitors extends Admin_Controller {
             return true;
         }
         return true;
-
     }
-
 }

@@ -2,16 +2,20 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Certificate extends Admin_Controller {
+class Certificate extends Admin_Controller
+{
 
-    function __construct() {
+    function __construct()
+    {
         parent::__construct();
+        $this->auth->is_logged_in();
 
         $this->load->library('Customlib');
         $this->load->model('certificate_model');
     }
 
-    public function index() {
+    public function index()
+    {
         if (!$this->rbac->hasPrivilege('student_certificate', 'can_view')) {
             access_denied();
         }
@@ -27,7 +31,8 @@ class Certificate extends Admin_Controller {
         $this->load->view('layout/footer');
     }
 
-    public function create() {
+    public function create()
+    {
         if (!$this->rbac->hasPrivilege('student_certificate', 'can_add')) {
             access_denied();
         }
@@ -94,8 +99,9 @@ class Certificate extends Admin_Controller {
             redirect('admin/certificate/index');
         }
     }
- 
-    function edit($id) {
+
+    function edit($id)
+    {
 
         if (!$this->rbac->hasPrivilege('student_certificate', 'can_edit')) {
             access_denied();
@@ -202,7 +208,8 @@ class Certificate extends Admin_Controller {
         }
     }
 
-    function delete($id) {
+    function delete($id)
+    {
         if (!$this->rbac->hasPrivilege('student_certificate', 'can_delete')) {
             access_denied();
         }
@@ -212,7 +219,8 @@ class Certificate extends Admin_Controller {
         redirect('admin/certificate/index');
     }
 
-    public function view() {
+    public function view()
+    {
         $id = $this->input->post('certificateid');
         $output = '';
         $data = array();
@@ -222,22 +230,33 @@ class Certificate extends Admin_Controller {
         echo $preview;
     }
 
-    public function view1() {
+    public function view1()
+    {
 
         $id = $this->input->post('certificateid');
         $output = '';
         $certificate = $this->certificate_model->certifiatebyid($id);
-        ?>
+?>
         <style type="text/css">
-            body{ font-family: 'arial';}
-            .tc-container{width: 100%;position: relative; text-align: center;}
-            .tc-container tr td{vertical-align: bottom;}
+            body {
+                font-family: 'arial';
+            }
+
+            .tc-container {
+                width: 100%;
+                position: relative;
+                text-align: center;
+            }
+
+            .tc-container tr td {
+                vertical-align: bottom;
+            }
         </style>
         <div class="tc-container">
             <img src="<?php echo base_url('uploads/certificate/') ?><?php echo $certificate->background_image; ?>" width="100%" height="100%" />
             <table width="100%" cellspacing="0" cellpadding="0">
                 <tr style="position:absolute; margin-left: auto;margin-right: auto;left: 0;right: 0;  width:<?php echo $certificate->content_width; ?>px; top:<?php echo $certificate->enable_image_height; ?>px">
-                    <td  valign="top" style="position: absolute;right: 0;">
+                    <td valign="top" style="position: absolute;right: 0;">
                         <?php if ($certificate->enable_student_image == 1) { ?>
                             <img src="<?php echo base_url('uploads/certificate/noimage.jpg') ?>" width="100" height="auto">
                         <?php } ?>
@@ -249,7 +268,8 @@ class Certificate extends Admin_Controller {
                     <td valign="top" style="width:<?php echo $certificate->content_width; ?>px;font-size: 18px; text-align:right;position:relative;"><?php echo $certificate->right_header; ?></td>
                 </tr>
                 <tr style="position:absolute;margin-left: auto;margin-right: auto;left: 0;right: 0; width:<?php echo $certificate->content_width; ?>px; display: block; top:<?php echo $certificate->content_height; ?>px;">
-                    <td colspan="3" valign="top" align="center"><p style="font-size: 16px;position: relative;text-align:center; margin:0 auto; width: 100%; left:auto; right:0;"><?php echo $certificate->certificate_text; ?></p>
+                    <td colspan="3" valign="top" align="center">
+                        <p style="font-size: 16px;position: relative;text-align:center; margin:0 auto; width: 100%; left:auto; right:0;"><?php echo $certificate->certificate_text; ?></p>
                     </td>
                 </tr>
                 <tr style="position:absolute; margin-left: auto;margin-right: auto;left: 0;right: 0;  width:<?php echo $certificate->content_width; ?>px; top:<?php echo $certificate->footer_height; ?>px">
@@ -259,8 +279,7 @@ class Certificate extends Admin_Controller {
                 </tr>
             </table>
         </div>
-        <?php
+<?php
     }
-
 }
 ?>

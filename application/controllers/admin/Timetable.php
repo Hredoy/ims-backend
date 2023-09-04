@@ -10,13 +10,14 @@ class Timetable extends Admin_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->auth->is_logged_in();
         $this->load->model("staff_model");
         $this->load->model("classteacher_model");
     }
 
     public function index()
     {
-     
+
         if (!$this->rbac->hasPrivilege('class_time_table', 'can_view')) {
             access_denied();
         }
@@ -186,10 +187,10 @@ class Timetable extends Admin_Controller
             $this->load->view('layout/footer', $data);
         } else {
 
-            $getDaysnameList         	= $this->customlib->getDaysname();
-            $data['getDaysnameList'] 	= $getDaysnameList;
-            $subject                 	= $this->subjectgroup_model->getGroupsubjects($subject_group_id);
-            $data['subject'] 			= $subject;
+            $getDaysnameList             = $this->customlib->getDaysname();
+            $data['getDaysnameList']     = $getDaysnameList;
+            $subject                     = $this->subjectgroup_model->getGroupsubjects($subject_group_id);
+            $data['subject']             = $subject;
             $this->load->view('layout/header', $data);
             $this->load->view('admin/timetable/timetableCreate', $data);
             $this->load->view('layout/footer', $data);
@@ -435,5 +436,4 @@ class Timetable extends Admin_Controller
             ->set_content_type('application/json')
             ->set_output(json_encode($json_array));
     }
-
 }

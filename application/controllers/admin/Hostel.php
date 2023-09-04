@@ -7,6 +7,7 @@ class Hostel extends Admin_Controller {
 
     function __construct() {
         parent::__construct();
+        $this->auth->is_logged_in();
 
         $this->load->library('Customlib');
     }
@@ -99,5 +100,3 @@ class Hostel extends Admin_Controller {
     }
 
 }
-
-?>

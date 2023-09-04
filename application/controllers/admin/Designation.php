@@ -8,6 +8,7 @@ class Designation extends Admin_Controller {
     function __construct() {
 
         parent::__construct();
+        $this->auth->is_logged_in();
 
         $this->load->helper('file');
         $this->config->load("payroll");
@@ -82,5 +83,3 @@ class Designation extends Admin_Controller {
     }
 
 }
-
-?>

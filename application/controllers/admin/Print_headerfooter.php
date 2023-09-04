@@ -3,13 +3,17 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Print_headerfooter extends Admin_Controller {
+class Print_headerfooter extends Admin_Controller
+{
 
-    function __construct() {
+    function __construct()
+    {
         parent::__construct();
+        $this->auth->is_logged_in();
     }
 
-    public function index() {
+    public function index()
+    {
         $this->session->set_userdata('top_menu', 'System Settings');
         $this->session->set_userdata('sub_menu', 'admin/print_headerfooter');
         $data['title'] = 'SMS Config List';
@@ -19,7 +23,8 @@ class Print_headerfooter extends Admin_Controller {
         $this->load->view('layout/footer', $data);
     }
 
-    public function edit() {
+    public function edit()
+    {
         $message = "";
         if (isset($_POST['type'])) {
             $is_required = $this->setting_model->check_haederimage($_POST['type']);
@@ -39,7 +44,6 @@ class Print_headerfooter extends Admin_Controller {
 
 
         if ($this->form_validation->run() == FALSE) {
-            
         } else {
 
             if (isset($_FILES["header_image"]) && !empty($_FILES['header_image']['name'])) {
@@ -81,8 +85,9 @@ class Print_headerfooter extends Admin_Controller {
         redirect('admin/print_headerfooter');
     }
 
-    public function handle_upload($str, $is_required) {
-        
+    public function handle_upload($str, $is_required)
+    {
+
         $image_validate = $this->config->item('image_validate');
         $result = $this->filetype_model->get();
         if (isset($_FILES["header_image"]) && !empty($_FILES['header_image']['name']) && $_FILES["header_image"]["size"] > 0) {
@@ -93,7 +98,7 @@ class Print_headerfooter extends Admin_Controller {
 
             $allowed_extension = array_map('trim', array_map('strtolower', explode(',', $result->image_extension)));
             $allowed_mime_type = array_map('trim', array_map('strtolower', explode(',', $result->image_mime)));
-            $ext               = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));          
+            $ext               = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
 
             $finfo = finfo_open(FILEINFO_MIME_TYPE);
             $mtype = finfo_file($finfo, $_FILES['header_image']['tmp_name']);
@@ -124,5 +129,4 @@ class Print_headerfooter extends Admin_Controller {
             }
         }
     }
-
 }

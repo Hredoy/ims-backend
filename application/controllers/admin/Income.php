@@ -4,15 +4,19 @@ if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
-class Income extends Admin_Controller {
+class Income extends Admin_Controller
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
+        $this->auth->is_logged_in();
         $this->load->helper('form');
         $this->config->load('app-config');
     }
 
-    public function index() {
+    public function index()
+    {
 
         if (!$this->rbac->hasPrivilege('income', 'can_view')) {
             access_denied();
@@ -28,7 +32,6 @@ class Income extends Admin_Controller {
         $this->form_validation->set_rules('date', $this->lang->line('date'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('documents', $this->lang->line('documents'), 'callback_handle_upload');
         if ($this->form_validation->run() == false) {
-            
         } else {
             $data = array(
                 'inc_head_id' => $this->input->post('inc_head_id'),
@@ -60,7 +63,8 @@ class Income extends Admin_Controller {
         $this->load->view('layout/footer', $data);
     }
 
-    public function download($documents) {
+    public function download($documents)
+    {
         $this->load->helper('download');
         $filepath = "./uploads/school_income/" . $this->uri->segment(6);
         $data = file_get_contents($filepath);
@@ -68,7 +72,8 @@ class Income extends Admin_Controller {
         force_download($name, $data);
     }
 
-    public function view($id) {
+    public function view($id)
+    {
         if (!$this->rbac->hasPrivilege('income', 'can_view')) {
             access_denied();
         }
@@ -80,13 +85,15 @@ class Income extends Admin_Controller {
         $this->load->view('layout/footer', $data);
     }
 
-    public function getByFeecategory() {
+    public function getByFeecategory()
+    {
         $feecategory_id = $this->input->get('feecategory_id');
         $data = $this->feetype_model->getTypeByFeecategory($feecategory_id);
         echo json_encode($data);
     }
 
-    public function getStudentCategoryFee() {
+    public function getStudentCategoryFee()
+    {
         $type = $this->input->post('type');
         $class_id = $this->input->post('class_id');
         $data = $this->income_model->getTypeByFeecategory($type, $class_id);
@@ -99,7 +106,8 @@ class Income extends Admin_Controller {
         echo json_encode($array);
     }
 
-    public function delete($id) {
+    public function delete($id)
+    {
         if (!$this->rbac->hasPrivilege('income', 'can_delete')) {
             access_denied();
         }
@@ -108,7 +116,8 @@ class Income extends Admin_Controller {
         redirect('admin/income/index');
     }
 
-    public function create() {
+    public function create()
+    {
         $data['title'] = 'Add Fees Master';
         $this->form_validation->set_rules('income', $this->lang->line('fees_master'), 'trim|required|xss_clean');
         if ($this->form_validation->run() == false) {
@@ -125,7 +134,8 @@ class Income extends Admin_Controller {
         }
     }
 
-    public function handle_upload() {
+    public function handle_upload()
+    {
 
         $image_validate = $this->config->item('file_validate');
         $result = $this->filetype_model->get();
@@ -135,11 +145,11 @@ class Income extends Admin_Controller {
             $file_size = $_FILES["documents"]["size"];
             $file_name = $_FILES["documents"]["name"];
 
-             $allowed_extension = array_map('trim', array_map('strtolower', explode(',', $result->file_extension)));
+            $allowed_extension = array_map('trim', array_map('strtolower', explode(',', $result->file_extension)));
             $allowed_mime_type = array_map('trim', array_map('strtolower', explode(',', $result->file_mime)));
             $ext               = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
-			
-				
+
+
             if ($files = filesize($_FILES['documents']['tmp_name'])) {
 
                 if (!in_array($file_type, $allowed_mime_type)) {
@@ -165,7 +175,8 @@ class Income extends Admin_Controller {
         return true;
     }
 
-    public function edit($id) {
+    public function edit($id)
+    {
         if (!$this->rbac->hasPrivilege('income', 'can_edit')) {
             access_denied();
         }
@@ -211,26 +222,26 @@ class Income extends Admin_Controller {
         }
     }
 
-    public function incomeSearch() {
+    public function incomeSearch()
+    {
         if (!$this->rbac->hasPrivilege('search_due_fees', 'can_view')) {
             access_denied();
         }
         $data['searchlist'] = $this->customlib->get_searchtype();
- 
+
         $this->session->set_userdata('top_menu', 'Income');
         $this->session->set_userdata('sub_menu', 'income/incomesearch');
         $data['search_type'] = '';
         $data['title'] = 'Search Income';
-            
-            $search = $this->input->post('search');
 
-            if ($search == "search_filter") {
-                  $this->form_validation->set_rules('search_type', $this->lang->line('search')." ".$this->lang->line('type'), 'trim|required|xss_clean');
-                if ($this->form_validation->run() == false) {
-                    
-                } else {
+        $search = $this->input->post('search');
 
-                    $data['search_type'] = $_POST['search_type'];
+        if ($search == "search_filter") {
+            $this->form_validation->set_rules('search_type', $this->lang->line('search') . " " . $this->lang->line('type'), 'trim|required|xss_clean');
+            if ($this->form_validation->run() == false) {
+            } else {
+
+                $data['search_type'] = $_POST['search_type'];
                 if (isset($_POST['search_type']) && $_POST['search_type'] != '') {
                     if ($_POST['search_type'] == 'all') {
                         $dates = $this->customlib->get_betweendate('this_year');
@@ -256,26 +267,22 @@ class Income extends Admin_Controller {
                 $date_to = date('Y-m-d', $this->customlib->dateYYYYMMDDtoStrtotime($date_to));
                 $resultList = $this->income_model->search("", $date_from, $date_to);
                 $data['resultList'] = $resultList;
-                }
-                
+            }
+        } else {
+
+            $data['inc_title'] = 'Income Result';
+            $this->form_validation->set_rules('search_text', $this->lang->line('search_text'), 'trim|required|xss_clean');
+            if ($this->form_validation->run() == false) {
             } else {
 
-                $data['inc_title'] = 'Income Result';
-                $this->form_validation->set_rules('search_text', $this->lang->line('search_text'), 'trim|required|xss_clean');
-                if ($this->form_validation->run() == false) {
-                    
-                } else {
-
-                    $search_text = $this->input->post('search_text');
-                    $resultList = $this->income_model->search($search_text, "", "");
-                    $data['resultList'] = $resultList;
-                }
+                $search_text = $this->input->post('search_text');
+                $resultList = $this->income_model->search($search_text, "", "");
+                $data['resultList'] = $resultList;
             }
+        }
 
-            $this->load->view('layout/header', $data);
-            $this->load->view('admin/income/incomeSearch', $data);
-            $this->load->view('layout/footer', $data);
-      
+        $this->load->view('layout/header', $data);
+        $this->load->view('admin/income/incomeSearch', $data);
+        $this->load->view('layout/footer', $data);
     }
-
 }

@@ -12,6 +12,7 @@ class Staff extends Admin_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->auth->is_logged_in();
         $this->config->load("payroll");
         $this->config->load("app-config");
         $this->load->library('Enc_lib');
@@ -240,7 +241,7 @@ class Staff extends Admin_Controller
 
         $date    = $start_year . "-" . $startMonth;
         $newdate = date("Y-m-d", strtotime($date . "+1 month"));
-		
+
         $data["countAttendance"] = $attendence_count;
 
         $data["resultlist"]       = $res;
@@ -421,7 +422,10 @@ class Staff extends Admin_Controller
         $this->form_validation->set_rules('third_doc', $this->lang->line('image'), 'callback_handle_third_upload');
         $this->form_validation->set_rules('fourth_doc', $this->lang->line('image'), 'callback_handle_fourth_upload');
         $this->form_validation->set_rules(
-            'email', $this->lang->line('email'), array('required', 'valid_email',
+            'email',
+            $this->lang->line('email'),
+            array(
+                'required', 'valid_email',
                 array('check_exists', array($this->staff_model, 'valid_email_id')),
             )
         );
@@ -503,7 +507,8 @@ class Staff extends Admin_Controller
             if (isset($surname)) {
 
                 $data_insert['surname'] = $surname;
-            }if (isset($department)) {
+            }
+            if (isset($department)) {
 
                 $data_insert['department'] = $department;
             }
@@ -649,7 +654,7 @@ class Staff extends Admin_Controller
                 }
             }
             $role_array = array('role_id' => $this->input->post('role'), 'staff_id' => 0);
-//==========================
+            //==========================
             $insert                                = true;
             $data_setting                          = array();
             $data_setting['id']                    = $this->sch_setting_detail->id;
@@ -812,7 +817,7 @@ class Staff extends Admin_Controller
                     $this->form_validation->set_message('handle_upload', $this->lang->line('file_type_not_allowed'));
                     return false;
                 }
-                
+
                 if ($file_size > $result->image_size) {
                     $this->form_validation->set_message('handle_upload', $this->lang->line('file_size_shoud_be_less_than') . number_format($image_validate['upload_size'] / 1048576, 2) . " MB");
                     return false;
@@ -839,8 +844,8 @@ class Staff extends Admin_Controller
 
             $allowed_extension = array_map('trim', array_map('strtolower', explode(',', $result->file_extension)));
             $allowed_mime_type = array_map('trim', array_map('strtolower', explode(',', $result->file_mime)));
-            $ext               = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));         
-          
+            $ext               = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+
             $finfo             = finfo_open(FILEINFO_MIME_TYPE);
             $mtype             = finfo_file($finfo, $_FILES['first_doc']['tmp_name']);
             finfo_close($finfo);
@@ -873,10 +878,10 @@ class Staff extends Admin_Controller
             $file_type         = $_FILES["second_doc"]['type'];
             $file_size         = $_FILES["second_doc"]["size"];
             $file_name         = $_FILES["second_doc"]["name"];
-             $allowed_extension = array_map('trim', array_map('strtolower', explode(',', $result->file_extension)));
+            $allowed_extension = array_map('trim', array_map('strtolower', explode(',', $result->file_extension)));
             $allowed_mime_type = array_map('trim', array_map('strtolower', explode(',', $result->file_mime)));
             $ext               = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
-           
+
             $finfo             = finfo_open(FILEINFO_MIME_TYPE);
             $mtype             = finfo_file($finfo, $_FILES['second_doc']['tmp_name']);
             finfo_close($finfo);
@@ -913,7 +918,7 @@ class Staff extends Admin_Controller
             $allowed_extension = array_map('trim', array_map('strtolower', explode(',', $result->file_extension)));
             $allowed_mime_type = array_map('trim', array_map('strtolower', explode(',', $result->file_mime)));
             $ext               = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
-            
+
             $finfo             = finfo_open(FILEINFO_MIME_TYPE);
             $mtype             = finfo_file($finfo, $_FILES['third_doc']['tmp_name']);
             finfo_close($finfo);
@@ -950,7 +955,7 @@ class Staff extends Admin_Controller
             $allowed_extension = array_map('trim', array_map('strtolower', explode(',', $result->file_extension)));
             $allowed_mime_type = array_map('trim', array_map('strtolower', explode(',', $result->file_mime)));
             $ext               = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
-           
+
             $finfo             = finfo_open(FILEINFO_MIME_TYPE);
             $mtype             = finfo_file($finfo, $_FILES['fourth_doc']['tmp_name']);
             finfo_close($finfo);
@@ -1067,7 +1072,10 @@ class Staff extends Admin_Controller
         }
 
         $this->form_validation->set_rules(
-            'email', $this->lang->line('email'), array('required', 'valid_email',
+            'email',
+            $this->lang->line('email'),
+            array(
+                'required', 'valid_email',
                 array('check_exists', array($this->staff_model, 'valid_email_id')),
             )
         );
@@ -1131,7 +1139,7 @@ class Staff extends Admin_Controller
                 }
                 $this->customfield_model->updateRecord($custom_value_array, $id, 'staff');
             }
-        
+
             $data1 = array(
                 'id'                   => $id,
                 'department'           => $department,
@@ -1201,14 +1209,16 @@ class Staff extends Admin_Controller
 
                     if (!empty($altid[$i])) {
 
-                        $data2 = array('staff_id' => $id,
+                        $data2 = array(
+                            'staff_id' => $id,
                             'leave_type_id'           => $leave_type[$i],
                             'id'                      => $altid[$i],
                             'alloted_leave'           => $alloted_leave[$i],
                         );
                     } else {
 
-                        $data2 = array('staff_id' => $id,
+                        $data2 = array(
+                            'staff_id' => $id,
                             'leave_type_id'           => $leave_type[$i],
                             'alloted_leave'           => $alloted_leave[$i],
                         );
@@ -1641,7 +1651,8 @@ class Staff extends Admin_Controller
         $error = "";
         if (isset($_FILES["file"]) && !empty($_FILES['file']['name'])) {
             $allowedExts = array('csv');
-            $mimes       = array('text/csv',
+            $mimes       = array(
+                'text/csv',
                 'text/plain',
                 'application/csv',
                 'text/comma-separated-values',
@@ -1650,7 +1661,8 @@ class Staff extends Admin_Controller
                 'application/vnd.msexcel',
                 'text/anytext',
                 'application/octet-stream',
-                'application/txt');
+                'application/txt'
+            );
             $temp      = explode(".", $_FILES["file"]["name"]);
             $extension = end($temp);
             if ($_FILES["file"]["error"] > 0) {
@@ -1711,5 +1723,4 @@ class Staff extends Admin_Controller
         $this->staff_model->rating_remove($id);
         redirect('admin/staff/rating');
     }
-
 }

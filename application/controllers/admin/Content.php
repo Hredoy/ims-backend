@@ -5,7 +5,9 @@ if (!defined('BASEPATH'))
 
 class Content extends Admin_Controller {
 
-    function __construct() {
+    function __construct()
+    {
+        $this->auth->is_logged_in();
         parent::__construct();
     }
 
@@ -352,5 +354,3 @@ class Content extends Admin_Controller {
     }
 
 }
- 
-?>

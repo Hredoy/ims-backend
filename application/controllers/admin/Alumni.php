@@ -4,10 +4,14 @@ if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
-class Alumni extends Admin_Controller {
+class Alumni extends Admin_Controller
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
+
+        $this->auth->is_logged_in();
         $this->sch_setting_detail = $this->setting_model->getSetting();
         $this->config->load('app-config');
         $this->load->library('smsgateway');
@@ -15,7 +19,8 @@ class Alumni extends Admin_Controller {
         $this->load->library('encoding_lib');
     }
 
-    public function alumnilist() {
+    public function alumnilist()
+    {
         if (!$this->rbac->hasPrivilege('manage_alumni', 'can_view')) {
             access_denied();
         }
@@ -64,7 +69,6 @@ class Alumni extends Admin_Controller {
                     $this->form_validation->set_rules('session_id', $this->lang->line('session'), 'trim|required|xss_clean');
                     $this->form_validation->set_rules('class_id', $this->lang->line('class'), 'trim|required|xss_clean');
                     if ($this->form_validation->run() == false) {
-                        
                     } else {
                         $data['searchby'] = "filter";
                         $data['class_id'] = $this->input->post('class_id');
@@ -88,7 +92,8 @@ class Alumni extends Admin_Controller {
         }
     }
 
-    public function get_alumnidetails() {
+    public function get_alumnidetails()
+    {
         $student_id = $_POST['student_id'];
         $data = $this->alumni_model->get_alumnidetail($student_id);
 
@@ -100,13 +105,15 @@ class Alumni extends Admin_Controller {
                 'current_phone' => '',
                 'occupation' => '',
                 'address' => '',
-                'student_id' => '');
+                'student_id' => ''
+            );
         }
 
         echo json_encode($data);
     }
 
-    public function add() {
+    public function add()
+    {
 
         $this->form_validation->set_rules('current_phone', $this->lang->line('current_phone'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('file', $this->lang->line('image'), 'callback_handle_upload');
@@ -138,14 +145,15 @@ class Alumni extends Admin_Controller {
                 $data_img = array('id' => $insert_id, 'photo' => 'uploads/alumni_student_images/' . $img_name);
                 $this->alumni_model->add($data_img);
             }
-         
+
             $array = array('status' => 'success', 'error' => '', 'message' => $this->lang->line('success_message'));
         }
 
         echo json_encode($array);
     }
 
-    public function handle_upload() {
+    public function handle_upload()
+    {
 
         $image_validate = $this->config->item('image_validate');
         $result = $this->filetype_model->get();
@@ -155,7 +163,7 @@ class Alumni extends Admin_Controller {
             $file_size = $_FILES["file"]["size"];
             $file_name = $_FILES["file"]["name"];
 
-           $allowed_extension = array_map('trim', array_map('strtolower', explode(',', $result->image_extension)));
+            $allowed_extension = array_map('trim', array_map('strtolower', explode(',', $result->image_extension)));
             $allowed_mime_type = array_map('trim', array_map('strtolower', explode(',', $result->image_mime)));
             $ext               = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
 
@@ -170,7 +178,7 @@ class Alumni extends Admin_Controller {
                     $this->form_validation->set_message('handle_upload', 'Extension Not Allowed');
                     return false;
                 }
-               if ($file_size > $result->image_size) {
+                if ($file_size > $result->image_size) {
                     $this->form_validation->set_message('handle_upload', $this->lang->line('file_size_shoud_be_less_than') . number_format($image_validate['upload_size'] / 1048576, 2) . " MB");
                     return false;
                 }
@@ -184,7 +192,8 @@ class Alumni extends Admin_Controller {
         return true;
     }
 
-    public function events() {
+    public function events()
+    {
 
         if (!$this->rbac->hasPrivilege('events', 'can_view')) {
             access_denied();
@@ -228,11 +237,12 @@ class Alumni extends Admin_Controller {
         $this->load->view("layout/footer.php");
     }
 
-    public function add_event() {
+    public function add_event()
+    {
 
         $this->form_validation->set_rules('event_title', $this->lang->line('event') . " " . $this->lang->line('title'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('from_date', $this->lang->line("event").''.$this->lang->line("from").' '.$this->lang->line("date"), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('to_date', $this->lang->line("event").''.$this->lang->line("to").' '.$this->lang->line("date"), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('from_date', $this->lang->line("event") . '' . $this->lang->line("from") . ' ' . $this->lang->line("date"), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('to_date', $this->lang->line("event") . '' . $this->lang->line("to") . ' ' . $this->lang->line("date"), 'trim|required|xss_clean');
 
 
         $studentclass = $this->input->post('event_for');
@@ -246,7 +256,7 @@ class Alumni extends Admin_Controller {
             $msg = array(
                 'event_title' => form_error('event_title'),
                 'from_date' => form_error('from_date'),
-				'to_date' => form_error('to_date'),
+                'to_date' => form_error('to_date'),
             );
             if ($studentclass == 'class') {
                 $msg1 = array(
@@ -338,18 +348,21 @@ class Alumni extends Admin_Controller {
         echo json_encode($array);
     }
 
-    public function get_event($id) {
+    public function get_event($id)
+    {
         $data = $this->alumni_model->get_eventbyid($id);
         $data['from_date'] = date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($data['from_date']));
         $data['to_date'] = date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($data['to_date']));
         echo json_encode($data);
     }
 
-    public function delete_event($id) {
+    public function delete_event($id)
+    {
         $this->alumni_model->delete_event($id);
     }
 
-    public function getevent() {
+    public function getevent()
+    {
 
         $year = $this->input->get('year');
         $month = $this->input->get('month');
@@ -409,8 +422,8 @@ class Alumni extends Admin_Controller {
         }
     }
 
-    public function deletestudent($id) {
+    public function deletestudent($id)
+    {
         $this->alumni_model->deletestudent($id);
     }
-
 }

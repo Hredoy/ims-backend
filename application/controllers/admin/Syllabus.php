@@ -2,23 +2,27 @@
 
 if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
-} 
+}
 
-class Syllabus extends Admin_Controller {
+class Syllabus extends Admin_Controller
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
+        $this->auth->is_logged_in();
         $this->sch_current_session = $this->setting_model->getCurrentSession();
         $this->staff_id = $this->customlib->getStaffID();
-        $this->sch_setting_detail=$this->setting_model->getSetting();
-        $this->start_weekday=strtolower($this->sch_setting_detail->start_week);
+        $this->sch_setting_detail = $this->setting_model->getSetting();
+        $this->start_weekday = strtolower($this->sch_setting_detail->start_week);
     }
 
-    public function index() {
+    public function index()
+    {
         if (!($this->rbac->hasPrivilege('manage_lesson_plan', 'can_view'))) {
             access_denied();
         }
-      
+
         $this->session->set_userdata('top_menu', 'lessonplan');
         $this->session->set_userdata('sub_menu', 'admin/syllabus');
         $my_role = $this->customlib->getStaffRole();
@@ -26,24 +30,25 @@ class Syllabus extends Admin_Controller {
         $data['role_id'] = $role->id;
         $staff_list = $this->staff_model->getEmployee('2');
         $data['staff_list'] = $staff_list;
-        $monday = strtotime("last ".$this->start_weekday);
+        $monday = strtotime("last " . $this->start_weekday);
         $monday = date('w', $monday) == date('w') ? $monday + 7 * 86400 : $monday;
         $sunday = strtotime(date("Y-m-d", $monday) . " +6 days");
         $this_week_start = date("Y-m-d", $monday);
         $this_week_end = date("Y-m-d", $sunday);
         $data['this_week_start'] = date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($this_week_start));
-        $data['this_week_end'] = date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($this_week_end)); 
+        $data['this_week_end'] = date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($this_week_end));
         $data['staff_id'] = $this->staff_id;
         $this->load->view('layout/header', $data);
         $this->load->view('admin/syllabus/index', $data);
         $this->load->view('layout/footer', $data);
-    } 
- 
-    public function get_weekdates() {
+    }
+
+    public function get_weekdates()
+    {
         $this_week_start = $this->customlib->dateFormatToYYYYMMDD($_POST['date']);
-        $prev_week_start = date("Y-m-d", strtotime('last '.$this->start_weekday, strtotime($this_week_start)));
-        $next_week_start = date("Y-m-d", strtotime('next '.$this->start_weekday, strtotime($this_week_start)));
-        $this_week_end = date( "Y-m-d", strtotime($this_week_start." +6 day"));
+        $prev_week_start = date("Y-m-d", strtotime('last ' . $this->start_weekday, strtotime($this_week_start)));
+        $next_week_start = date("Y-m-d", strtotime('next ' . $this->start_weekday, strtotime($this_week_start)));
+        $this_week_end = date("Y-m-d", strtotime($this_week_start . " +6 day"));
         $data['this_week_start'] = $this->customlib->dateformat($this_week_start);
         $data['this_week_end'] = $this->customlib->dateformat($this_week_end);
         $data['prev_week_start'] = $this->customlib->dateformat($prev_week_start);
@@ -63,7 +68,7 @@ class Syllabus extends Admin_Controller {
                 $myclasssubjects = $this->subjecttimetable_model->getByStaffClassTeacherandDay($staff_id, $day_key);
 
                 if (!empty($myclasssubjects[0]->timetable_id)) {
-                   
+
                     $timetableid = $myclasssubjects[0]->timetable_id;
                     $concate = "yes";
                 }
@@ -88,12 +93,13 @@ class Syllabus extends Admin_Controller {
             $data['timetable'][$day_key] = $this->subjecttimetable_model->getSyllabussubject($staff_id, $day_key, $condition);
         }
 
-       
+
         $data['staff_id'] = $staff_id;
         $this->load->view('admin/syllabus/_get_weekdates', $data);
     }
 
-    public function get_subject_syllabus() {
+    public function get_subject_syllabus()
+    {
         $data['id'] = $_POST['id'];
         $staff_id = $_POST['staff_id'];
         $my_role = $this->customlib->getStaffRole();
@@ -107,12 +113,14 @@ class Syllabus extends Admin_Controller {
         $this->load->view('admin/syllabus/_get_subject_syllabus', $data);
     }
 
-    public function delete_subject_syllabus() {
+    public function delete_subject_syllabus()
+    {
 
         $this->syllabus_model->delete_subject_syllabus($_POST['id']);
     }
 
-    public function get_subject_syllabusdata() {
+    public function get_subject_syllabusdata()
+    {
         $staff_id = $this->customlib->getStaffID();
         $my_role = $this->customlib->getStaffRole();
         $role = json_decode($my_role);
@@ -126,14 +134,15 @@ class Syllabus extends Admin_Controller {
         }
     }
 
-    public function getsubject_syllabus($id) {
+    public function getsubject_syllabus($id)
+    {
         $data = $this->syllabus_model->get_subject_syllabusdatabyid($id);
-        $data['date'] = date($this->customlib->getSchoolDateFormat(), strtotime($data['date']));		
+        $data['date'] = date($this->customlib->getSchoolDateFormat(), strtotime($data['date']));
         echo json_encode($data);
-
     }
 
-    public function add_syllabus() {
+    public function add_syllabus()
+    {
 
 
         $this->form_validation->set_rules('lesson_id', $this->lang->line('lesson'), 'trim|required|xss_clean');
@@ -198,7 +207,8 @@ class Syllabus extends Admin_Controller {
         echo json_encode($array);
     }
 
-    public function download($doc) {
+    public function download($doc)
+    {
         $this->load->helper('download');
         $filepath = "./uploads/syllabus_attachment/" . $this->uri->segment(4);
         $data = file_get_contents($filepath);
@@ -206,7 +216,8 @@ class Syllabus extends Admin_Controller {
         force_download($name, $data);
     }
 
-    public function lacture_video_download($doc) {
+    public function lacture_video_download($doc)
+    {
         $this->load->helper('download');
         $filepath = "./uploads/syllabus_attachment/lacture_video/" . $this->uri->segment(4);
 
@@ -215,7 +226,8 @@ class Syllabus extends Admin_Controller {
         force_download($name, $data);
     }
 
-    public function handle_uploadlacturevideo() {
+    public function handle_uploadlacturevideo()
+    {
 
         $image_validate = $this->config->item('file_validate');
         $result = $this->filetype_model->get();
@@ -228,7 +240,7 @@ class Syllabus extends Admin_Controller {
             $allowed_extension = array_map('trim', array_map('strtolower', explode(',', $result->file_extension)));
             $allowed_mime_type = array_map('trim', array_map('strtolower', explode(',', $result->file_mime)));
             $ext               = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
-           
+
             $finfo = finfo_open(FILEINFO_MIME_TYPE);
             $mtype = finfo_file($finfo, $_FILES['lacture_video']['tmp_name']);
             finfo_close($finfo);
@@ -255,7 +267,8 @@ class Syllabus extends Admin_Controller {
         return true;
     }
 
-    public function handle_upload() {
+    public function handle_upload()
+    {
 
         $image_validate = $this->config->item('file_validate');
         $result = $this->filetype_model->get();
@@ -268,11 +281,11 @@ class Syllabus extends Admin_Controller {
             $allowed_extension = array_map('trim', array_map('strtolower', explode(',', $result->file_extension)));
             $allowed_mime_type = array_map('trim', array_map('strtolower', explode(',', $result->file_mime)));
             $ext               = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
-         
+
             $finfo = finfo_open(FILEINFO_MIME_TYPE);
             $mtype = finfo_file($finfo, $_FILES['file']['tmp_name']);
             finfo_close($finfo);
- 
+
             if (!in_array($mtype, $allowed_mime_type)) {
                 $this->form_validation->set_message('handle_upload', 'File Type Not Allowed');
                 return false;
@@ -282,7 +295,7 @@ class Syllabus extends Admin_Controller {
                 $this->form_validation->set_message('handle_upload', 'Extension Not Allowed');
                 return false;
             }
-            if ($file_size > $result->file_size) {                
+            if ($file_size > $result->file_size) {
                 $this->form_validation->set_message('handle_upload', $this->lang->line('file_size_shoud_be_less_than') . number_format($image_validate['upload_size'] / 1048576, 2) . " MB");
                 return false;
             }
@@ -295,7 +308,8 @@ class Syllabus extends Admin_Controller {
         return true;
     }
 
-    public function status() {
+    public function status()
+    {
 
         if (!($this->rbac->hasPrivilege('manage_syllabus_status', 'can_view'))) {
             access_denied();
@@ -319,7 +333,6 @@ class Syllabus extends Admin_Controller {
         $this->form_validation->set_rules('subject_id', $this->lang->line('subject'), 'trim|required|xss_clean');
 
         if ($this->form_validation->run() == false) {
-            
         } else {
             $data['class_id'] = $_POST['class_id'];
             $data['section_id'] = $_POST['section_id'];
@@ -349,5 +362,4 @@ class Syllabus extends Admin_Controller {
         $this->load->view('admin/lessonplan/index', $data);
         $this->load->view('layout/footer');
     }
-
 }

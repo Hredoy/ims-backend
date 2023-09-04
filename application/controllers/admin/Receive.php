@@ -3,16 +3,20 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Receive extends Admin_Controller {
+class Receive extends Admin_Controller
+{
 
-    function __construct() {
+    function __construct()
+    {
         parent::__construct();
+        $this->auth->is_logged_in();
         $this->load->library('form_validation');
 
         $this->load->model("Dispatch_model");
     }
 
-    public function index() {
+    public function index()
+    {
         if (!$this->rbac->hasPrivilege('postal_receive', 'can_view')) {
             access_denied();
         }
@@ -50,7 +54,8 @@ class Receive extends Admin_Controller {
         }
     }
 
-    function editreceive($id) {
+    function editreceive($id)
+    {
         if (!$this->rbac->hasPrivilege('postal_receive', 'can_view')) {
             access_denied();
         }
@@ -89,7 +94,8 @@ class Receive extends Admin_Controller {
         }
     }
 
-    public function delete($id) {
+    public function delete($id)
+    {
         if (!$this->rbac->hasPrivilege('postal_receive', 'can_delete')) {
             access_denied();
         }
@@ -97,14 +103,15 @@ class Receive extends Admin_Controller {
         $this->Dispatch_model->delete($id);
     }
 
-    public function imagedelete($id, $image) {
+    public function imagedelete($id, $image)
+    {
         if (!$this->rbac->hasPrivilege('postal_receive', 'can_delete')) {
             access_denied();
         }
         $this->Dispatch_model->image_delete($id, $image);
     }
 
-    public function handle_upload($str,$var)
+    public function handle_upload($str, $var)
     {
 
         $image_validate = $this->config->item('file_validate');
@@ -134,7 +141,6 @@ class Receive extends Admin_Controller {
                     $this->form_validation->set_message('handle_upload', $this->lang->line('file_size_shoud_be_less_than') . number_format($image_validate['upload_size'] / 1048576, 2) . " MB");
                     return false;
                 }
-
             } else {
                 $this->form_validation->set_message('handle_upload', "File Type / Extension Error Uploading  Image");
                 return false;
@@ -143,7 +149,5 @@ class Receive extends Admin_Controller {
             return true;
         }
         return true;
-
     }
-
 }

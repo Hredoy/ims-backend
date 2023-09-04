@@ -2,19 +2,20 @@
 
 if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
-} 
+}
 
 class Admin extends Admin_Controller
 {
 
     public function __construct()
     {
+
         parent::__construct();
+        $this->auth->is_logged_in();
         $this->load->model("classteacher_model");
         $this->load->model("Staff_model");
         $this->load->library('Enc_lib');
         $this->sch_setting_detail = $this->setting_model->getSetting();
-
     }
 
     public function unauthorized()
@@ -84,7 +85,6 @@ class Admin extends Admin_Controller
         foreach ($tot_roles as $key => $value) {
 
             $count_roles[$value["name"]] = $this->role_model->count_roles($value["id"]);
-
         }
         $data["roles"] = $count_roles;
 
@@ -198,7 +198,6 @@ class Admin extends Admin_Controller
                     if ($awaiting_value->fee_amount > 0) {
                         $amount_to_be_taken = $awaiting_value->fee_amount;
                     }
-
                 }
                 if ($amount_to_be_taken > 0) {
                     $total_fess++;
@@ -218,7 +217,6 @@ class Admin extends Admin_Controller
                     } else {
                         $total_unpaid++;
                     }
-
                 }
             }
         }
@@ -253,7 +251,6 @@ class Admin extends Admin_Controller
                 'lost'             => $enquiry['lost'],
                 'lost_progress'    => ($enquiry['lost'] * 100) / $total_enquiry,
             );
-
         } else {
 
             $data['enquiry_overview'] = array(
@@ -268,7 +265,6 @@ class Admin extends Admin_Controller
                 'lost'             => 0,
                 'lost_progress'    => 0,
             );
-
         }
 
         $data['total_paid'] = $total_paid;
@@ -319,7 +315,11 @@ class Admin extends Admin_Controller
         $data['Staffattendence_data'] = $Staffattendence;
         $getTotalStaff                = $this->Staff_model->getTotalStaff();
         $data['getTotalStaff_data']   = $getTotalStaff;
-        if ($getTotalStaff > 0) {$percentTotalStaff_data = ($Staffattendence * 100) / ($getTotalStaff);} else { $percentTotalStaff_data = '0';}
+        if ($getTotalStaff > 0) {
+            $percentTotalStaff_data = ($Staffattendence * 100) / ($getTotalStaff);
+        } else {
+            $percentTotalStaff_data = '0';
+        }
         $data['percentTotalStaff_data'] = $percentTotalStaff_data;
         $data['sch_setting']            = $this->sch_setting_detail;
 
@@ -365,7 +365,7 @@ class Admin extends Admin_Controller
         $session_array = $this->session->has_userdata('session_array');
         if ($session_array) {
             $this->session->unset_userdata('session_array');
-        } 
+        }
         $session       = $this->session_model->get($session);
         $session_array = array('session_id' => $session['id'], 'session' => $session['session']);
         $this->session->set_userdata('session_array', $session_array);
@@ -405,7 +405,6 @@ class Admin extends Admin_Controller
             if ($this->input->post('backup') == "upload") {
                 $this->form_validation->set_rules('file', 'Image', 'callback_handle_upload');
                 if ($this->form_validation->run() == false) {
-
                 } else {
                     if (isset($_FILES["file"]) && !empty($_FILES['file']['name'])) {
                         $fileInfo  = pathinfo($_FILES["file"]["name"]);
@@ -494,7 +493,6 @@ class Admin extends Admin_Controller
 
                             $msg = "Backup restored successfully!";
                         }
-
                     } // end if file exists
 
                 }
@@ -701,7 +699,6 @@ class Admin extends Admin_Controller
                 $st_date = $st_date + 86400;
             }
         } else {
-
         }
 
         return $return_amount;
@@ -793,7 +790,7 @@ class Admin extends Admin_Controller
 
     public function filetype()
     {
-    
+
         $data          = array();
         $data['title'] = 'File Type List';
         $this->session->set_userdata('top_menu', 'System Settings');
@@ -861,7 +858,7 @@ class Admin extends Admin_Controller
         }
     }
 
-      public function updateaddon()
+    public function updateaddon()
     {
         $this->form_validation->set_rules('app-email', 'Email', 'required|valid_email|trim|xss_clean');
         $this->form_validation->set_rules('app-envato_market_purchase_code', 'Purchase Code', 'required|trim|xss_clean');
@@ -872,7 +869,7 @@ class Admin extends Admin_Controller
                 'app-email'                       => form_error('app-email'),
                 'app-envato_market_purchase_code' => form_error('app-envato_market_purchase_code'),
             );
-            
+
             $array = array('status' => '2', 'error' => $data);
 
             return $this->output
@@ -884,5 +881,4 @@ class Admin extends Admin_Controller
             $response = $this->auth->addon_update();
         }
     }
-
 }

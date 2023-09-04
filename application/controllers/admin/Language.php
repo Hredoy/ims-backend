@@ -7,6 +7,7 @@ class Language extends Admin_Controller {
 
     public function __construct() {
         parent::__construct();
+        $this->auth->is_logged_in();
     }
 
     function index() {
@@ -521,4 +522,3 @@ class Language extends Admin_Controller {
 
 
 }
-?>

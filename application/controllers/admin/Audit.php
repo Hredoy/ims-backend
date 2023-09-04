@@ -3,21 +3,26 @@
 if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
- 
-class Audit extends Admin_Controller {
 
-    public function __construct() {
+class Audit extends Admin_Controller
+{
+
+    public function __construct()
+    {
         parent::__construct();
+        $this->auth->is_logged_in();
     }
- 
-    public function unauthorized() {
+
+    public function unauthorized()
+    {
         $data = array();
         $this->load->view('layout/header', $data);
         $this->load->view('unauthorized', $data);
         $this->load->view('layout/footer', $data);
     }
 
-    public function index($offset = 0) {
+    public function index($offset = 0)
+    {
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'audit/index');
         $data['title'] = 'Audit Trail Report';
@@ -48,14 +53,15 @@ class Audit extends Admin_Controller {
         $config['num_tag_close'] = '</li>';
         $this->pagination->initialize($config);
         $query = $this->audit_model->get(100, $this->uri->segment(4));
-      
+
         $data['resultlist'] = $query;
         $this->load->view('layout/header');
         $this->load->view('admin/audit/index', $data);
         $this->load->view('layout/footer');
     }
 
-    public function getDatatable() {
+    public function getDatatable()
+    {
         $audit = $this->audit_model->getAllRecord();
         $audit = json_decode($audit);
 
@@ -88,5 +94,4 @@ class Audit extends Admin_Controller {
         );
         echo json_encode($json_data);
     }
-
 }

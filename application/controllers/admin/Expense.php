@@ -10,6 +10,7 @@ class Expense extends Admin_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->auth->is_logged_in();
         $this->load->library('Customlib');
         $this->config->load('app-config');
     }
@@ -30,7 +31,6 @@ class Expense extends Admin_Controller
         $this->form_validation->set_rules('date', $this->lang->line('date'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('documents', $this->lang->line('documents'), 'callback_handle_upload');
         if ($this->form_validation->run() == false) {
-
         } else {
             $data = array(
                 'exp_head_id' => $this->input->post('exp_head_id'),
@@ -233,16 +233,15 @@ class Expense extends Admin_Controller
         $this->session->set_userdata('top_menu', 'Expenses');
         $this->session->set_userdata('sub_menu', 'expense/expensesearch');
         $data['title'] = 'Search Expense';
-       
-       
-            $search = $this->input->post('search');
-            if ($search == "search_filter") {
-                 $this->form_validation->set_rules('search_type', $this->lang->line('search')." ".$this->lang->line('type'), 'trim|required|xss_clean');
-                if ($this->form_validation->run() == false) {
 
-                } else {
 
-                     $search              = $this->input->post('search_type');
+        $search = $this->input->post('search');
+        if ($search == "search_filter") {
+            $this->form_validation->set_rules('search_type', $this->lang->line('search') . " " . $this->lang->line('type'), 'trim|required|xss_clean');
+            if ($this->form_validation->run() == false) {
+            } else {
+
+                $search              = $this->input->post('search_type');
                 $data['search_type'] = $_POST['search_type'];
 
                 if (isset($_POST['search_type']) && $_POST['search_type'] != '') {
@@ -268,25 +267,20 @@ class Expense extends Admin_Controller
 
                 $resultList         = $this->expense_model->search("", $date_from, $date_to);
                 $data['resultList'] = $resultList;
-                }
-
-               
-            } else {
-                $data['exp_title'] = 'Expense Result';
-                $this->form_validation->set_rules('search_text', $this->lang->line('search_text'), 'trim|required|xss_clean');
-                if ($this->form_validation->run() == false) {
-
-                } else {
-
-                    $search_text        = $this->input->post('search_text');
-                    $resultList         = $this->expense_model->search($search_text, "", "");
-                    $data['resultList'] = $resultList;
-                }
             }
-            $this->load->view('layout/header', $data);
-            $this->load->view('admin/expense/expenseSearch', $data);
-            $this->load->view('layout/footer', $data);
-       
-    }
+        } else {
+            $data['exp_title'] = 'Expense Result';
+            $this->form_validation->set_rules('search_text', $this->lang->line('search_text'), 'trim|required|xss_clean');
+            if ($this->form_validation->run() == false) {
+            } else {
 
+                $search_text        = $this->input->post('search_text');
+                $resultList         = $this->expense_model->search($search_text, "", "");
+                $data['resultList'] = $resultList;
+            }
+        }
+        $this->load->view('layout/header', $data);
+        $this->load->view('admin/expense/expenseSearch', $data);
+        $this->load->view('layout/footer', $data);
+    }
 }

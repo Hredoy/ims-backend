@@ -10,6 +10,7 @@ class Users extends Admin_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->auth->is_logged_in();
         $this->load->model("classteacher_model");
         $this->sch_setting_detail = $this->setting_model->getSetting();
     }
@@ -102,7 +103,6 @@ class Users extends Admin_Controller
 
             $resultlist         = $this->student_model->searchAdmissionDetails($class_id, $year);
             $data["resultlist"] = $resultlist;
-
         }
         if (!empty($resultlist)) {
             foreach ($resultlist as $key => $value) {
@@ -160,5 +160,4 @@ class Users extends Admin_Controller
         $this->load->view("admin/users/logindetailreport", $data);
         $this->load->view("layout/footer");
     }
-
 }

@@ -3,11 +3,14 @@
 if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
- 
-class Mailsms extends Admin_Controller {
 
-    public function __construct() {
+class Mailsms extends Admin_Controller
+{
+
+    public function __construct()
+    {
         parent::__construct();
+        $this->auth->is_logged_in();
 
         $this->load->library('smsgateway');
         $this->load->library('mailsmsconf');
@@ -16,7 +19,8 @@ class Mailsms extends Admin_Controller {
         $this->sch_setting_detail = $this->setting_model->getSetting();
     }
 
-    public function index() {
+    public function index()
+    {
         if (!$this->rbac->hasPrivilege('email_sms_log', 'can_view')) {
             access_denied();
         }
@@ -31,7 +35,8 @@ class Mailsms extends Admin_Controller {
         $this->load->view('layout/footer');
     }
 
-    public function search() {
+    public function search()
+    {
         $keyword = $this->input->post('keyword');
         $category = $this->input->post('category');
         $result = array();
@@ -40,12 +45,12 @@ class Mailsms extends Admin_Controller {
             if ($category == "student") {
                 $result = $this->student_model->searchNameLike($keyword);
                 foreach ($result as $key => $value) {
-                  $result[$key]['fullname']=$this->customlib->getFullName($value['firstname'],$value['middlename'],$value['lastname'],$sch_setting->middlename,$sch_setting->lastname);;
+                    $result[$key]['fullname'] = $this->customlib->getFullName($value['firstname'], $value['middlename'], $value['lastname'], $sch_setting->middlename, $sch_setting->lastname);;
                 }
             } elseif ($category == "student_guardian") {
                 $result = $this->student_model->searchNameLike($keyword);
                 foreach ($result as $key => $value) {
-                  $result[$key]['fullname']=$this->customlib->getFullName($value['firstname'],$value['middlename'],$value['lastname'],$sch_setting->middlename,$sch_setting->lastname);;
+                    $result[$key]['fullname'] = $this->customlib->getFullName($value['firstname'], $value['middlename'], $value['lastname'], $sch_setting->middlename, $sch_setting->lastname);;
                 }
             } elseif ($category == "parent") {
 
@@ -53,14 +58,14 @@ class Mailsms extends Admin_Controller {
             } elseif ($category == "staff") {
                 $result = $this->staff_model->searchNameLike($keyword);
             } else {
-                
             }
         }
-        
+
         echo json_encode($result);
     }
 
-    public function compose() {
+    public function compose()
+    {
         if (!$this->rbac->hasPrivilege('email', 'can_view')) {
             access_denied();
         }
@@ -87,7 +92,7 @@ class Mailsms extends Admin_Controller {
             $array = array();
             foreach ($birthStudents as $student_key => $student_value) {
 
-                $array[] = array('name' => $this->customlib->getFullName($student_value['firstname'],$student_value['middlename'],$student_value['lastname'],$this->sch_setting_detail->middlename,$this->sch_setting_detail->lastname), 'email' => $student_value['email']);
+                $array[] = array('name' => $this->customlib->getFullName($student_value['firstname'], $student_value['middlename'], $student_value['lastname'], $this->sch_setting_detail->middlename, $this->sch_setting_detail->lastname), 'email' => $student_value['email']);
             }
             $birthDaysList['students'] = $array;
         }
@@ -98,7 +103,7 @@ class Mailsms extends Admin_Controller {
                 $array[] = array('name' => $staff_value['name'], 'email' => $staff_value['email']);
             }
             $birthDaysList['staff'] = $array;
-        } 
+        }
 
         $data['roles'] = $this->role_model->get();
         $data['birthDaysList'] = $birthDaysList;
@@ -108,7 +113,8 @@ class Mailsms extends Admin_Controller {
         $this->load->view('layout/footer');
     }
 
-    public function compose_sms() {
+    public function compose_sms()
+    {
         if (!$this->rbac->hasPrivilege('sms', 'can_view')) {
             access_denied();
         }
@@ -128,7 +134,8 @@ class Mailsms extends Admin_Controller {
             $array = array();
             foreach ($birthStudents as $student_key => $student_value) {
 
-                $array[] = array('name' => $this->customlib->getFullName($student_value['firstname'],$student_value['middlename'],$student_value['lastname'],$this->sch_setting_detail->middlename,$this->sch_setting_detail->lastname),
+                $array[] = array(
+                    'name' => $this->customlib->getFullName($student_value['firstname'], $student_value['middlename'], $student_value['lastname'], $this->sch_setting_detail->middlename, $this->sch_setting_detail->lastname),
                     'contact_no' => $student_value['mobileno'],
                     'app_key' => $student_value['app_key'],
                 );
@@ -159,7 +166,8 @@ class Mailsms extends Admin_Controller {
         $this->load->view('layout/footer');
     }
 
-    public function edit($id) {
+    public function edit($id)
+    {
         $data['title'] = 'Add Vehicle';
         $data['id'] = $id;
         $editvehicle = $this->vehicle_model->get($id);
@@ -190,13 +198,15 @@ class Mailsms extends Admin_Controller {
         }
     }
 
-    public function delete($id) {
+    public function delete($id)
+    {
         $data['title'] = 'Fees Master List';
         $this->vehicle_model->remove($id);
         redirect('admin/mailsms/index');
     }
 
-    public function send_individual() {
+    public function send_individual()
+    {
 
         $this->form_validation->set_error_delimiters('<li>', '</li>');
         $this->form_validation->set_rules('individual_title', $this->lang->line('title'), 'required');
@@ -274,8 +284,9 @@ class Mailsms extends Admin_Controller {
         }
     }
 
-    public function send_birthday() {
-        
+    public function send_birthday()
+    {
+
         $this->form_validation->set_error_delimiters('<li>', '</li>');
         $this->form_validation->set_rules('user[]', $this->lang->line('recipient'), 'required');
         $this->form_validation->set_rules('birthday_title', $this->lang->line('title'), 'required');
@@ -347,7 +358,8 @@ class Mailsms extends Admin_Controller {
         }
     }
 
-    public function send_group() {
+    public function send_group()
+    {
         $this->form_validation->set_error_delimiters('<li>', '</li>');
         $this->form_validation->set_rules('group_title', $this->lang->line('title'), 'required');
         $this->form_validation->set_rules('group_message', $this->lang->line('message'), 'required');
@@ -453,7 +465,8 @@ class Mailsms extends Admin_Controller {
         }
     }
 
-    public function send_group_sms() {
+    public function send_group_sms()
+    {
 
         $this->form_validation->set_error_delimiters('<li>', '</li>');
         $this->form_validation->set_rules('group_title', $this->lang->line('title'), 'required');
@@ -558,7 +571,8 @@ class Mailsms extends Admin_Controller {
         }
     }
 
-    public function send_birthday_sms() {
+    public function send_birthday_sms()
+    {
         $this->form_validation->set_error_delimiters('<li>', '</li>');
         $this->form_validation->set_rules('user[]', $this->lang->line('recipient'), 'required');
         $this->form_validation->set_rules('birthday_title', $this->lang->line('title'), 'required');
@@ -639,7 +653,8 @@ class Mailsms extends Admin_Controller {
         }
     }
 
-    public function send_individual_sms() {
+    public function send_individual_sms()
+    {
 
         $this->form_validation->set_error_delimiters('<li>', '</li>');
         $this->form_validation->set_rules('individual_title', $this->lang->line('title'), 'required');
@@ -712,7 +727,8 @@ class Mailsms extends Admin_Controller {
         }
     }
 
-    public function send_class_sms() {
+    public function send_class_sms()
+    {
 
         $this->form_validation->set_error_delimiters('<li>', '</li>');
 
@@ -792,7 +808,8 @@ class Mailsms extends Admin_Controller {
         }
     }
 
-    public function send_class() {
+    public function send_class()
+    {
 
         $this->form_validation->set_error_delimiters('<li>', '</li>');
 
@@ -876,7 +893,8 @@ class Mailsms extends Admin_Controller {
         }
     }
 
-    public function test_sms() {
+    public function test_sms()
+    {
         $this->form_validation->set_rules('mobile', $this->lang->line('mobile_number'), 'required');
 
         if ($this->form_validation->run() == false) {
@@ -892,5 +910,4 @@ class Mailsms extends Admin_Controller {
         }
         echo json_encode($array);
     }
-
 }

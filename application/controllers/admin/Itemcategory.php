@@ -7,6 +7,7 @@ class Itemcategory extends Admin_Controller {
 
     function __construct() {
         parent::__construct();
+        $this->auth->is_logged_in();
         $this->load->helper('url');
     }
 
@@ -84,5 +85,3 @@ class Itemcategory extends Admin_Controller {
     }
 
 }
-
-?>

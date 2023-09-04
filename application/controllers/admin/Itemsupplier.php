@@ -7,6 +7,7 @@ class Itemsupplier extends Admin_Controller {
 
     function __construct() {
         parent::__construct();
+        $this->auth->is_logged_in();
 
         $this->load->helper('url');
     }
@@ -114,5 +115,3 @@ class Itemsupplier extends Admin_Controller {
     }
 
 }
-
-?>

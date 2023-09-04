@@ -10,6 +10,7 @@ class Notification extends Admin_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->auth->is_logged_in();
     }
 
     public function index()
@@ -83,7 +84,6 @@ class Notification extends Admin_Controller
         $this->form_validation->set_rules('publish_date', $this->lang->line('publish_date'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('visible[]', $this->lang->line('message_to'), 'trim|required|xss_clean');
         if ($this->form_validation->run() == false) {
-
         } else {
 
             $userdata    = $this->customlib->getUserData();
@@ -153,7 +153,6 @@ class Notification extends Admin_Controller
         $this->form_validation->set_rules('publish_date', $this->lang->line('publish_date'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('visible[]', $this->lang->line('message_to'), 'trim|required|xss_clean');
         if ($this->form_validation->run() == false) {
-
         } else {
 
             $userdata    = $this->customlib->getUserData();
@@ -330,5 +329,4 @@ class Notification extends Admin_Controller
             ->set_status_header(200)
             ->set_output(json_encode($response));
     }
-
 }

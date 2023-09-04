@@ -3,16 +3,20 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Dispatch extends Admin_Controller {
+class Dispatch extends Admin_Controller
+{
 
-    function __construct() {
+    function __construct()
+    {
         parent::__construct();
         $this->load->library('form_validation');
+        $this->auth->is_logged_in();
 
         $this->load->model("Dispatch_model");
     }
 
-    public function index() {
+    public function index()
+    {
         if (!$this->rbac->hasPrivilege('postal_dispatch', 'can_view')) {
             access_denied();
         }
@@ -51,7 +55,8 @@ class Dispatch extends Admin_Controller {
         }
     }
 
-    function editdispatch($id) {
+    function editdispatch($id)
+    {
         if (!$this->rbac->hasPrivilege('postal_dispatch', 'can_edit')) {
             access_denied();
         }
@@ -92,7 +97,8 @@ class Dispatch extends Admin_Controller {
         }
     }
 
-    public function download($documents) {
+    public function download($documents)
+    {
         $this->load->helper('download');
         $filepath = "./uploads/front_office/dispatch_receive/" . $documents;
         $data = file_get_contents($filepath);
@@ -100,7 +106,8 @@ class Dispatch extends Admin_Controller {
         force_download($name, $data);
     }
 
-    public function delete($id) {
+    public function delete($id)
+    {
         if (!$this->rbac->hasPrivilege('postal_dispatch', 'can_delete')) {
             access_denied();
         }
@@ -108,13 +115,15 @@ class Dispatch extends Admin_Controller {
         $this->Dispatch_model->delete($id);
     }
 
-    public function imagedelete($id, $image) {
+    public function imagedelete($id, $image)
+    {
         $this->Dispatch_model->image_delete($id, $image);
         $this->session->set_flashdata('msg', '<div class="alert alert-success">' . $this->lang->line('delete_message') . '</div>');
         redirect('admin/dispatch');
     }
 
-    public function details($id, $type) {
+    public function details($id, $type)
+    {
 
         if (!$this->rbac->hasPrivilege('postal_dispatch', 'can_view')) {
             access_denied();
@@ -124,7 +133,7 @@ class Dispatch extends Admin_Controller {
         $this->load->view('admin/frontoffice/dispacthreceviemodel', $data);
     }
 
-    public function handle_upload($str,$var)
+    public function handle_upload($str, $var)
     {
 
         $image_validate = $this->config->item('file_validate');
@@ -154,7 +163,6 @@ class Dispatch extends Admin_Controller {
                     $this->form_validation->set_message('handle_upload', $this->lang->line('file_size_shoud_be_less_than') . number_format($image_validate['upload_size'] / 1048576, 2) . " MB");
                     return false;
                 }
-
             } else {
                 $this->form_validation->set_message('handle_upload', "File Type / Extension Error Uploading  Image");
                 return false;
@@ -163,7 +171,5 @@ class Dispatch extends Admin_Controller {
             return true;
         }
         return true;
-
     }
-
 }

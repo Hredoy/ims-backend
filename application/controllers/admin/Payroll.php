@@ -6,6 +6,7 @@ class Payroll extends Admin_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->auth->is_logged_in();
         $this->load->helper('file');
         $this->config->load("mailsms");
         $this->config->load("payroll");
@@ -178,7 +179,8 @@ class Payroll extends Admin_Controller
             $this->create($month, $year, $staff_id);
         } else {
 
-            $data = array('staff_id' => $staff_id,
+            $data = array(
+                'staff_id' => $staff_id,
                 'basic'                  => $basic,
                 'total_allowance'        => $total_allowance,
                 'total_deduction'        => $total_deduction,
@@ -224,7 +226,8 @@ class Payroll extends Admin_Controller
                     $j = 0;
                     foreach ($deduction_type as $key => $type) {
 
-                        $type_data = array('payslip_id' => $payslipid,
+                        $type_data = array(
+                            'payslip_id' => $payslipid,
                             'allowance_type'                => $deduction_type[$j],
                             'amount'                        => $deduction_amount[$j],
                             'staff_id'                      => $staff_id,
@@ -420,7 +423,5 @@ class Payroll extends Admin_Controller
             $this->payroll_model->revertPayslipStatus($payslipid);
         }
         redirect('admin/payroll/search/' . $month . "/" . $year . "/" . $role);
-
     }
-
 }

@@ -6,12 +6,11 @@ if (!defined('BASEPATH')) {
 
 class Question extends Admin_Controller
 {
-     public function __construct()
+    public function __construct()
     {
         parent::__construct();
-    
+        $this->auth->is_logged_in();
         $this->sch_setting_detail = $this->setting_model->getSetting();
-
     }
     public function read($id)
     {
@@ -32,16 +31,16 @@ class Question extends Admin_Controller
         $this->load->view('layout/header', $data);
         $this->load->view('admin/question/read', $data);
         $this->load->view('layout/footer', $data);
-    } 
+    }
     public function index($offset = 0)
-    { 
+    {
 
-        
-   
+
+
         if (!$this->rbac->hasPrivilege('question_bank', 'can_view')) {
             access_denied();
-        } 
-         $listaudit = $this->question_model->getall();
+        }
+        $listaudit = $this->question_model->getall();
 
         $config['total_rows'] = $this->question_model->count();
         $config['base_url'] = base_url() . "admin/question/index";
@@ -67,9 +66,9 @@ class Question extends Admin_Controller
         $config['num_tag_close'] = '</li>';
         $this->pagination->initialize($config);
         $query = $this->question_model->getall(100, $this->uri->segment(4));
-      
+
         $data['resultlist'] = $query;
-       
+
         $this->session->set_userdata('top_menu', 'Online_Examinations');
         $this->session->set_userdata('sub_menu', 'Online_Examinations/question');
         $data                   = array();
@@ -81,7 +80,7 @@ class Question extends Admin_Controller
         $data['question_level'] = $this->config->item('question_level');
         $questionList           = $this->question_model->get();
         $data['questionList']   = $query;
-     
+
         $this->load->view('layout/header', $data);
         $this->load->view('admin/question/question', $data);
         $this->load->view('layout/footer', $data);
@@ -104,7 +103,7 @@ class Question extends Admin_Controller
         $name     = 'import_question_sample_file.csv';
         force_download($name, $data);
     }
- 
+
     public function uploadfile()
     {
 
@@ -125,7 +124,7 @@ class Question extends Admin_Controller
             echo json_encode($array);
         } else {
             $insert_array = array();
-//====================
+            //====================
             if (isset($_FILES["file"]) && !empty($_FILES['file']['name'])) {
 
                 $fileName = $_FILES["file"]["tmp_name"];
@@ -253,7 +252,6 @@ class Question extends Admin_Controller
             }
 
             $array = array('status' => 0, 'error' => $msg, 'message' => '');
-
         } else {
 
             $insert_data = array(
@@ -308,7 +306,6 @@ class Question extends Admin_Controller
             $this->question_model->add($insert_data);
 
             $array = array('status' => 1, 'error' => '', 'message' => $this->lang->line('success_message'));
-
         }
 
         echo json_encode($array);
@@ -321,7 +318,6 @@ class Question extends Admin_Controller
         $result['options'] = $this->question_model->get_option($id);
         $result['ans']     = $this->question_model->get_answer($id);
         echo json_encode($result);
-
     }
 
     public function addform()
@@ -405,7 +401,7 @@ class Question extends Admin_Controller
         $next_link     = '';
         $page_link     = '';
 
-// echo $total_links;
+        // echo $total_links;
         $page_array = array();
         if ($total_links > 4) {
             if ($page < 5) {
@@ -488,82 +484,76 @@ class Question extends Admin_Controller
         return $output;
     }
 
- 
-    public function getDatatable(){
+
+    public function getDatatable()
+    {
         $question_type      = $this->config->item('question_type');
         $question_level      = $this->config->item('question_level');
         $question_dt = $this->question_model->getAllRecord();
         $question_dt = json_decode($question_dt);
         $dt_data = array();
-        $recordsTotal_flter="";
+        $recordsTotal_flter = "";
         $userdata = $this->customlib->getUserData();
         $role_id = $userdata["role_id"];
         if (!empty($question_dt->data)) {
             foreach ($question_dt->data as $key => $value) {
-              
-            
-                $delete="'".$this->lang->line("delete_confirm")."'";
-                $delete_title="'".$this->lang->line("delete")."'";
+
+
+                $delete = "'" . $this->lang->line("delete_confirm") . "'";
+                $delete_title = "'" . $this->lang->line("delete") . "'";
                 $row = array();
-          
+
                 $row[] = $value->id;
                 $row[] = $value->name;
-                $row[] = ($value->question_type != "") ?$question_type[$value->question_type]:"";
-                $row[] = ($value->level !="" )? $question_level[$value->level]:"";
-                $row[] = readmorelink($value->question,site_url('admin/question/read/'.$value->id));
+                $row[] = ($value->question_type != "") ? $question_type[$value->question_type] : "";
+                $row[] = ($value->level != "") ? $question_level[$value->level] : "";
+                $row[] = readmorelink($value->question, site_url('admin/question/read/' . $value->id));
                 if ($this->rbac->hasPrivilege('question_bank', 'can_edit')) {
-                $row[] ='<button type="button" data-placement="left" class="btn btn-default btn-xs question-btn-edit" data-toggle="tooltip" id="load" data-recordid="'.$value->id.'" title="'.$this->lang->line("edit").'" ><i class="fa fa-pencil"></i></button><a data-placement="left" href="'.base_url().'admin/question/delete/'.$value->id.'" class="btn btn-default btn-xs"  data-toggle="tooltip" title='.$delete_title.' onclick="return confirm('.$delete.')">
+                    $row[] = '<button type="button" data-placement="left" class="btn btn-default btn-xs question-btn-edit" data-toggle="tooltip" id="load" data-recordid="' . $value->id . '" title="' . $this->lang->line("edit") . '" ><i class="fa fa-pencil"></i></button><a data-placement="left" href="' . base_url() . 'admin/question/delete/' . $value->id . '" class="btn btn-default btn-xs"  data-toggle="tooltip" title=' . $delete_title . ' onclick="return confirm(' . $delete . ')">
                                                     <i class="fa fa-remove"></i>
                                                 </a>';
-            }
-           if($role_id==2){
-             $my_section=array();
-             if($this->sch_setting_detail->class_teacher=='yes' && $this->sch_setting_detail->my_question=='1'){
-                $my_class=$this->class_model->get();
-            foreach ($my_class as $class_key => $class_value) {
-              $section_id= $this->teacher_model->get_teacherrestricted_modesections($this->customlib->getStaffID(), $class_value['id']);
-              foreach ($section_id as $section_idkey => $section_idvalue) {
-                  $my_section[]=$section_idvalue['section_id'];
-              }
-             
-              if(in_array($value->section_id, $my_section, TRUE) && $class_value['id']==$value->class_id){
-                 $dt_data[] = $row;
-         $recordsTotal_flter=count($dt_data);  
-              }
-            }
+                }
+                if ($role_id == 2) {
+                    $my_section = array();
+                    if ($this->sch_setting_detail->class_teacher == 'yes' && $this->sch_setting_detail->my_question == '1') {
+                        $my_class = $this->class_model->get();
+                        foreach ($my_class as $class_key => $class_value) {
+                            $section_id = $this->teacher_model->get_teacherrestricted_modesections($this->customlib->getStaffID(), $class_value['id']);
+                            foreach ($section_id as $section_idkey => $section_idvalue) {
+                                $my_section[] = $section_idvalue['section_id'];
+                            }
 
-        }elseif($this->sch_setting_detail->class_teacher=='yes' && $this->sch_setting_detail->my_question=='0'){
-            $my_class=$this->class_model->get();
-            foreach ($my_class as $class_key => $class_value) {
-              $section_id= $this->teacher_model->get_teacherrestricted_modesections($this->customlib->getStaffID(), $class_value['id']);
-              foreach ($section_id as $section_idkey => $section_idvalue) {
-                  $my_section[]=$section_idvalue['section_id'];
-              }
-             
-              if(in_array($value->section_id, $my_section, TRUE) && $class_value['id']==$value->class_id){
-                 $dt_data[] = $row;
-         $recordsTotal_flter=count($dt_data);  
-              }
-            }
-            
+                            if (in_array($value->section_id, $my_section, TRUE) && $class_value['id'] == $value->class_id) {
+                                $dt_data[] = $row;
+                                $recordsTotal_flter = count($dt_data);
+                            }
+                        }
+                    } elseif ($this->sch_setting_detail->class_teacher == 'yes' && $this->sch_setting_detail->my_question == '0') {
+                        $my_class = $this->class_model->get();
+                        foreach ($my_class as $class_key => $class_value) {
+                            $section_id = $this->teacher_model->get_teacherrestricted_modesections($this->customlib->getStaffID(), $class_value['id']);
+                            foreach ($section_id as $section_idkey => $section_idvalue) {
+                                $my_section[] = $section_idvalue['section_id'];
+                            }
 
-        }elseif($this->sch_setting_detail->class_teacher=='no' && $this->sch_setting_detail->my_question=='1'){
-            if($this->customlib->getStaffID()==$value->staff_id){
-               $dt_data[] = $row;
-               $recordsTotal_flter=count($dt_data);
-            }
-       }else{
-         $dt_data[] = $row;
-         $recordsTotal_flter=count($dt_data);  
-       }
-
-           }else{
-            $dt_data[] = $row;
-         $recordsTotal_flter=count($dt_data);   
-           }
-
-
-               
+                            if (in_array($value->section_id, $my_section, TRUE) && $class_value['id'] == $value->class_id) {
+                                $dt_data[] = $row;
+                                $recordsTotal_flter = count($dt_data);
+                            }
+                        }
+                    } elseif ($this->sch_setting_detail->class_teacher == 'no' && $this->sch_setting_detail->my_question == '1') {
+                        if ($this->customlib->getStaffID() == $value->staff_id) {
+                            $dt_data[] = $row;
+                            $recordsTotal_flter = count($dt_data);
+                        }
+                    } else {
+                        $dt_data[] = $row;
+                        $recordsTotal_flter = count($dt_data);
+                    }
+                } else {
+                    $dt_data[] = $row;
+                    $recordsTotal_flter = count($dt_data);
+                }
             }
         }
 
@@ -575,7 +565,4 @@ class Question extends Admin_Controller
         );
         echo json_encode($json_data);
     }
-
-  
-
 }

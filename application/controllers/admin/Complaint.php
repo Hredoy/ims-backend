@@ -3,15 +3,19 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Complaint extends Admin_Controller {
+class Complaint extends Admin_Controller
+{
 
-    function __construct() {
+    function __construct()
+    {
         parent::__construct();
+        $this->auth->is_logged_in();
         $this->load->library('form_validation');
         $this->load->model("complaint_Model");
     }
 
-    public function index() {
+    public function index()
+    {
         if (!$this->rbac->hasPrivilege('complaint', 'can_view')) {
             access_denied();
         }
@@ -54,7 +58,8 @@ class Complaint extends Admin_Controller {
         }
     }
 
-    function edit($id) {
+    function edit($id)
+    {
         if (!$this->rbac->hasPrivilege('complaint', 'can_edit')) {
             access_denied();
         }
@@ -94,7 +99,8 @@ class Complaint extends Admin_Controller {
         }
     }
 
-    function details($id) {
+    function details($id)
+    {
         if (!$this->rbac->hasPrivilege('complaint', 'can_view')) {
             access_denied();
         }
@@ -103,7 +109,8 @@ class Complaint extends Admin_Controller {
         $this->load->view('admin/frontoffice/Complaintmodalview', $data);
     }
 
-    public function delete($id) {
+    public function delete($id)
+    {
         if (!$this->rbac->hasPrivilege('complaint', 'can_delete')) {
             access_denied();
         }
@@ -114,7 +121,8 @@ class Complaint extends Admin_Controller {
         redirect('admin/complaint');
     }
 
-    function download($image) {
+    function download($image)
+    {
         $this->load->helper('download');
         $filepath = "./uploads/front_office/complaints/" . $image;
         $data = file_get_contents($filepath);
@@ -122,7 +130,8 @@ class Complaint extends Admin_Controller {
         force_download($name, $data);
     }
 
-    function imagedelete($id, $image) {
+    function imagedelete($id, $image)
+    {
         if (!$this->rbac->hasPrivilege('complaint', 'can_delete')) {
             access_denied();
         }
@@ -131,11 +140,12 @@ class Complaint extends Admin_Controller {
         redirect('admin/complaint');
     }
 
-    public function check_default($post_string) {
+    public function check_default($post_string)
+    {
         return $post_string == "" ? FALSE : TRUE;
     }
 
-    public function handle_upload($str,$var)
+    public function handle_upload($str, $var)
     {
 
         $image_validate = $this->config->item('file_validate');
@@ -165,7 +175,6 @@ class Complaint extends Admin_Controller {
                     $this->form_validation->set_message('handle_upload', $this->lang->line('file_size_shoud_be_less_than') . number_format($image_validate['upload_size'] / 1048576, 2) . " MB");
                     return false;
                 }
-
             } else {
                 $this->form_validation->set_message('handle_upload', "File Type / Extension Error Uploading  Image");
                 return false;
@@ -174,7 +183,5 @@ class Complaint extends Admin_Controller {
             return true;
         }
         return true;
-
     }
-
 }

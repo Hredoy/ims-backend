@@ -4,18 +4,22 @@ if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
-class Subjectattendence extends Admin_Controller {
+class Subjectattendence extends Admin_Controller
+{
 
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
+        $this->auth->is_logged_in();
         $this->config->load("mailsms");
         $this->load->library('mailsmsconf');
         $this->config_attendance = $this->config->item('attendence');
         $this->load->model("classteacher_model");
     }
 
-    public function reportbymonthstudent() {
+    public function reportbymonthstudent()
+    {
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/attendence');
         $this->session->set_userdata('subsub_menu', 'Reports/attendence/reportbymonthstudent');
@@ -57,7 +61,8 @@ class Subjectattendence extends Admin_Controller {
         $this->load->view('layout/footer', $data);
     }
 
-    public function reportbymonth() {
+    public function reportbymonth()
+    {
 
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/attendence');
@@ -94,20 +99,21 @@ class Subjectattendence extends Admin_Controller {
 
             $data['resultlist'] = $resultlist;
         }
-       
+
         $this->load->view('layout/header', $data);
         $this->load->view('admin/subjectattendence/reportbymonth', $data);
         $this->load->view('layout/footer', $data);
     }
 
-    public function reportbydate() {
+    public function reportbydate()
+    {
 
         $this->session->set_userdata('top_menu', 'Attendance');
         $this->session->set_userdata('sub_menu', 'subjectattendence/reportbydate');
         $data = array();
         $class = $this->class_model->get('', $classteacher = 'yes');
         $data['classlist'] = $class;
-          $data['sch_setting']     = $this->setting_model->getSetting();
+        $data['sch_setting']     = $this->setting_model->getSetting();
         $this->form_validation->set_rules('class_id', $this->lang->line('class'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('section_id', $this->lang->line('section'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('date', $this->lang->line('date'), 'trim|required|xss_clean');
@@ -121,7 +127,6 @@ class Subjectattendence extends Admin_Controller {
             $attendencetypes = $this->attendencetype_model->get();
             $data['attendencetypeslist'] = $attendencetypes;
             $data['resultlist'] = $resultlist;
-            
         }
 
         $this->load->view('layout/header', $data);
@@ -129,7 +134,8 @@ class Subjectattendence extends Admin_Controller {
         $this->load->view('layout/footer', $data);
     }
 
-    public function index() {
+    public function index()
+    {
 
 
         $this->session->set_userdata('top_menu', 'Attendance');
@@ -150,7 +156,7 @@ class Subjectattendence extends Admin_Controller {
         $data['class_id'] = "";
         $data['section_id'] = "";
         $data['date'] = "";
-       $data['sch_setting']     = $this->setting_model->getSetting();
+        $data['sch_setting']     = $this->setting_model->getSetting();
         $this->form_validation->set_rules('class_id', $this->lang->line('class'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('section_id', $this->lang->line('section'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('date', $this->lang->line('date'), 'trim|required|xss_clean');
@@ -224,7 +230,7 @@ class Subjectattendence extends Admin_Controller {
                             $absent_student_list[] = $value;
                         }
                     }
-                } 
+                }
                 $this->studentsubjectattendence_model->add($insert_student_list, $update_student_list);
                 $absent_config = $this->config_attendance['absent'];
                 if (!empty($absent_student_list)) {
@@ -238,7 +244,7 @@ class Subjectattendence extends Admin_Controller {
             }
             $attendencetypes = $this->attendencetype_model->get();
             $data['attendencetypeslist'] = $attendencetypes;
- 
+
             $resultlist = $this->studentsubjectattendence_model->searchAttendenceClassSection($class, $section, $subject_timetable_id, date('Y-m-d', $this->customlib->datetostrtotime($date)));
 
             $data['resultlist'] = $resultlist;
@@ -248,5 +254,4 @@ class Subjectattendence extends Admin_Controller {
             $this->load->view('layout/footer', $data);
         }
     }
-
 }

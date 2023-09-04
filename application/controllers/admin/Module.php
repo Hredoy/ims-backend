@@ -4,6 +4,7 @@ class Module extends Admin_Controller {
 
     function __construct() {
         parent::__construct();
+        $this->auth->is_logged_in();
         $this->load->model("module_model");
     }
 
@@ -72,5 +73,3 @@ class Module extends Admin_Controller {
     }
 
 }
-
-?>

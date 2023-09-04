@@ -10,6 +10,7 @@ class Lessonplan extends Admin_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->auth->is_logged_in();
 
         $this->load->library('Customlib');
         $this->sch_current_session = $this->setting_model->getCurrentSession();
@@ -38,7 +39,6 @@ class Lessonplan extends Admin_Controller
         $this->form_validation->set_rules('subject_id', $this->lang->line('subject'), 'trim|required|xss_clean');
 
         if ($this->form_validation->run() == false) {
-
         } else {
             $data['class_id']               = $_POST['class_id'];
             $data['section_id']             = $_POST['section_id'];
@@ -93,11 +93,11 @@ class Lessonplan extends Admin_Controller
             $myclasssubjects = $this->subjecttimetable_model->getByStaffClassTeachersubjects($staff_id);
 
             if (!empty($myclasssubjects[0]->subject_group_subject_id)) {
-                
+
                 $timetableid = $myclasssubjects[0]->subject_group_subject_id;
                 $concate     = "yes";
             }
-            
+
             $mysubjects = $this->subjecttimetable_model->getByTeacherSubjects($staff_id);
             if (!empty($mysubjects[0]->subject_group_subject_id)) {
                 if ($concate == 'yes') {
@@ -116,9 +116,9 @@ class Lessonplan extends Admin_Controller
             }
             $where_in = explode(',', $timetableid);
         }
-        
+
         $result = $this->lessonplan_model->get('', $this->sch_current_session);
-        
+
         if (!empty($result)) {
             foreach ($result as $key => $value) {
                 $lesson           = $this->lessonplan_model->getlesson($value["subject_group_subject_id"], $value["subject_group_class_sections_id"], $this->sch_current_session);
@@ -669,5 +669,4 @@ class Lessonplan extends Admin_Controller
     {
         $this->lessonplan_model->gettopic('', $this->sch_current_session);
     }
-
 }

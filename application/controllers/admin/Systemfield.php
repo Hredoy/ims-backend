@@ -3,20 +3,24 @@
 if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
- 
-class Systemfield extends Admin_Controller {
+
+class Systemfield extends Admin_Controller
+{
 
     public $custom_fields_list = array();
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
+        $this->auth->is_logged_in();
         $this->load->library('encoding_lib');
         $this->load->model("student_edit_field_model");
         $this->custom_fields_list = $this->config->item('custom_fields');
         $this->custom_field_table = $this->config->item('custom_field_table');
     }
 
-    public function index() {
+    public function index()
+    {
         $this->session->set_userdata('top_menu', 'System Settings');
         $this->session->set_userdata('sub_menu', 'System Settings/systemfield');
         $data['result'] = $this->setting_model->getSetting();
@@ -26,7 +30,8 @@ class Systemfield extends Admin_Controller {
         $this->load->view('layout/footer');
     }
 
-    public function changeStatus() {
+    public function changeStatus()
+    {
 
         $id = $this->input->post('id');
         $status = $this->input->post('status');
@@ -52,7 +57,7 @@ class Systemfield extends Admin_Controller {
             } else {
                 $data['lastname'] = 0;
             }
-        }else if ($role == 'middlename') {
+        } else if ($role == 'middlename') {
             if ($status == "yes") {
                 $data['middlename'] = 1;
             } else {
@@ -438,39 +443,37 @@ class Systemfield extends Admin_Controller {
             }
         }
 
-        if($this->findSelected($this->student_edit_field_model->get(),$role)){
+        if ($this->findSelected($this->student_edit_field_model->get(), $role)) {
 
-            if($status=='no'){
-                 $insert = array(
-                'name'   => $role,
-                'status' => 0,
-            );
-            $this->student_edit_field_model->add($insert);
-            }
-
-            if($role=='guardian_name'){
+            if ($status == 'no') {
                 $insert = array(
-                'name'   => 'if_guardian_is',
-                'status' => 0,
-            );
-                
-            $this->student_edit_field_model->add($insert);
+                    'name'   => $role,
+                    'status' => 0,
+                );
+                $this->student_edit_field_model->add($insert);
             }
-           
+
+            if ($role == 'guardian_name') {
+                $insert = array(
+                    'name'   => 'if_guardian_is',
+                    'status' => 0,
+                );
+
+                $this->student_edit_field_model->add($insert);
+            }
         }
-       
+
         $this->setting_model->add($data);
     }
 
-    public function  findSelected($inserted_fields,$find){
+    public function  findSelected($inserted_fields, $find)
+    {
 
-    foreach ($inserted_fields as $inserted_key => $inserted_value) {
-      if ($find == $inserted_value->name && $inserted_value->status) {
-        return true;
-       }
-
+        foreach ($inserted_fields as $inserted_key => $inserted_value) {
+            if ($find == $inserted_value->name && $inserted_value->status) {
+                return true;
+            }
+        }
+        return false;
     }
-    return false;
-   }
-
 }

@@ -10,6 +10,8 @@ class Admitcard extends Admin_Controller
     public function __construct()
     {
         parent::__construct();
+
+        $this->auth->is_logged_in();
     }
 
     public function index()
@@ -378,5 +380,4 @@ class Admitcard extends Admin_Controller
         $page              = $this->load->view('admin/admitcard/_view', $data, true);
         echo json_encode(array('status' => 1, 'page' => $page));
     }
-
 }

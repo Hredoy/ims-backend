@@ -10,6 +10,7 @@ class Disable_reason extends Admin_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->auth->is_logged_in();
     }
 
     public function index()
@@ -93,5 +94,4 @@ class Disable_reason extends Admin_Controller
         $this->disable_reason_model->remove($id);
         redirect('admin/disable_reason');
     }
-
 }

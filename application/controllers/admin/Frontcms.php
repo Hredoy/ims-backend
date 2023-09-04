@@ -3,16 +3,20 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Frontcms extends Admin_Controller {
+class Frontcms extends Admin_Controller
+{
 
-    function __construct() {
+    function __construct()
+    {
         parent::__construct();
+        $this->auth->is_logged_in();
         $this->load->model('frontcms_setting_model');
         $this->load->config('ci-blog');
         $this->front_themes = $this->config->item('ci_front_themes');
     }
 
-    function index() {
+    function index()
+    {
         if (!$this->rbac->hasPrivilege('front_cms_setting', 'can_view')) {
             access_denied();
         }
@@ -115,7 +119,8 @@ class Frontcms extends Admin_Controller {
         $this->load->view('layout/footer', $data);
     }
 
-    function handle_upload() {
+    function handle_upload()
+    {
         if (isset($_FILES["logo"]) && !empty($_FILES["logo"]['name'])) {
             $allowedExts = array('jpg', 'jpeg', 'png');
             $temp = explode(".", $_FILES["logo"]["name"]);
@@ -123,9 +128,11 @@ class Frontcms extends Admin_Controller {
             if ($_FILES["logo"]["error"] > 0) {
                 $error .= "Error opening the file<br />";
             }
-            if ($_FILES["logo"]["type"] != 'image/gif' &&
-                    $_FILES["logo"]["type"] != 'image/jpeg' &&
-                    $_FILES["logo"]["type"] != 'image/png') {
+            if (
+                $_FILES["logo"]["type"] != 'image/gif' &&
+                $_FILES["logo"]["type"] != 'image/jpeg' &&
+                $_FILES["logo"]["type"] != 'image/png'
+            ) {
                 $this->form_validation->set_message('handle_upload', $this->lang->line('invalid_file_type'));
                 return false;
             }
@@ -142,5 +149,4 @@ class Frontcms extends Admin_Controller {
             return true;
         }
     }
-
 }

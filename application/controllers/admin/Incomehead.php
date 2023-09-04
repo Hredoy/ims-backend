@@ -7,6 +7,7 @@ class Incomehead extends Admin_Controller {
 
     function __construct() {
         parent::__construct();
+        $this->auth->is_logged_in();
         $this->load->helper('url');
     }
 
@@ -96,5 +97,3 @@ class Incomehead extends Admin_Controller {
     }
 
 }
-
-?>

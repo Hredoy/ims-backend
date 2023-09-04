@@ -10,6 +10,7 @@ class Generateidcard extends Admin_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->auth->is_logged_in();
 
         $this->load->library('Customlib');
         $this->sch_setting_detail = $this->setting_model->getSetting();
@@ -58,7 +59,6 @@ class Generateidcard extends Admin_Controller
 
                 $this->form_validation->set_rules('id_card', $this->lang->line('id_card_template'), 'trim|required|xss_clean');
                 if ($this->form_validation->run() == false) {
-
                 } else {
                     $data['searchby']     = "filter";
                     $data['class_id']     = $this->input->post('class_id');
@@ -113,5 +113,4 @@ class Generateidcard extends Admin_Controller
         $id_cards = $this->load->view('admin/certificate/generatemultiple', $data, true);
         echo $id_cards;
     }
-
 }

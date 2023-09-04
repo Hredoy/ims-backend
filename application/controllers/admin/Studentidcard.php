@@ -1,14 +1,17 @@
 <?php
 
-class studentidcard extends Admin_Controller {
+class studentidcard extends Admin_Controller
+{
 
-    function __construct() {
+    function __construct()
+    {
         parent::__construct();
-
+        $this->auth->is_logged_in();
         $this->load->library('Customlib');
     }
 
-    public function index() {
+    public function index()
+    {
 
         if (!$this->rbac->hasPrivilege('student_id_card', 'can_view')) {
             access_denied();
@@ -21,7 +24,8 @@ class studentidcard extends Admin_Controller {
         $this->load->view('layout/footer');
     }
 
-    public function create() {
+    public function create()
+    {
 
         if (!$this->rbac->hasPrivilege('student_id_card', 'can_add')) {
             access_denied();
@@ -169,7 +173,8 @@ class studentidcard extends Admin_Controller {
         }
     }
 
-    function edit($id) {
+    function edit($id)
+    {
         if (!$this->rbac->hasPrivilege('student_id_card', 'can_edit')) {
             access_denied();
         }
@@ -315,24 +320,34 @@ class studentidcard extends Admin_Controller {
         }
     }
 
-    function delete($id) {
+    function delete($id)
+    {
         $data['title'] = 'Certificate List';
         $this->Student_id_card_model->remove($id);
         $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('delete_message') . '</div>');
         redirect('admin/studentidcard/index');
     }
 
-    public function view() {
+    public function view()
+    {
         $id = $this->input->post('certificateid');
         $output = '';
         $idcard = $this->Student_id_card_model->idcardbyid($id);
-       
-        ?>
+
+?>
         <style type="text/css">
-            { margin:0; padding: 0;}
+            {
+                margin: 0;
+                padding: 0;
+            }
 
             /*       body{ font-family: 'arial'; margin:0; padding: 0;font-size: 12px; color: #000;}*/
-            .tc-container{width: 100%;position: relative; text-align: center;}
+            .tc-container {
+                width: 100%;
+                position: relative;
+                text-align: center;
+            }
+
             .tcmybg {
                 background: top center;
                 background-size: contain;
@@ -345,46 +360,140 @@ class studentidcard extends Admin_Controller {
                 margin-right: auto;
                 right: 0;
             }
+
             /*begin students id card*/
-            .studentmain{background: #efefef;width: 100%; margin-bottom: 30px;}
-            .studenttop img{width:30px;vertical-align: top;}
-            .studenttop{background: <?php echo $idcard->header_color; ?>;padding:2px;color: #fff;overflow: hidden;
-                        position: relative;z-index: 1;}
-            .sttext1{font-size: 24px;font-weight: bold;line-height: 30px;}
-            .stgray{background: #efefef;padding-top: 5px; padding-bottom: 10px;}
-            .staddress{margin-bottom: 0; padding-top: 2px;}
-            .stdivider{border-bottom: 2px solid #000;margin-top: 5px; margin-bottom: 5px;}
-            .stlist{padding: 0; margin:0; list-style: none;}
-            .stlist li{text-align: left;display: inline-block;width: 100%;padding: 0px 5px;}
-            .stlist li span{width:65%;float: right;}
-            .stimg{
+            .studentmain {
+                background: #efefef;
+                width: 100%;
+                margin-bottom: 30px;
+            }
+
+            .studenttop img {
+                width: 30px;
+                vertical-align: top;
+            }
+
+            .studenttop {
+                background: <?php echo $idcard->header_color; ?>;
+                padding: 2px;
+                color: #fff;
+                overflow: hidden;
+                position: relative;
+                z-index: 1;
+            }
+
+            .sttext1 {
+                font-size: 24px;
+                font-weight: bold;
+                line-height: 30px;
+            }
+
+            .stgray {
+                background: #efefef;
+                padding-top: 5px;
+                padding-bottom: 10px;
+            }
+
+            .staddress {
+                margin-bottom: 0;
+                padding-top: 2px;
+            }
+
+            .stdivider {
+                border-bottom: 2px solid #000;
+                margin-top: 5px;
+                margin-bottom: 5px;
+            }
+
+            .stlist {
+                padding: 0;
+                margin: 0;
+                list-style: none;
+            }
+
+            .stlist li {
+                text-align: left;
+                display: inline-block;
+                width: 100%;
+                padding: 0px 5px;
+            }
+
+            .stlist li span {
+                width: 65%;
+                float: right;
+            }
+
+            .stimg {
                 /*margin-top: 5px;*/
                 width: 80px;
                 height: auto;
                 /*margin: 0 auto;*/
             }
-            .stimg img{width: 100%;height: auto;border-radius: 2px;display: block;}
-            .staround{padding:3px 10px 3px 0;position: relative;overflow: hidden;}
-            .staround2{position: relative; z-index: 9;}
-            .stbottom{background: #453278;height: 20px;width: 100%;clear: both;margin-bottom: 5px;}
+
+            .stimg img {
+                width: 100%;
+                height: auto;
+                border-radius: 2px;
+                display: block;
+            }
+
+            .staround {
+                padding: 3px 10px 3px 0;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .staround2 {
+                position: relative;
+                z-index: 9;
+            }
+
+            .stbottom {
+                background: #453278;
+                height: 20px;
+                width: 100%;
+                clear: both;
+                margin-bottom: 5px;
+            }
+
             /*.stidcard{margin-top: 0px;
                 color: #fff;font-size: 16px; line-height: 16px;
                 padding: 2px 0 0; position: relative; z-index: 1;
                 background: #453277;
                 text-transform: uppercase;}*/
-            .principal{margin-top: -40px;margin-right:10px; float:right;}
-            .stred{color: #000;}
-            .spanlr{padding-left: 5px; padding-right: 5px;}
-            .cardleft{width: 20%;float: left;}
-            .cardright{width: 77%;float: right; }
+            .principal {
+                margin-top: -40px;
+                margin-right: 10px;
+                float: right;
+            }
+
+            .stred {
+                color: #000;
+            }
+
+            .spanlr {
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+
+            .cardleft {
+                width: 20%;
+                float: left;
+            }
+
+            .cardright {
+                width: 77%;
+                float: right;
+            }
         </style>
         <table cellpadding="0" cellspacing="0" width="100%">
-            <tr> 
+            <tr>
                 <td valign="top" width="32%" style="padding: 3px;">
                     <table cellpadding="0" cellspacing="0" width="100%" class="tc-container" style="background: #efefef;">
                         <tr>
                             <td valign="top">
-                                <img src="<?php echo base_url('uploads/student_id_card/background/') ?><?php echo $idcard->background; ?>" class="tcmybg" style="opacity: .1"/></td>
+                                <img src="<?php echo base_url('uploads/student_id_card/background/') ?><?php echo $idcard->background; ?>" class="tcmybg" style="opacity: .1" />
+                            </td>
                         </tr>
                         <tr>
                             <td valign="top">
@@ -470,10 +579,9 @@ class studentidcard extends Admin_Controller {
                         </tr>
                     </table>
                 </td>
-            </tr>  
+            </tr>
         </table>
-        <?php
+<?php
     }
-
 }
 ?>

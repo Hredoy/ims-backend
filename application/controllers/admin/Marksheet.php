@@ -4,13 +4,17 @@ if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
-class Marksheet extends Admin_Controller {
+class Marksheet extends Admin_Controller
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
+        $this->auth->is_logged_in();
     }
 
-    public function index() {
+    public function index()
+    {
         if (!$this->rbac->hasPrivilege('design_marksheet', 'can_view')) {
             access_denied();
         }
@@ -145,13 +149,15 @@ class Marksheet extends Admin_Controller {
                 $img_name = $time . '.' . $fileInfo['extension'];
                 move_uploaded_file($_FILES["left_sign"]["tmp_name"], "./uploads/marksheet/" . $img_name);
                 $insert_data['left_sign'] = $img_name;
-            }if (isset($_FILES["middle_sign"]) && !empty($_FILES["middle_sign"]['name'])) {
+            }
+            if (isset($_FILES["middle_sign"]) && !empty($_FILES["middle_sign"]['name'])) {
                 $time = md5($_FILES["middle_sign"]['name'] . microtime());
                 $fileInfo = pathinfo($_FILES["middle_sign"]["name"]);
                 $img_name = $time . '.' . $fileInfo['extension'];
                 move_uploaded_file($_FILES["middle_sign"]["tmp_name"], "./uploads/marksheet/" . $img_name);
                 $insert_data['middle_sign'] = $img_name;
-            }if (isset($_FILES["right_sign"]) && !empty($_FILES["right_sign"]['name'])) {
+            }
+            if (isset($_FILES["right_sign"]) && !empty($_FILES["right_sign"]['name'])) {
                 $time = md5($_FILES["right_sign"]['name'] . microtime());
                 $fileInfo = pathinfo($_FILES["right_sign"]["name"]);
                 $img_name = $time . '.' . $fileInfo['extension'];
@@ -177,7 +183,8 @@ class Marksheet extends Admin_Controller {
         $this->load->view('layout/footer');
     }
 
-    public function handle_upload($str, $var) {
+    public function handle_upload($str, $var)
+    {
 
         $image_validate = $this->config->item('image_validate');
         $result = $this->filetype_model->get();
@@ -190,7 +197,7 @@ class Marksheet extends Admin_Controller {
             $allowed_extension = array_map('trim', array_map('strtolower', explode(',', $result->image_extension)));
             $allowed_mime_type = array_map('trim', array_map('strtolower', explode(',', $result->image_mime)));
             $ext               = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
-            
+
 
             if ($files = @getimagesize($_FILES[$var]['tmp_name'])) {
 
@@ -217,7 +224,8 @@ class Marksheet extends Admin_Controller {
         return true;
     }
 
-    public function edit($id) {
+    public function edit($id)
+    {
         if (!$this->rbac->hasPrivilege('design_marksheet', 'can_edit')) {
             access_denied();
         }
@@ -352,13 +360,15 @@ class Marksheet extends Admin_Controller {
                 $img_name = $time . '.' . $fileInfo['extension'];
                 move_uploaded_file($_FILES["left_sign"]["tmp_name"], "./uploads/marksheet/" . $img_name);
                 $insert_data['left_sign'] = $img_name;
-            }if (isset($_FILES["middle_sign"]) && !empty($_FILES["middle_sign"]['name'])) {
+            }
+            if (isset($_FILES["middle_sign"]) && !empty($_FILES["middle_sign"]['name'])) {
                 $time = md5($_FILES["middle_sign"]['name'] . microtime());
                 $fileInfo = pathinfo($_FILES["middle_sign"]["name"]);
                 $img_name = $time . '.' . $fileInfo['extension'];
                 move_uploaded_file($_FILES["middle_sign"]["tmp_name"], "./uploads/marksheet/" . $img_name);
                 $insert_data['middle_sign'] = $img_name;
-            }if (isset($_FILES["right_sign"]) && !empty($_FILES["right_sign"]['name'])) {
+            }
+            if (isset($_FILES["right_sign"]) && !empty($_FILES["right_sign"]['name'])) {
                 $time = md5($_FILES["right_sign"]['name'] . microtime());
                 $fileInfo = pathinfo($_FILES["right_sign"]["name"]);
                 $img_name = $time . '.' . $fileInfo['extension'];
@@ -384,7 +394,8 @@ class Marksheet extends Admin_Controller {
         $this->load->view('layout/footer');
     }
 
-    public function delete($id) {
+    public function delete($id)
+    {
         if (!$this->rbac->hasPrivilege('design_marksheet', 'can_delete')) {
             access_denied();
         }
@@ -394,7 +405,8 @@ class Marksheet extends Admin_Controller {
         redirect('admin/marksheet/index');
     }
 
-    public function view() {
+    public function view()
+    {
         $id = $this->input->post('certificateid');
         $output = '';
         $data = array();
@@ -403,5 +415,4 @@ class Marksheet extends Admin_Controller {
         $page = $this->load->view('admin/marksheet/_view', $data, true);
         echo json_encode(array('status' => 1, 'page' => $page));
     }
-
 }

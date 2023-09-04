@@ -4,6 +4,7 @@ class Schoolhouse extends Admin_Controller {
 
     function __construct() {
         parent::__construct();
+        $this->auth->is_logged_in();
         $this->load->model("schoolhouse_model");
     }
 
@@ -93,5 +94,3 @@ class Schoolhouse extends Admin_Controller {
     }
 
 }
-
-?>

@@ -10,6 +10,7 @@ class Itemstock extends Admin_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->auth->is_logged_in();
         $this->load->helper('form');
     }
 
@@ -30,7 +31,6 @@ class Itemstock extends Admin_Controller
         $this->form_validation->set_rules('item_photo', $this->lang->line('file'), 'callback_handle_upload[item_photo]');
 
         if ($this->form_validation->run() == false) {
-
         } else {
             $store_id = ($this->input->post('store_id')) ? $this->input->post('store_id') : null;
             $data     = array(
@@ -132,7 +132,6 @@ class Itemstock extends Admin_Controller
                     $this->form_validation->set_message('handle_upload', $this->lang->line('file_size_shoud_be_less_than') . number_format($image_validate['upload_size'] / 1048576, 2) . " MB");
                     return false;
                 }
-
             } else {
                 $this->form_validation->set_message('handle_upload', "File Type / Extension Error Uploading ");
                 return false;
@@ -141,7 +140,6 @@ class Itemstock extends Admin_Controller
             return true;
         }
         return true;
-
     }
 
     public function edit($id)
@@ -201,5 +199,4 @@ class Itemstock extends Admin_Controller
             redirect('admin/itemstock/index');
         }
     }
-
 }

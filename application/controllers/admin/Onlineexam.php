@@ -10,10 +10,10 @@ class Onlineexam extends Admin_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->auth->is_logged_in();
         $this->config->load('app-config');
         $this->sch_setting_detail = $this->setting_model->getSetting();
-                $this->load->library('mailsmsconf');
-
+        $this->load->library('mailsmsconf');
     }
 
     public function index()
@@ -118,7 +118,6 @@ class Onlineexam extends Admin_Controller
                 /* If the query returns nothing, we throw an error message */
             } else {
                 $pag_content = '';
-
             }
             $no_of_paginations = ceil($result->total_row / $per_page);
 
@@ -139,7 +138,6 @@ class Onlineexam extends Admin_Controller
                 } else {
                     $end_loop = $no_of_paginations;
                 }
-
             }
 
             $pag_navigation .= "<ul class='pagination'>";
@@ -164,7 +162,6 @@ class Onlineexam extends Admin_Controller
                 } else {
                     $pag_navigation .= "<li p='$i' class='active_v'><a>{$i}</a></li>";
                 }
-
             }
 
             if ($next_btn && $cur_page < $no_of_paginations) {
@@ -257,7 +254,6 @@ class Onlineexam extends Admin_Controller
                     if ($each_student_value['onlineexam_student_session_id'] != 0) {
                         $all_students[] = $each_student_value['onlineexam_student_session_id'];
                     }
-
                 }
             }
 
@@ -268,7 +264,6 @@ class Onlineexam extends Admin_Controller
             }
             if (!empty($all_students)) {
                 $array_delete = array_diff($all_students, $students_id);
-
             }
             if (!empty($students_id)) {
                 $student_session_array = array();
@@ -350,7 +345,6 @@ class Onlineexam extends Admin_Controller
                 $where_search['question_type']  = $question_type;
                 $where_search['class_id']       = $class_id;
                 $where_search['section_id']     = $section_id;
-
             }
             $where_search['is_quiz'] = $is_quiz;
             $data['question_type']   = $this->config->item('question_type');
@@ -378,10 +372,8 @@ class Onlineexam extends Admin_Controller
 
                                 $dt_data[]          = $questionList_value;
                                 $recordsTotal_flter = count($dt_data);
-
                             }
                         }
-
                     } elseif ($this->sch_setting_detail->class_teacher == 'yes' && $this->sch_setting_detail->my_question == '0') {
 
                         $my_class = $this->class_model->get();
@@ -397,7 +389,6 @@ class Onlineexam extends Admin_Controller
                                 $recordsTotal_flter = count($dt_data);
                             }
                         }
-
                     } elseif ($this->sch_setting_detail->class_teacher == 'no' && $this->sch_setting_detail->my_question == '1') {
 
                         if ($this->customlib->getStaffID() == $questionList_value->staff_id) {
@@ -409,7 +400,6 @@ class Onlineexam extends Admin_Controller
                         $dt_data[]          = $questionList_value;
                         $recordsTotal_flter = count($dt_data);
                     }
-
                 }
                 $data['questionList'] = $dt_data;
             } else {
@@ -445,7 +435,6 @@ class Onlineexam extends Admin_Controller
                 } else {
                     $end_loop = $no_of_paginations;
                 }
-
             }
 
             $pag_navigation .= "<ul class='pagination pull-right'>";
@@ -473,7 +462,6 @@ class Onlineexam extends Admin_Controller
 
                     $pag_navigation .= "<li p='$i'  class='activee'><a href='#'>{$i}</a></li>";
                 }
-
             }
 
             if ($next_btn && $cur_page < $no_of_paginations) {
@@ -502,26 +490,25 @@ class Onlineexam extends Admin_Controller
         );
 
         echo json_encode($response);
-
     }
 
     public function rankgenerate()
     {
-      $examid=$this->input->post('examid');
-      $student_data=$this->onlineexam_model->searchAllOnlineExamStudents($examid);
-      $student_question_array=array();
-        if(!empty($student_data)){
-        foreach ($student_data as $student_key => $student_value) {            
-          $student_question_array[$student_value['onlineexam_student_id']] = $this->onlineexamresult_model->getResultByStudent($student_value['onlineexam_student_id'], $examid);
+        $examid = $this->input->post('examid');
+        $student_data = $this->onlineexam_model->searchAllOnlineExamStudents($examid);
+        $student_question_array = array();
+        if (!empty($student_data)) {
+            foreach ($student_data as $student_key => $student_value) {
+                $student_question_array[$student_value['onlineexam_student_id']] = $this->onlineexamresult_model->getResultByStudent($student_value['onlineexam_student_id'], $examid);
+            }
         }
-        }
-      $data['onlineexam'] = $this->onlineexam_model->get($examid);
-      $data['student_question_array']=$student_question_array;
-      $data['examid']=$examid;
-      $data['student_data']=$student_data;
-      $data['sch_setting'] = $this->sch_setting_detail;
-      $page = $this->load->view('admin/onlineexam/_rankgenerate', $data, true);
-      $array = array('status' => 1, 'page' => $page,'examid'=>$examid, 'message' => $this->lang->line('success_message'));
+        $data['onlineexam'] = $this->onlineexam_model->get($examid);
+        $data['student_question_array'] = $student_question_array;
+        $data['examid'] = $examid;
+        $data['student_data'] = $student_data;
+        $data['sch_setting'] = $this->sch_setting_detail;
+        $page = $this->load->view('admin/onlineexam/_rankgenerate', $data, true);
+        $array = array('status' => 1, 'page' => $page, 'examid' => $examid, 'message' => $this->lang->line('success_message'));
         echo json_encode($array);
     }
 
@@ -607,53 +594,50 @@ class Onlineexam extends Admin_Controller
             }
 
             $this->onlineexam_model->add($insert_data);
-            if($id!=0){
-                $exam_notification=$this->onlineexam_model->get_msnstatusByexam_id($id);
-               
+            if ($id != 0) {
+                $exam_notification = $this->onlineexam_model->get_msnstatusByexam_id($id);
 
-                if ($is_active == 1 && $exam_notification['publish_exam_notification']==0) {
 
-                $sender_details = array(
-                    'exam_id'               => $id,
-                    'exam_title'               => $this->input->post('exam'),
-                    'attempt'            => $this->input->post('attempt'),
-                    'time_duration' => $this->input->post('duration'),
-                    'passing_percentage' => $this->input->post('passing_percentage'),
-                    'exam_from'          => date('Y-m-d H:i:s', $this->customlib->dateTimeformatTwentyfourhour($this->input->post('exam_from'), false)),
-                    'exam_to'            => date('Y-m-d H:i:s', $this->customlib->dateTimeformatTwentyfourhour($this->input->post('exam_to'), false)),
-                    
-                );
-    
-                $notification_status=$this->mailsmsconf->mailsms('online_examination_publish_exam', $sender_details);
-                   
+                if ($is_active == 1 && $exam_notification['publish_exam_notification'] == 0) {
+
+                    $sender_details = array(
+                        'exam_id'               => $id,
+                        'exam_title'               => $this->input->post('exam'),
+                        'attempt'            => $this->input->post('attempt'),
+                        'time_duration' => $this->input->post('duration'),
+                        'passing_percentage' => $this->input->post('passing_percentage'),
+                        'exam_from'          => date('Y-m-d H:i:s', $this->customlib->dateTimeformatTwentyfourhour($this->input->post('exam_from'), false)),
+                        'exam_to'            => date('Y-m-d H:i:s', $this->customlib->dateTimeformatTwentyfourhour($this->input->post('exam_to'), false)),
+
+                    );
+
+                    $notification_status = $this->mailsmsconf->mailsms('online_examination_publish_exam', $sender_details);
+
                     $publish_exam_notification['id'] = $id;
                     $publish_exam_notification['publish_exam_notification'] = '1';
                     $this->onlineexam_model->add($publish_exam_notification);
-                
-               
+                }
+
+                if ($publish_result == 1 && $exam_notification['publish_result_notification'] == 0) {
+
+                    $sender_details = array(
+                        'exam_id'               => $id,
+                        'exam_title'               => $this->input->post('exam'),
+                        'attempt'            => $this->input->post('attempt'),
+                        'time_duration' => $this->input->post('duration'),
+                        'passing_percentage' => $this->input->post('passing_percentage'),
+                        'exam_from'          => date('Y-m-d H:i:s', $this->customlib->dateTimeformatTwentyfourhour($this->input->post('exam_from'), false)),
+                        'exam_to'            => date('Y-m-d H:i:s', $this->customlib->dateTimeformatTwentyfourhour($this->input->post('exam_to'), false)),
+
+                    );
+
+                    $this->mailsmsconf->mailsms('online_examination_publish_result', $sender_details);
+                    $publish_result_notification['id'] = $id;
+                    $publish_result_notification['publish_result_notification'] = '1';
+                    $this->onlineexam_model->add($publish_result_notification);
+                }
             }
 
-              if ($publish_result == 1 && $exam_notification['publish_result_notification']==0) {
-              
-                 $sender_details = array(
-                    'exam_id'               => $id,
-                    'exam_title'               => $this->input->post('exam'),
-                    'attempt'            => $this->input->post('attempt'),
-                    'time_duration' => $this->input->post('duration'),
-                    'passing_percentage' => $this->input->post('passing_percentage'),
-                    'exam_from'          => date('Y-m-d H:i:s', $this->customlib->dateTimeformatTwentyfourhour($this->input->post('exam_from'), false)),
-                    'exam_to'            => date('Y-m-d H:i:s', $this->customlib->dateTimeformatTwentyfourhour($this->input->post('exam_to'), false)),
-                    
-                );
-
-                $this->mailsmsconf->mailsms('online_examination_publish_result', $sender_details);    
-                $publish_result_notification['id'] = $id;
-                $publish_result_notification['publish_result_notification'] = '1';
-                $this->onlineexam_model->add($publish_result_notification);
-              
-            }
-            }
-              
             $array = array('status' => 1, 'error' => '', 'message' => $this->lang->line('success_message'));
         }
 
@@ -681,33 +665,32 @@ class Onlineexam extends Admin_Controller
     {
 
         $this->form_validation->set_rules('row[]', 'row', 'trim|required|xss_clean');
-        
+
 
         if ($this->form_validation->run() == false) {
 
             $msg = array(
                 'row'    => form_error('row[]'),
-            
+
             );
 
             $array = array('status' => 0, 'error' => $msg, 'message' => '');
         } else {
-            $row=$this->input->post('row');
-            $exam_id=$this->input->post('exam_id');
-          
-            if(!empty($row)){
-                $students=array();
+            $row = $this->input->post('row');
+            $exam_id = $this->input->post('exam_id');
+
+            if (!empty($row)) {
+                $students = array();
                 foreach ($row as $row_key => $row_value) {
-                   $students[]=array(
-                      'id'=>$row_value,
-                      'rank'=>$this->input->post('onlineexam_student_id_'.$row_value)
-                  );
+                    $students[] = array(
+                        'id' => $row_value,
+                        'rank' => $this->input->post('onlineexam_student_id_' . $row_value)
+                    );
                 }
-        
-           $this->onlineexam_model->updateStudentRank($students,$exam_id);
-            
-            }        
-        
+
+                $this->onlineexam_model->updateStudentRank($students, $exam_id);
+            }
+
             $array = array('status' => 1, 'error' => '', 'message' => $this->lang->line('success_message'));
         }
 
@@ -752,9 +735,7 @@ class Onlineexam extends Admin_Controller
 
                     $this->form_validation->set_message('validate_duration', 'The %s field must be HH:mm:ss');
                     return false;
-
                 }
-
             } else {
                 $this->form_validation->set_message('validate_duration', 'The %s field can not be 00:00:00 ');
                 return false;
@@ -856,7 +837,6 @@ class Onlineexam extends Admin_Controller
             $this->load->view('layout/header', $data);
             $this->load->view('admin/onlineexam/report', $data);
             $this->load->view('layout/footer', $data);
-
         } else {
 
             if ($this->input->server('REQUEST_METHOD') == "POST") {
@@ -866,8 +846,6 @@ class Onlineexam extends Admin_Controller
                 $section_id      = $this->input->post('section_id');
                 $results         = $this->onlineexamresult_model->getStudentByExam($exam_id, $class_id, $section_id);
                 $data['results'] = $results;
-               
-
             }
 
             $this->load->view('layout/header', $data);
@@ -900,11 +878,9 @@ class Onlineexam extends Admin_Controller
             $question_result = $this->load->view('admin/onlineexam/_print', $data, true);
         } else {
             $question_result = $this->load->view('admin/onlineexam/_getstudentresult', $data, true);
-
         }
 
         echo json_encode(array('status' => 1, 'result' => $question_result));
-
     }
 
     public function getExamQuestions()
@@ -920,5 +896,4 @@ class Onlineexam extends Admin_Controller
         $questionList = $this->load->view('admin/onlineexam/_getexamquestions', $data, true);
         echo json_encode(array('status' => 1, 'result' => $questionList, 'exam' => $exam));
     }
-
 }

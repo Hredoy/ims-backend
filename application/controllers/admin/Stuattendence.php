@@ -7,7 +7,7 @@ class Stuattendence extends Admin_Controller {
 
     function __construct() {
         parent::__construct();
-
+        $this->auth->is_logged_in();
         $this->config->load("mailsms");
         $this->load->library('mailsmsconf');
         $this->config_attendance = $this->config->item('attendence');
@@ -352,5 +352,3 @@ class Stuattendence extends Admin_Controller {
     }
 
 }
-
-?>

@@ -10,6 +10,7 @@ class Academic extends Admin_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->auth->is_logged_in();
         $this->sch_setting_detail = $this->setting_model->getSetting();
         $this->config->load('app-config');
         $this->load->library('smsgateway');

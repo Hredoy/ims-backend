@@ -4,6 +4,7 @@ class Timeline extends Admin_Controller {
 
     function __construct() {
         parent::__construct();
+        $this->auth->is_logged_in();
 
         $this->load->library('form_validation');
         $this->load->model('timeline_model');
@@ -182,5 +183,3 @@ class Timeline extends Admin_Controller {
     }
 
 }
-
-?>

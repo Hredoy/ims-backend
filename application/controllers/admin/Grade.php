@@ -10,30 +10,31 @@ class Grade extends Admin_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->auth->is_logged_in();
         $this->exam_type = $this->config->item('exam_type');
     }
 
-   
+
 
     public function index()
     {
         if (!$this->rbac->hasPrivilege('marks_grade', 'can_view')) {
             access_denied();
         }
-        $this->session->set_userdata('top_menu','Examinations');
-        $this->session->set_userdata('sub_menu','Examinations/grade');
+        $this->session->set_userdata('top_menu', 'Examinations');
+        $this->session->set_userdata('sub_menu', 'Examinations/grade');
         $data['title']      = 'Add Arade';
         $data['title_list'] = 'Grade Details';
         $listgrade          = $this->grade_model->getGradeDetails();
         $data['examType']   = $this->exam_type;
         $data['listgrade']  = $listgrade;
-        $this->form_validation->set_rules('exam_type', $this->lang->line('exam')." ".$this->lang->line('type'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('exam_type', $this->lang->line('exam') . " " . $this->lang->line('type'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('name', $this->lang->line('grade'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('mark_from', $this->lang->line('percentage_upto'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('mark_upto', $this->lang->line('percentage_from'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('grade_point', $this->lang->line('grade')." ".$this->lang->line('point'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('grade_point', $this->lang->line('grade') . " " . $this->lang->line('point'), 'trim|required|xss_clean');
         if ($this->form_validation->run() == false) {
-           
+
             $this->load->view('layout/header');
             $this->load->view('admin/grade/creategrade', $data);
             $this->load->view('layout/footer');
@@ -60,7 +61,7 @@ class Grade extends Admin_Controller
         }
         $data['title']      = 'Edit Grade';
         $data['title_list'] = 'Grade Details';
-         $listgrade          = $this->grade_model->getGradeDetails();
+        $listgrade          = $this->grade_model->getGradeDetails();
         $data['examType']   = $this->exam_type;
         $data['listgrade']  = $listgrade;
 
@@ -68,13 +69,13 @@ class Grade extends Admin_Controller
         $data['id']         = $id;
         $editgrade          = $this->grade_model->get($id);
         $data['editgrade']  = $editgrade;
-         $this->form_validation->set_rules('exam_type', $this->lang->line('exam')." ".$this->lang->line('type'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('exam_type', $this->lang->line('exam') . " " . $this->lang->line('type'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('name', $this->lang->line('grade'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('mark_from', $this->lang->line('percentage_upto'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('mark_upto', $this->lang->line('percentage_from'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('grade_point', $this->lang->line('grade')." ".$this->lang->line('point'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('grade_point', $this->lang->line('grade') . " " . $this->lang->line('point'), 'trim|required|xss_clean');
         if ($this->form_validation->run() == false) {
-          
+
             $this->load->view('layout/header');
             $this->load->view('admin/grade/editgrade', $data);
             $this->load->view('layout/footer');
@@ -103,5 +104,4 @@ class Grade extends Admin_Controller
         $this->grade_model->remove($id);
         redirect('admin/grade/index');
     }
-
 }

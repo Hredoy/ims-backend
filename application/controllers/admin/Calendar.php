@@ -6,6 +6,7 @@ class Calendar extends Admin_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->auth->is_logged_in();
         $this->load->helper('file');
         $this->load->library('customlib');
         $this->load->model("calendar_model");
@@ -44,15 +45,15 @@ class Calendar extends Admin_Controller
         $config['cur_tag_close']   = '</a></li>';
         $config['num_tag_open']    = '<li>';
         $config['num_tag_close']   = '</li>';
-        $this->pagination->initialize($config);     
- 
+        $this->pagination->initialize($config);
+
         $tasklist         = $this->calendar_model->getTask(10, $this->uri->segment(4), $userdata["id"], $userdata["role_id"]);
         $data["tasklist"] = $tasklist;
         $data["title"]    = "Event Calendar";
         $this->load->view("layout/header.php");
         $this->load->view("setting/eventcalendar", $data);
         $this->load->view("layout/footer.php");
-    } 
+    }
 
     public function addtodo()
     {
@@ -82,7 +83,8 @@ class Calendar extends Admin_Controller
             $eventid           = $this->input->post("eventid");
             if (!empty($eventid)) {
 
-                $eventdata = array('event_title' => $event_title,
+                $eventdata = array(
+                    'event_title' => $event_title,
                     'event_description'              => $event_description,
                     'start_date'                     => $start_date,
                     'end_date'                       => $start_date,
@@ -93,7 +95,8 @@ class Calendar extends Admin_Controller
                 );
                 $msg = $this->lang->line('update_message');
             } else {
-                $eventdata = array('event_title' => $event_title,
+                $eventdata = array(
+                    'event_title' => $event_title,
                     'event_description'              => $event_description,
                     'start_date'                     => $start_date,
                     'end_date'                       => $start_date,
@@ -105,7 +108,7 @@ class Calendar extends Admin_Controller
                 );
                 $msg = $this->lang->line('success_message');
             }
-        
+
             $this->calendar_model->saveEvent($eventdata);
             $array = array('status' => 'success', 'error' => '', 'message' => $msg);
         }
@@ -118,11 +121,11 @@ class Calendar extends Admin_Controller
 
         $this->form_validation->set_rules('title', $this->lang->line('event') . " " . $this->lang->line('title'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('event_from', $this->lang->line('event') . " " . $this->lang->line('form'), 'trim|required|xss_clean');
-         $this->form_validation->set_rules('event_to', $this->lang->line('event') . " " . $this->lang->line('to'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('event_to', $this->lang->line('event') . " " . $this->lang->line('to'), 'trim|required|xss_clean');
 
         if ($this->form_validation->run() == false) {
 
-            $msg = array( 
+            $msg = array(
                 'title' => form_error('title'),
                 'event_from' => form_error('event_from'),
                 'event_to' => form_error('event_to'),
@@ -135,13 +138,13 @@ class Calendar extends Admin_Controller
             $event_color       = $this->input->post("eventcolor");
             if (empty($event_color)) {
                 $event_color = '#337ab7';
-            } 
+            }
 
-         
+
 
             $start_date = date('Y-m-d H:i:s', $this->customlib->dateTimeformatTwentyfourhour($this->input->post("event_from")));
             $end_date   = date('Y-m-d H:i:s', $this->customlib->dateTimeformatTwentyfourhour($this->input->post("event_to")));
-  
+
             $userdata = $this->customlib->getUserData();
             if ($event_type == 'private') {
 
@@ -156,7 +159,8 @@ class Calendar extends Admin_Controller
 
                 $event_for = $userdata["role_id"];
             }
-            $eventdata = array('event_title' => $event_title,
+            $eventdata = array(
+                'event_title' => $event_title,
                 'event_description'              => $event_description,
                 'start_date'                     => $start_date,
                 'end_date'                       => $end_date,
@@ -168,11 +172,10 @@ class Calendar extends Admin_Controller
 
 
             $this->calendar_model->saveEvent($eventdata);
-          
-            $array = array('status' => 'success', 'error' => '', 'message' => $this->lang->line('success_message'));
 
+            $array = array('status' => 'success', 'error' => '', 'message' => $this->lang->line('success_message'));
         }
-       echo json_encode($array);
+        echo json_encode($array);
     }
 
     public function updateevent()
@@ -180,13 +183,13 @@ class Calendar extends Admin_Controller
         if (!$this->rbac->hasPrivilege('calendar_to_do_list', 'can_edit')) {
             access_denied();
         }
-            $this->form_validation->set_rules('title', $this->lang->line('event') . " " . $this->lang->line('title'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('title', $this->lang->line('event') . " " . $this->lang->line('title'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('event_from', $this->lang->line('event') . " " . $this->lang->line('form'), 'trim|required|xss_clean');
-         $this->form_validation->set_rules('event_to', $this->lang->line('event') . " " . $this->lang->line('to'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('event_to', $this->lang->line('event') . " " . $this->lang->line('to'), 'trim|required|xss_clean');
 
         if ($this->form_validation->run() == false) {
 
-             $msg = array( 
+            $msg = array(
                 'title' => form_error('title'),
                 'event_from' => form_error('event_from'),
                 'event_to' => form_error('event_to'),
@@ -214,11 +217,12 @@ class Calendar extends Admin_Controller
 
                 $event_for = $userdata["role_id"];
             }
-            
-           $start_date = date('Y-m-d H:i:s', $this->customlib->dateTimeformatTwentyfourhour($this->input->post("event_from")));
+
+            $start_date = date('Y-m-d H:i:s', $this->customlib->dateTimeformatTwentyfourhour($this->input->post("event_from")));
             $end_date   = date('Y-m-d H:i:s', $this->customlib->dateTimeformatTwentyfourhour($this->input->post("event_to")));
-            
-            $eventdata = array('id' => $id,
+
+            $eventdata = array(
+                'id' => $id,
                 'event_title'           => $event_title,
                 'event_description'     => $event_description,
                 'start_date'            => $start_date,
@@ -226,11 +230,10 @@ class Calendar extends Admin_Controller
                 'event_type'            => $event_type,
                 'event_color'           => $event_color,
                 'event_for'             => $event_for,
-            ); 
-           
+            );
+
             $this->calendar_model->saveEvent($eventdata);
             $array = array('status' => 'success', 'error' => '', 'message' => $this->lang->line('success_message'));
-
         }
         echo json_encode($array);
     }
@@ -262,7 +265,8 @@ class Calendar extends Admin_Controller
                 if ($event_type == 'task') {
 
                     if (($event_for == $value["event_for"]) && ($value["role_id"] == $userdata["role_id"])) {
-                        $eventdata[] = array('title' => $value["event_title"],
+                        $eventdata[] = array(
+                            'title' => $value["event_title"],
                             'start'                      => $value["start_date"],
                             'end'                        => $value["end_date"],
                             'description'                => $value["event_description"],
@@ -274,7 +278,8 @@ class Calendar extends Admin_Controller
                     }
                 } else {
                     if ($event_for == $value["event_for"]) {
-                        $eventdata[] = array('title' => $value["event_title"],
+                        $eventdata[] = array(
+                            'title' => $value["event_title"],
                             'start'                      => $value["start_date"],
                             'end'                        => $value["end_date"],
                             'description'                => $value["event_description"],
@@ -284,7 +289,8 @@ class Calendar extends Admin_Controller
                             'event_type'                 => $value["event_type"],
                         );
                     } elseif ($event_type == 'protected') {
-                        $eventdata[] = array('title' => $value["event_title"],
+                        $eventdata[] = array(
+                            'title' => $value["event_title"],
                             'start'                      => $value["start_date"],
                             'end'                        => $value["end_date"],
                             'description'                => $value["event_description"],
@@ -294,7 +300,6 @@ class Calendar extends Admin_Controller
                             'event_type'                 => $value["event_type"],
                         );
                     }
-
                 }
             }
 
@@ -308,8 +313,8 @@ class Calendar extends Admin_Controller
             access_denied();
         }
         $result              = $this->calendar_model->getEvents($id);
-        $start_date          = date($this->customlib->getSchoolDateFormat()." H:i:s", strtotime($result["start_date"]));
-        $end_date            = date($this->customlib->getSchoolDateFormat()." H:i:s", strtotime($result["end_date"]));
+        $start_date          = date($this->customlib->getSchoolDateFormat() . " H:i:s", strtotime($result["start_date"]));
+        $end_date            = date($this->customlib->getSchoolDateFormat() . " H:i:s", strtotime($result["end_date"]));
         $colorid             = trim($result["event_color"], "#");
         $result["colorid"]   = $colorid;
         $result["startdate"] = $start_date;
@@ -361,5 +366,4 @@ class Calendar extends Admin_Controller
         }
         echo json_encode($array);
     }
-
 }

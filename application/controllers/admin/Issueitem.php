@@ -3,14 +3,18 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Issueitem extends Admin_Controller {
+class Issueitem extends Admin_Controller
+{
 
-    function __construct() {
+    function __construct()
+    {
         parent::__construct();
+        $this->auth->is_logged_in();
         $this->load->helper('form');
     }
 
-    public function index() {
+    public function index()
+    {
         if (!$this->rbac->hasPrivilege('issue_item', 'can_view')) {
             access_denied();
         }
@@ -26,7 +30,8 @@ class Issueitem extends Admin_Controller {
         $this->load->view('layout/footer', $data);
     }
 
-    public function create() {
+    public function create()
+    {
         $this->session->set_userdata('top_menu', 'Inventory');
         $this->session->set_userdata('sub_menu', 'issueitem/index');
         $data['title'] = 'Add Issue item';
@@ -43,7 +48,8 @@ class Issueitem extends Admin_Controller {
         $this->load->view('layout/footer', $data);
     }
 
-    function add() {
+    function add()
+    {
         $this->form_validation->set_rules('account_type', $this->lang->line('account_type'), 'required|trim|xss_clean');
         $this->form_validation->set_rules('issue_to', $this->lang->line('issue_to'), 'required|trim|xss_clean');
         $this->form_validation->set_rules('issue_by', $this->lang->line('issue_by'), 'required|trim|xss_clean');
@@ -89,7 +95,8 @@ class Issueitem extends Admin_Controller {
         }
     }
 
-    public function check_available_quantity() {
+    public function check_available_quantity()
+    {
         $item_category_id = $this->input->post('item_category_id');
         $item_id = $this->input->post('item_id');
         $quantity = $this->input->post('quantity');
@@ -108,13 +115,15 @@ class Issueitem extends Admin_Controller {
         return TRUE;
     }
 
-    function delete($id) {
+    function delete($id)
+    {
         $data['title'] = 'Delete';
         $this->itemissue_model->remove($id);
         redirect('admin/issueitem');
     }
 
-    public function getUser() {
+    public function getUser()
+    {
 
         $usertype = $this->input->post('usertype');
 
@@ -129,7 +138,8 @@ class Issueitem extends Admin_Controller {
         echo json_encode($result_final);
     }
 
-    public function returnItem() {
+    public function returnItem()
+    {
 
         $issue_id = $this->input->post('item_issue_id');
 
@@ -145,5 +155,4 @@ class Issueitem extends Admin_Controller {
         $result_final = array('status' => 'pass', 'message' => $this->lang->line('success_message'));
         echo json_encode($result_final);
     }
-
 }

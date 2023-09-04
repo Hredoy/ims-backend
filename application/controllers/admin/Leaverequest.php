@@ -4,6 +4,7 @@ class Leaverequest extends Admin_Controller {
 
     function __construct() {
         parent::__construct();
+        $this->auth->is_logged_in();
 
         $this->config->load("payroll");
 
@@ -349,5 +350,3 @@ class Leaverequest extends Admin_Controller {
     }
 
 }
-
-?>

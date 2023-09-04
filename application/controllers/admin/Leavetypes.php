@@ -6,6 +6,7 @@ class LeaveTypes extends Admin_Controller {
     function __construct() {
 
         parent::__construct();
+        $this->auth->is_logged_in();
 
         $this->load->helper('file');
         $this->config->load("payroll");
@@ -95,5 +96,3 @@ class LeaveTypes extends Admin_Controller {
     }
 
 }
-
-?>

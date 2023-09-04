@@ -4,15 +4,19 @@ if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
-class Updater extends Admin_Controller {
+class Updater extends Admin_Controller
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
+        $this->auth->is_logged_in();
         $this->load->helper('string');
     }
 
-    public function index($chk = null) {
-         if (!$this->rbac->hasPrivilege('superadmin', 'can_view')) {
+    public function index($chk = null)
+    {
+        if (!$this->rbac->hasPrivilege('superadmin', 'can_view')) {
             access_denied();
         }
         $data = array();
@@ -34,7 +38,6 @@ class Updater extends Admin_Controller {
                     $res_json = json_decode($fn_response);
                     $data['version'] = $res_json->version;
                 } else {
-                    
                 }
             }
         }
@@ -53,7 +56,8 @@ class Updater extends Admin_Controller {
         $this->load->view('layout/footer', $data);
     }
 
-    public function checkup() {
+    public function checkup()
+    {
         $version = "";
         $response = $this->auth->checkupdate();
 
@@ -71,5 +75,4 @@ class Updater extends Admin_Controller {
         }
         return json_encode(array('version' => $version));
     }
-
 }

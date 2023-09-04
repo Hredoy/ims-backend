@@ -10,6 +10,7 @@ class Exam_schedule extends Admin_Controller {
 
     public function __construct() {
         parent::__construct();
+        $this->auth->is_logged_in();
         $this->load->library('encoding_lib');
         $this->exam_type = $this->config->item('exam_type');
         $this->sch_current_session = $this->setting_model->getCurrentSession();
@@ -46,5 +47,3 @@ class Exam_schedule extends Admin_Controller {
     }
 
 }
-
-?>

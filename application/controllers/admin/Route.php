@@ -7,6 +7,7 @@ class Route extends Admin_Controller {
 
     function __construct() {
         parent::__construct();
+        $this->auth->is_logged_in();
         $this->load->model("classteacher_model");
          $this->sch_setting_detail = $this->setting_model->getSetting();
     }
@@ -137,5 +138,3 @@ class Route extends Admin_Controller {
     }
 
 }
-
-?>

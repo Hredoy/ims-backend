@@ -9,6 +9,7 @@ class Staffattendance extends Admin_Controller {
     function __construct() {
 
         parent::__construct();
+        $this->auth->is_logged_in();
         $this->load->helper('file');
 
         $this->config->load("mailsms");
@@ -283,5 +284,3 @@ class Staffattendance extends Admin_Controller {
     }
 
 }
-
-?>

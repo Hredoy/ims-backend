@@ -3,17 +3,21 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Enquiry extends Admin_Controller {
+class Enquiry extends Admin_Controller
+{
 
-    function __construct() {
+    function __construct()
+    {
         parent::__construct();
+        $this->auth->is_logged_in();
         $this->load->library('form_validation');
         $this->load->model("enquiry_model");
         $this->config->load("payroll");
         $this->enquiry_status = $this->config->item('enquiry_status');
     }
 
-    public function index() {
+    public function index()
+    {
 
 
         if (!$this->rbac->hasPrivilege('admission_enquiry', 'can_view')) {
@@ -25,26 +29,22 @@ class Enquiry extends Admin_Controller {
         $data['class_list'] = $this->class_model->get();
         $data["source_select"] = "";
         $data["status"] = "active";
-       
-       
-             $this->form_validation->set_rules('from_date', $this->lang->line('enquiry')." ".$this->lang->line('from')." ".$this->lang->line('date'), 'trim|required|xss_clean');
-              $this->form_validation->set_rules('to_date', $this->lang->line('enquiry')." ".$this->lang->line('to')." ".$this->lang->line('date'), 'trim|required|xss_clean');
+
+
+        $this->form_validation->set_rules('from_date', $this->lang->line('enquiry') . " " . $this->lang->line('from') . " " . $this->lang->line('date'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('to_date', $this->lang->line('enquiry') . " " . $this->lang->line('to') . " " . $this->lang->line('date'), 'trim|required|xss_clean');
 
         if ($this->form_validation->run() == TRUE) {
-          
+
             $source = $this->input->post("source");
             $status = $this->input->post("status");
             $date_from = date("Y-m-d", $this->customlib->datetostrtotime($this->input->post("from_date")));
             $date_to = date("Y-m-d", $this->customlib->datetostrtotime($this->input->post("to_date")));
- 
+
             $data["source_select"] = $source;
             $data["status"] = $status;
-           
-            $enquiry_list = $this->enquiry_model->searchEnquiry($source, $status, $date_from, $date_to);
-            
 
-             
-           
+            $enquiry_list = $this->enquiry_model->searchEnquiry($source, $status, $date_from, $date_to);
         } else {
 
             $enquiry_list = $this->enquiry_model->getenquiry_list();
@@ -70,7 +70,8 @@ class Enquiry extends Admin_Controller {
         $this->load->view('layout/footer');
     }
 
-    public function add() {
+    public function add()
+    {
         if (!$this->rbac->hasPrivilege('admission_enquiry', 'can_add')) {
             access_denied();
         }
@@ -113,7 +114,8 @@ class Enquiry extends Admin_Controller {
         echo json_encode($array);
     }
 
-    public function delete($id) {
+    public function delete($id)
+    {
         if (!$this->rbac->hasPrivilege('admission_enquiry', 'can_delete')) {
             access_denied();
         }
@@ -124,7 +126,8 @@ class Enquiry extends Admin_Controller {
         echo json_encode($array);
     }
 
-    public function follow_up($enquiry_id, $status) {
+    public function follow_up($enquiry_id, $status)
+    {
 
         if (!$this->rbac->hasPrivilege('follow_up_admission_enquiry', 'can_view')) {
             access_denied();
@@ -137,7 +140,8 @@ class Enquiry extends Admin_Controller {
         $this->load->view('admin/frontoffice/follow_up_modal', $data);
     }
 
-    function follow_up_insert() {
+    function follow_up_insert()
+    {
         if (!$this->rbac->hasPrivilege('follow_up_admission_enquiry', 'can_add')) {
             access_denied();
         }
@@ -173,14 +177,16 @@ class Enquiry extends Admin_Controller {
         echo json_encode($array);
     }
 
-    function follow_up_list($id) {
+    function follow_up_list($id)
+    {
 
         $data['id'] = $id;
         $data['follow_up_list'] = $this->enquiry_model->getfollow_up_list($id);
         $this->load->view('admin/frontoffice/followuplist', $data);
     }
 
-    function details($id, $status) {
+    function details($id, $status)
+    {
 
         if (!$this->rbac->hasPrivilege('admission_enquiry', 'can_view')) {
             access_denied();
@@ -195,7 +201,8 @@ class Enquiry extends Admin_Controller {
         $this->load->view('admin/frontoffice/enquiryeditmodalview', $data);
     }
 
-    function editpost($id) {
+    function editpost($id)
+    {
 
         if (!$this->rbac->hasPrivilege('admission_enquiry', 'can_edit')) {
             access_denied();
@@ -239,7 +246,8 @@ class Enquiry extends Admin_Controller {
         echo json_encode($array);
     }
 
-    public function follow_up_delete($follow_up_id, $enquiry_id) {
+    public function follow_up_delete($follow_up_id, $enquiry_id)
+    {
         if (!$this->rbac->hasPrivilege('follow_up_admission_enquiry', 'can_delete')) {
             access_denied();
         }
@@ -250,11 +258,13 @@ class Enquiry extends Admin_Controller {
         $this->load->view('admin/frontoffice/followuplist', $data);
     }
 
-    public function check_default($post_string) {
+    public function check_default($post_string)
+    {
         return $post_string == '' ? FALSE : TRUE;
     }
 
-    public function change_status() {
+    public function change_status()
+    {
 
         $id = $this->input->post("id");
         $status = $this->input->post("status");
@@ -271,5 +281,4 @@ class Enquiry extends Admin_Controller {
 
         echo json_encode($array);
     }
-
 }

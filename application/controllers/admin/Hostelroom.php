@@ -8,6 +8,7 @@ class Hostelroom extends Admin_Controller {
     function __construct() {
         parent::__construct();
 
+        $this->auth->is_logged_in();
         $this->load->library('Customlib');
         $this->load->model("classteacher_model");
          $this->sch_setting_detail = $this->setting_model->getSetting();
@@ -165,6 +166,4 @@ class Hostelroom extends Admin_Controller {
         $this->load->view("layout/footer", $data);
     }
 
-} 
-
-?>
+}

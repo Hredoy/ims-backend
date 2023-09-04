@@ -7,6 +7,7 @@ class Subject extends Admin_Controller {
 
     function __construct() {
         parent::__construct();
+        $this->auth->is_logged_in();
         $this->load->helper('file');
     }
 
@@ -119,5 +120,3 @@ class Subject extends Admin_Controller {
     }
 
 }
-
-?>

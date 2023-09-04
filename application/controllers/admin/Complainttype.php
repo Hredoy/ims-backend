@@ -3,15 +3,19 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Complainttype extends Admin_Controller {
+class Complainttype extends Admin_Controller
+{
 
-    function __construct() {
+    function __construct()
+    {
         parent::__construct();
+        $this->auth->is_logged_in();
         $this->load->library('form_validation');
         $this->load->model("ComplaintType_model");
     }
 
-    function index() {
+    function index()
+    {
         if (!$this->rbac->hasPrivilege('setup_font_office', 'can_view')) {
             access_denied();
         }
@@ -33,7 +37,8 @@ class Complainttype extends Admin_Controller {
         }
     }
 
-    function editcomplainttype($complainttype_id) {
+    function editcomplainttype($complainttype_id)
+    {
         if (!$this->rbac->hasPrivilege('setup_font_office', 'can_edit')) {
             access_denied();
         }
@@ -60,7 +65,8 @@ class Complainttype extends Admin_Controller {
         }
     }
 
-    function delete($id) {
+    function delete($id)
+    {
         if (!$this->rbac->hasPrivilege('setup_font_office', 'can_delete')) {
             access_denied();
         }
@@ -68,5 +74,4 @@ class Complainttype extends Admin_Controller {
         $this->session->set_flashdata('msg', '<div class="alert alert-success">' . $this->lang->line('delete_message') . '</div>');
         redirect('admin/complainttype');
     }
-
 }

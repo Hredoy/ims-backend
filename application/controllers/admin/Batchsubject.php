@@ -4,13 +4,17 @@ if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
-class Batchsubject extends Admin_Controller {
+class Batchsubject extends Admin_Controller
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
+        $this->auth->is_logged_in();
     }
 
-    public function index() {
+    public function index()
+    {
         if (!$this->rbac->hasPrivilege('batch', 'can_view')) {
             access_denied();
         }
@@ -28,10 +32,12 @@ class Batchsubject extends Admin_Controller {
         $this->form_validation->set_rules('section_id', $this->lang->line('section'), 'trim|required|xss_clean');
 
         $this->form_validation->set_rules(
-                'subject_id', $this->lang->line('subject'), array(
-            'required',
-            array('check_batchsubjectexists', array($this->batchsubject_model, 'valid_batchsubject')),
-                )
+            'subject_id',
+            $this->lang->line('subject'),
+            array(
+                'required',
+                array('check_batchsubjectexists', array($this->batchsubject_model, 'valid_batchsubject')),
+            )
         );
 
         if ($this->form_validation->run() == true) {
@@ -54,7 +60,8 @@ class Batchsubject extends Admin_Controller {
         $this->load->view('layout/footer', $data);
     }
 
-    public function delete($id) {
+    public function delete($id)
+    {
         if (!$this->rbac->hasPrivilege('batch', 'can_delete')) {
             access_denied();
         }
@@ -63,7 +70,8 @@ class Batchsubject extends Admin_Controller {
         redirect('admin/batchsubject');
     }
 
-    public function deletegrp($id) {
+    public function deletegrp($id)
+    {
         if (!$this->rbac->hasPrivilege('batch', 'can_delete')) {
             access_denied();
         }
@@ -72,7 +80,8 @@ class Batchsubject extends Admin_Controller {
         redirect('admin/batchsubject');
     }
 
-    public function edit($id) {
+    public function edit($id)
+    {
         if (!$this->rbac->hasPrivilege('batch', 'can_edit')) {
             access_denied();
         }
@@ -92,10 +101,12 @@ class Batchsubject extends Admin_Controller {
         $this->form_validation->set_rules('section_id', $this->lang->line('section'), 'trim|required|xss_clean');
 
         $this->form_validation->set_rules(
-                'subject_id', $this->lang->line('subject'), array(
-            'required',
-            array('check_batchsubjectexists', array($this->batchsubject_model, 'valid_batchsubject')),
-                )
+            'subject_id',
+            $this->lang->line('subject'),
+            array(
+                'required',
+                array('check_batchsubjectexists', array($this->batchsubject_model, 'valid_batchsubject')),
+            )
         );
         if ($this->form_validation->run() == false) {
             $this->load->view('layout/header', $data);
@@ -117,22 +128,24 @@ class Batchsubject extends Admin_Controller {
         }
     }
 
-    public function getSectionByClass() {
+    public function getSectionByClass()
+    {
         $class_id = $this->input->post('class_id');
         $data = $this->batchsubject_model->getBatchSectionByClass($class_id);
         echo json_encode($data);
     }
 
-    public function getBatchByClassSection() {
+    public function getBatchByClassSection()
+    {
         $class_section_id = $this->input->post('class_section_id');
         $data = $this->batchsubject_model->getBatchByClassSection($class_section_id);
         echo json_encode($data);
     }
 
-    public function getBatchByClass() {
+    public function getBatchByClass()
+    {
         $class_id = $this->input->post('class_id');
         $data = $this->batchsubject_model->getBatchByClass($class_id);
         echo json_encode($data);
     }
-
 }

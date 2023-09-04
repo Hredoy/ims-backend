@@ -11,6 +11,7 @@ class Blog extends Admin_Controller
     {
         parent::__construct();
         $this->sch_setting_detail = $this->setting_model->getSetting();
+        $this->auth->is_logged_in();
         $this->config->load('app-config');
         $this->load->library('smsgateway');
         $this->load->library('mailsmsconf');

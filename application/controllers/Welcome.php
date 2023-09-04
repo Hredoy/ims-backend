@@ -394,7 +394,7 @@ class Welcome extends Front_Controller
         $this->data['posts'] = $this->db->get_where('blog', ['category_id' => $id])->result();
 
         $this->data['page']['title'] =  $this->data['category']->name;
-        $this->data['page']['meta_title'] =$this->data['category']->name;
+        $this->data['page']['meta_title'] = $this->data['category']->name;
         $this->data['page']['meta_keyword'] =  $this->data['category']->name;
         $this->data['page']['meta_description'] =  $this->data['category']->name;
         $this->data['sch_setting'] = $this->sch_setting_detail;
@@ -429,7 +429,7 @@ class Welcome extends Front_Controller
         $this->data['msg']  = $this->db->get('academic_messages')->row();
 
         $this->data['page']['title'] =  $this->data['msg']->title;
-        $this->data['page']['meta_title'] =$this->data['msg']->title;
+        $this->data['page']['meta_title'] = $this->data['msg']->title;
         $this->data['page']['meta_keyword'] =  $this->data['msg']->title;
         $this->data['page']['meta_description'] =  $this->data['msg']->title;
         $this->data['sch_setting'] = $this->sch_setting_detail;
@@ -461,7 +461,6 @@ class Welcome extends Front_Controller
         $this->form_validation->set_rules('exam_id', $this->lang->line('exam'), 'trim|required|xss_clean');
 
         if ($this->form_validation->run() == false) {
-
         } else {
             $exam_group_id = $this->input->post('exam_group_id');
             $exam_id = $this->input->post('exam_id');
@@ -514,7 +513,6 @@ class Welcome extends Front_Controller
         $this->form_validation->set_rules('exam_group_id', $this->lang->line('exam') . " " . $this->lang->line('group'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('exam_id', $this->lang->line('exam'), 'trim|required|xss_clean');
         if ($this->form_validation->run() == false) {
-
         } else {
 
             $id = $_POST['exam_id'];
@@ -634,7 +632,6 @@ class Welcome extends Front_Controller
                 if ($search == 'search_filter') {
                     $this->form_validation->set_rules('class_id', $this->lang->line('class'), 'trim|required|xss_clean');
                     if ($this->form_validation->run() == false) {
-
                     } else {
                         $this->data['searchby'] = "filter";
                         $this->data['class_id'] = $this->input->post('class_id');
@@ -715,5 +712,13 @@ class Welcome extends Front_Controller
 
 
         $this->load_theme('pages/teacher-list');
+    }
+
+
+    public function getByClass()
+    {
+        $class_id = $this->input->get('class_id');
+        $data     = $this->section_model->getClassBySection($class_id);
+        echo json_encode($data);
     }
 }

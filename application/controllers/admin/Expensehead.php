@@ -7,6 +7,7 @@ class Expensehead extends Admin_Controller {
 
     function __construct() {
         parent::__construct();
+        $this->auth->is_logged_in();
     }
 
     function index() {
@@ -95,5 +96,3 @@ class Expensehead extends Admin_Controller {
     }
 
 }
-
-?>
