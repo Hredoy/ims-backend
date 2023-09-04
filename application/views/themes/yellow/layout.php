@@ -388,38 +388,8 @@
                                     </div>
                                 <?php endforeach; ?>
                                 <div class="card">
-                                    <div class="card-header">
-                                        <h2>যোগাযোগ ও পরামর্শ</h2>
-                                    </div>
                                     <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <p><strong>ক্যাম্পাস :<br>
-                                                    </strong>East Shikarpur, P.O.Nurali Bari, Hathazari, Chattogram</p>
-                                            </div>
-                                            <div class="col-sm-12">
-                                                <p><strong>Phone:</strong>
-                                                    01309104429</p>
-                                            </div>
-                                            <div class="col-sm-12">
-                                                <p><strong>Web :</strong> <a href="https://www.aksaghs.edu.bd">www.aksaghs.edu.bd</a><br>
-                                                </p>
-                                            </div>
-                                            <div class="col-sm-12">
-                                                <strong>E-mail :</strong> <a href="mailto:aks841394@gmail.com">aks841394@gmail.com</a>
-                                                <p></p>
-                                            </div>
-                                            <div class="col-sm-12">
-                                                <strong>Facebook :</strong> <a target="_blank" href="https://www.facebook.com/profile.php?id=100046890731155">এ,কে,সিদ্দিকী
-                                                    আদর্শ বালিকা উ/বি</a>
-                                                <p></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-body">
-                                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d8521.580240911684!2d91.85743894323!3d22.426461090177686!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30ad287b80447237%3A0x9ada9873bd467613!2sA.%20K.%20Siddique%20Girls%20High%20School!5e0!3m2!1sen!2sbd!4v1693131516510!5m2!1sen!2sbd" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                        <iframe src="<?= $front_setting->google_map ?>" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                                     </div>
                                 </div>
                             </div>

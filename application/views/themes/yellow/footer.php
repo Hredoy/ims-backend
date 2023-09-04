@@ -2,7 +2,7 @@
     <div>
         <footer class="bg-dark text-white">
             <div class="footer-main">
-                <div class="container">
+                <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-4 col-sm-6">
                             <h3 class="fo-title">গুরুত্বপুর্ণ অয়েবসাইটের লিঙ্ক</h3>
