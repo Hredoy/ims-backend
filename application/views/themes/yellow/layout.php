@@ -164,31 +164,33 @@
                 <main class="mt-3">
                     <div class="container-fluid">
                         <div class="row bg-white">
-                            <!-- Left Sidebar -->
-                            <div class="col-sm-3">
-                                <?php
-                                $academic_message = $this->db->get('academic_messages')->result();
-                                foreach ($academic_message as $msg) :
-                                ?>
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h3><?= $msg->title ?></h3>
-                                        </div>
-                                        <div class="card-body">
-                                            <img src="<?= $msg->image ?>" style="width:35%; height:auto; float:left; margin-right:5px; border:1px solid #999">
-                                            <p><?= $msg->name ?></p>
-                                            <p>ফোন <?= $msg->phone ?></p>
-                                            <p>ইমেইল <?= $msg->email ?></p>
+                            <?php if (empty($content) || current_url() == base_url()) { ?>
+                                <!-- Left Sidebar -->
+                                <div class="col-sm-3">
+                                    <?php
+                                    $academic_message = $this->db->get('academic_messages')->result();
+                                    foreach ($academic_message as $msg) :
+                                    ?>
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h3><?= $msg->title ?></h3>
+                                            </div>
+                                            <div class="card-body">
+                                                <img src="<?= $msg->image ?>" style="width:35%; height:auto; float:left; margin-right:5px; border:1px solid #999">
+                                                <p><?= $msg->name ?></p>
+                                                <p>ফোন <?= $msg->phone ?></p>
+                                                <p>ইমেইল <?= $msg->email ?></p>
 
+                                            </div>
+                                            <div class="card-footer">
+                                                <a href="<?= base_url('academic-message/' . $msg->id) ?>"><?= $msg->title ?></a>
+                                            </div>
                                         </div>
-                                        <div class="card-footer">
-                                            <a href="<?= base_url('academic-message/' . $msg->id) ?>"><?= $msg->title ?></a>
-                                        </div>
-                                    </div>
-                                <?php endforeach; ?>
-                            </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php } ?>
                             <!-- Main Content -->
-                            <div class="col-sm-9">
+                            <div class="<?= empty($content) || current_url() == base_url() ?  'col-sm-9' : 'col-sm-12' ?>">
                                 <div class="row">
                                     <div class="col-sm-8">
                                         <?php if (empty($content) || current_url() == base_url()) { ?>
@@ -222,234 +224,261 @@
                                             </div>
                                             <div class="card-footer"><a href="<?= base_url('/all-notice') ?>">সকল নোটিশ</a></div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <section class="sptb bg-white">
-                                            <div class="container-fluid">
-                                                <div class="section-title center-block text-center">
-                                                    <h2>সকল ই-সেবা</h2>
-                                                    <span class="sectiontitle-design"><span class="icons"></span></span>
-                                                </div>
-                                                <div class="item-all-cat center-block text-center education-categories">
-                                                    <div class="row">
-                                                        <div class="col-lg-3 col-md-4 col-sm-6">
-                                                            <div class="item-all-card text-dark text-center" style="height:160px!important;">
-                                                                <a href="<?= base_url('/online_admission') ?>"></a>
-                                                                <div class="iteam-all-icon">
-                                                                    <img src="images/documents.png" alt="" width="57px" height="57px">
-                                                                </div>
-                                                                <div class="item-all-text mt-3">
-                                                                    <h5 class="mb-0">ভর্তি ফরম</h5>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-3 col-md-4 col-sm-6">
-                                                            <div class="item-all-card text-dark text-center" style="height:160px!important;">
-                                                                <a href="<?= base_url('page/admission-rules') ?>"></a>
-                                                                <div class="iteam-all-icon">
-                                                                    <img src="images/rules.png" alt="" width="57px" height="57px">
-                                                                </div>
-                                                                <div class="item-all-text mt-3">
-                                                                    <h5 class="mb-0">ভর্তির নিয়মাবলি</h5>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-3 col-md-4 col-sm-6">
-                                                            <div class="item-all-card text-dark text-center" style="height:160px!important;">
-                                                                <a href="<?= base_url('page/teaching-permission-and-recognition') ?>"></a>
-                                                                <div class="iteam-all-icon">
-                                                                    <img src="images/permission.png" alt="" width="57px" height="57px">
-                                                                </div>
-                                                                <div class="item-all-text mt-3">
-                                                                    <h5 class="mb-0">পাঠদানের অনুমতি ও স্বীকৃতি</h5>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-3 col-md-4 col-sm-6">
-                                                            <div class="item-all-card text-dark text-center" style="height:160px!important;">
-                                                                <a href="<?= base_url('exam-results') ?>"></a>
-                                                                <div class="iteam-all-icon">
-                                                                    <img src="images/exam-results.png" alt="" width="57px" height="57px">
-                                                                </div>
-                                                                <div class="item-all-text mt-3">
-                                                                    <h5 class="mb-0">ফলাফল</h5>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-3 col-md-4 col-sm-6">
-                                                            <div class="item-all-card text-dark text-center" style="height:160px!important;">
-                                                                <a href="<?= base_url('student-list') ?>"></a>
-                                                                <div class="iteam-all-icon">
-                                                                    <img src="images/personal-information.png" alt="" width="57px" height="57px">
-                                                                </div>
-                                                                <div class="item-all-text mt-3">
-                                                                    <h5 class="mb-0">শিক্ষার্থীর তথ্য</h5>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-3 col-md-4 col-sm-6">
-                                                            <div class="item-all-card text-dark text-center" style="height:160px!important;">
-                                                                <a href="<?= base_url('teacher-stuff-list') ?>"></a>
-                                                                <div class="iteam-all-icon">
-                                                                    <img src="images/information.png" alt="" width="57px" height="57px">
-                                                                </div>
-                                                                <div class="item-all-text mt-3">
-                                                                    <h5 class="mb-0">শিক্ষক-কর্মচারীর তথ্য</h5>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-3 col-md-4 col-sm-6">
-                                                            <div class="item-all-card text-dark text-center" style="height:160px!important;">
-                                                                <a href="<?= base_url('library') ?>"></a>
-                                                                <div class="iteam-all-icon">
-                                                                    <img src="images/library.png" alt="" width="57px" height="57px">
-                                                                </div>
-                                                                <div class="item-all-text mt-3">
-                                                                    <h5 class="mb-0">পাঠাগার</h5>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-3 col-md-4 col-sm-6">
-                                                            <div class="item-all-card text-dark text-center" style="height:160px!important;">
-                                                                <a href="#"></a>
-                                                                <div class="iteam-all-icon">
-                                                                    <img src="images/group.png" alt="" width="57px" height="57px">
-                                                                </div>
-                                                                <div class="item-all-text mt-3">
-                                                                    <h5 class="mb-0">পরিচালনা কমিটির তথ্য</h5>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-3 col-md-4 col-sm-6">
-                                                            <div class="item-all-card text-dark text-center" style="height:160px!important;">
-                                                                <a href="<?= base_url('page/academic-information') ?>"></a>
-                                                                <div class="iteam-all-icon">
-                                                                    <img src="images/company.png" alt="" width="57px" height="57px">
-                                                                </div>
-                                                                <div class="item-all-text mt-3">
-                                                                    <h5 class="mb-0">একাডেমিক তথ্য</h5>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-3 col-md-4 col-sm-6">
-                                                            <div class="item-all-card text-dark text-center" style="height:160px!important;">
-                                                                <a href="<?= base_url('class-routine') ?>"></a>
-                                                                <div class="iteam-all-icon">
-                                                                    <img src="images/calendar.png" alt="" width="57px" height="57px">
-                                                                </div>
-                                                                <div class="item-all-text mt-3">
-                                                                    <h5 class="mb-0">ক্লাস রুটিন</h5>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-3 col-md-4 col-sm-6">
-                                                            <div class="item-all-card text-dark text-center" style="height:160px!important;">
-                                                                <a href="<?= base_url('exam-routine') ?>"></a>
-                                                                <div class="iteam-all-icon">
-                                                                    <img src="images/work-schedule.png" alt="" width="57px" height="57px">
-                                                                </div>
-                                                                <div class="item-all-text mt-3">
-                                                                    <h5 class="mb-0">পরীক্ষার রুটিন</h5>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-3 col-md-4 col-sm-6">
-                                                            <div class="item-all-card text-dark text-center" style="height:160px!important;">
-                                                                <a href="<?= base_url('page/picture') ?>"></a>
-                                                                <div class="iteam-all-icon">
-                                                                    <img src="images/image-gallery.png" alt="" width="57px" height="57px">
-                                                                </div>
-                                                                <div class="item-all-text mt-3">
-                                                                    <h5 class="mb-0">ফটো গ্যালারী</h5>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                        <?php if (!empty($content) && current_url() !== base_url()) { ?>
+                                            <!-- Left Sidebar -->
+                                            <?php
+                                            $academic_message = $this->db->get('academic_messages')->result();
+                                            foreach ($academic_message as $msg) :
+                                            ?>
+                                                <div class="card mt-2">
+                                                    <div class="card-header">
+                                                        <h3><?= $msg->title ?></h3>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <img src="<?= $msg->image ?>" style="width:35%; height:auto; float:left; margin-right:5px; border:1px solid #999">
+                                                        <p><?= $msg->name ?></p>
+                                                        <p>ফোন <?= $msg->phone ?></p>
+                                                        <p>ইমেইল <?= $msg->email ?></p>
 
                                                     </div>
+                                                    <div class="card-footer">
+                                                        <a href="<?= base_url('academic-message/' . $msg->id) ?>"><?= $msg->title ?></a>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </section>
+                                            <?php endforeach; ?>
+                                        <?php } ?>
                                     </div>
                                 </div>
+                                <?php if (empty($content) || current_url() == base_url()) { ?>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <section class="sptb bg-white">
+                                                <div class="container-fluid">
+                                                    <div class="section-title center-block text-center">
+                                                        <h2>সকল ই-সেবা</h2>
+                                                        <span class="sectiontitle-design"><span class="icons"></span></span>
+                                                    </div>
+                                                    <div class="item-all-cat center-block text-center education-categories">
+                                                        <div class="row">
+                                                            <div class="col-lg-3 col-md-4 col-sm-6">
+                                                                <div class="item-all-card text-dark text-center" style="height:160px!important;">
+                                                                    <a href="<?= base_url('/online_admission') ?>"></a>
+                                                                    <div class="iteam-all-icon">
+                                                                        <img src="images/documents.png" alt="" width="57px" height="57px">
+                                                                    </div>
+                                                                    <div class="item-all-text mt-3">
+                                                                        <h5 class="mb-0">ভর্তি ফরম</h5>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3 col-md-4 col-sm-6">
+                                                                <div class="item-all-card text-dark text-center" style="height:160px!important;">
+                                                                    <a href="<?= base_url('page/admission-rules') ?>"></a>
+                                                                    <div class="iteam-all-icon">
+                                                                        <img src="images/rules.png" alt="" width="57px" height="57px">
+                                                                    </div>
+                                                                    <div class="item-all-text mt-3">
+                                                                        <h5 class="mb-0">ভর্তির নিয়মাবলি</h5>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3 col-md-4 col-sm-6">
+                                                                <div class="item-all-card text-dark text-center" style="height:160px!important;">
+                                                                    <a href="<?= base_url('page/teaching-permission-and-recognition') ?>"></a>
+                                                                    <div class="iteam-all-icon">
+                                                                        <img src="images/permission.png" alt="" width="57px" height="57px">
+                                                                    </div>
+                                                                    <div class="item-all-text mt-3">
+                                                                        <h5 class="mb-0">পাঠদানের অনুমতি ও স্বীকৃতি</h5>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3 col-md-4 col-sm-6">
+                                                                <div class="item-all-card text-dark text-center" style="height:160px!important;">
+                                                                    <a href="<?= base_url('exam-results') ?>"></a>
+                                                                    <div class="iteam-all-icon">
+                                                                        <img src="images/exam-results.png" alt="" width="57px" height="57px">
+                                                                    </div>
+                                                                    <div class="item-all-text mt-3">
+                                                                        <h5 class="mb-0">ফলাফল</h5>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3 col-md-4 col-sm-6">
+                                                                <div class="item-all-card text-dark text-center" style="height:160px!important;">
+                                                                    <a href="<?= base_url('student-list') ?>"></a>
+                                                                    <div class="iteam-all-icon">
+                                                                        <img src="images/personal-information.png" alt="" width="57px" height="57px">
+                                                                    </div>
+                                                                    <div class="item-all-text mt-3">
+                                                                        <h5 class="mb-0">শিক্ষার্থীর তথ্য</h5>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3 col-md-4 col-sm-6">
+                                                                <div class="item-all-card text-dark text-center" style="height:160px!important;">
+                                                                    <a href="<?= base_url('teacher-stuff-list') ?>"></a>
+                                                                    <div class="iteam-all-icon">
+                                                                        <img src="images/information.png" alt="" width="57px" height="57px">
+                                                                    </div>
+                                                                    <div class="item-all-text mt-3">
+                                                                        <h5 class="mb-0">শিক্ষক-কর্মচারীর তথ্য</h5>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3 col-md-4 col-sm-6">
+                                                                <div class="item-all-card text-dark text-center" style="height:160px!important;">
+                                                                    <a href="<?= base_url('library') ?>"></a>
+                                                                    <div class="iteam-all-icon">
+                                                                        <img src="images/library.png" alt="" width="57px" height="57px">
+                                                                    </div>
+                                                                    <div class="item-all-text mt-3">
+                                                                        <h5 class="mb-0">পাঠাগার</h5>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3 col-md-4 col-sm-6">
+                                                                <div class="item-all-card text-dark text-center" style="height:160px!important;">
+                                                                    <a href="#"></a>
+                                                                    <div class="iteam-all-icon">
+                                                                        <img src="images/group.png" alt="" width="57px" height="57px">
+                                                                    </div>
+                                                                    <div class="item-all-text mt-3">
+                                                                        <h5 class="mb-0">পরিচালনা কমিটির তথ্য</h5>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3 col-md-4 col-sm-6">
+                                                                <div class="item-all-card text-dark text-center" style="height:160px!important;">
+                                                                    <a href="<?= base_url('page/academic-information') ?>"></a>
+                                                                    <div class="iteam-all-icon">
+                                                                        <img src="images/company.png" alt="" width="57px" height="57px">
+                                                                    </div>
+                                                                    <div class="item-all-text mt-3">
+                                                                        <h5 class="mb-0">একাডেমিক তথ্য</h5>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3 col-md-4 col-sm-6">
+                                                                <div class="item-all-card text-dark text-center" style="height:160px!important;">
+                                                                    <a href="<?= base_url('class-routine') ?>"></a>
+                                                                    <div class="iteam-all-icon">
+                                                                        <img src="images/calendar.png" alt="" width="57px" height="57px">
+                                                                    </div>
+                                                                    <div class="item-all-text mt-3">
+                                                                        <h5 class="mb-0">ক্লাস রুটিন</h5>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3 col-md-4 col-sm-6">
+                                                                <div class="item-all-card text-dark text-center" style="height:160px!important;">
+                                                                    <a href="<?= base_url('exam-routine') ?>"></a>
+                                                                    <div class="iteam-all-icon">
+                                                                        <img src="images/work-schedule.png" alt="" width="57px" height="57px">
+                                                                    </div>
+                                                                    <div class="item-all-text mt-3">
+                                                                        <h5 class="mb-0">পরীক্ষার রুটিন</h5>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3 col-md-4 col-sm-6">
+                                                                <div class="item-all-card text-dark text-center" style="height:160px!important;">
+                                                                    <a href="<?= base_url('page/picture') ?>"></a>
+                                                                    <div class="iteam-all-icon">
+                                                                        <img src="images/image-gallery.png" alt="" width="57px" height="57px">
+                                                                    </div>
+                                                                    <div class="item-all-text mt-3">
+                                                                        <h5 class="mb-0">ফটো গ্যালারী</h5>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+                                    </div>
+                                <?php } ?>
                             </div>
 
                         </div>
-                        <div class="row">
-                            <div class="col-sm-8">
-                                <div class="row">
-                                    <div class="col-sm-12">
+                        <?php if (empty($content) || current_url() == base_url()) { ?>
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h2>
+                                                        বিদ্যালয় পরিচিতি
+
+                                                    </h2>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <img src="<?= base_url($school_setting->institute_image) ?> " style="margin-top:60px" class="img-fluid">
+                                                        </div>
+                                                        <div class="col-sm-8">
+                                                            <h3><?= $school_setting->name ?> আপনাকে স্বাগতম</h3>
+                                                            <blockquote>
+                                                                <?= $school_setting->inst_details ?>
+                                                            </blockquote>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <iframe src="<?= $front_setting->google_map ?>" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <?php
+                                $blogCategory = $this->db->get('blogCategory')->result();
+                                foreach ($blogCategory as $category) :
+                                    $blogs = $this->db->where('category_id', $category->id)->order_by('id', 'ASC')->limit(5)->get('blog')->result();
+                                ?>
+                                    <div class="col-lg-3">
                                         <div class="card">
                                             <div class="card-header">
-                                                <h2>
-                                                    বিদ্যালয় পরিচিতি
-
-                                                </h2>
+                                                <h3 class="card-title"><?= $category->name ?></h3>
                                             </div>
-                                            <div class="card-body">
-                                                <div class="row">
-                                                    <div class="col-sm-4">
-                                                        <img src="<?= base_url($school_setting->institute_image) ?> " style="margin-top:60px" class="img-fluid">
-                                                    </div>
-                                                    <div class="col-sm-8">
-                                                        <h3><?= $school_setting->name ?> আপনাকে স্বাগতম</h3>
-                                                        <blockquote>
-                                                            <?= $school_setting->inst_details ?>
-                                                        </blockquote>
-                                                    </div>
-                                                </div>
+                                            <div class="card-body pb-4">
+                                                <ul class="vertical-scroll" style="overflow-y: hidden; height: 448px;">
+                                                    <?php foreach ($blogs as $blog) :
+                                                        $words = explode(' ', $blog->title);
+                                                        $shortened_title = implode(' ', array_slice($words, 0, 4));
+                                                        if (count($words) > 4) {
+                                                            $shortened_title .= '...';
+                                                        }
+                                                    ?>
+                                                        <li class="item">
+                                                            <div class="p-3">
+                                                                <div class="mb-2"><a href="<?= base_url('blog/' . $blog->id) ?>"><span class="fs-16"><?= $shortened_title; ?>
+                                                                        </span></a></div>
+                                                                <span class="badge badge-blue  f-12"><i class="fa fa-calender"></i> <?= date('Y-m-d', strtotime($blog->created_at)) ?></span>
+                                                            </div>
+                                                        </li>
+                                                    <?php endforeach; ?>
+
+                                                </ul>
+                                            </div>
+                                            <div class="card-footer">
+                                                <a href="<?= base_url('blog-list/' . $category->id) ?>">আরো দেখুন &gt;&gt;</a>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                <?php endforeach; ?>
                             </div>
-                            <div class="col-sm-4">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <iframe src="<?= $front_setting->google_map ?>" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <?php
-                            $blogCategory = $this->db->get('blogCategory')->result();
-                            foreach ($blogCategory as $category) :
-                                $blogs = $this->db->where('category_id', $category->id)->order_by('id', 'ASC')->limit(5)->get('blog')->result();
-                            ?>
-                                <div class="col-lg-3">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h3 class="card-title"><?= $category->name ?></h3>
-                                        </div>
-                                        <div class="card-body pb-4">
-                                            <ul class="vertical-scroll" style="overflow-y: hidden; height: 448px;">
-                                                <?php foreach ($blogs as $blog) :
-                                                    $words = explode(' ', $blog->title);
-                                                    $shortened_title = implode(' ', array_slice($words, 0, 4));
-                                                    if (count($words) > 4) {
-                                                        $shortened_title .= '...';
-                                                    }
-                                                ?>
-                                                    <li class="item">
-                                                        <div class="p-3">
-                                                            <div class="mb-2"><a href="<?= base_url('blog/' . $blog->id) ?>"><span class="fs-16"><?= $shortened_title; ?>
-                                                                    </span></a></div>
-                                                            <span class="badge badge-blue  f-12"><i class="fa fa-calender"></i> <?= date('Y-m-d', strtotime($blog->created_at)) ?></span>
-                                                        </div>
-                                                    </li>
-                                                <?php endforeach; ?>
-
-                                            </ul>
-                                        </div>
-                                        <div class="card-footer">
-                                            <a href="<?= base_url('blog-list/' . $category->id) ?>">আরো দেখুন &gt;&gt;</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
-                        </div>
+                        <?php } ?>
                     </div>
                 </main>
                 <?php echo $footer; ?>
