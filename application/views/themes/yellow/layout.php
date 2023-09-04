@@ -286,7 +286,7 @@
                                                 <div class="card-body">
                                                     <div class="row">
                                                         <div class="col-sm-4">
-                                                            <img src="<?= $school_setting->institute_image ?> " style="margin-top:60px" class="img-fluid">
+                                                            <img src="<?= base_url($school_setting->institute_image) ?> " style="margin-top:60px" class="img-fluid">
                                                         </div>
                                                         <div class="col-sm-8">
                                                             <h3><?= $school_setting->name ?> আপনাকে স্বাগতম</h3>
