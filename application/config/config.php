@@ -28,7 +28,7 @@ function get_base_url()
 {
   $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
   $domain = $_SERVER['HTTP_HOST'];
-  $subdirectory = '/smart_school_src/'; // If your CodeIgniter app is in a subdirectory, specify it here
+  $subdirectory = '/ims-backend/'; // If your CodeIgniter app is in a subdirectory, specify it here
 
   return $protocol . $domain . $subdirectory;
 }

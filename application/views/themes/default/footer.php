@@ -5,7 +5,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-4 col-sm-6">
-                            <h3 class="fo-title">গুরুত্বপুর্ণ অয়েবসাইটের লিঙ্ক</h3>
+                            <h3 class="fo-title">গুরুত্বপুর্ণ ওয়েবসাইটের লিঙ্ক</h3>
                             <ul class="f1-list">
                                 <?php
                                 foreach ($footer_menus as $footer_menu_key => $footer_menu_value) {
