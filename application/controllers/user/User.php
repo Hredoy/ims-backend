@@ -14,7 +14,7 @@ class User extends Student_Controller
 
     public function __construct()
     {
-        parent::__construct();
+        parent::__construct();;
         $this->payment_method     = $this->paymentsetting_model->getActiveMethod();
         $this->sch_setting_detail = $this->setting_model->getSetting();
         $this->load->model("student_edit_field_model");
@@ -70,13 +70,11 @@ class User extends Student_Controller
 
     public function dashboard()
     {
-
         $this->session->set_userdata('top_menu', 'Dashboard');
         $student_id            = $this->customlib->getStudentSessionUserID();
         $student_current_class = $this->customlib->getStudentCurrentClsSection();
 
         $student = $this->student_model->getStudentByClassSectionID($student_current_class->class_id, $student_current_class->section_id, $student_id);
-
         $data = array();
         if (!empty($student)) {
 

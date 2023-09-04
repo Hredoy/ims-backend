@@ -530,7 +530,7 @@ class Student extends Admin_Controller
                     'fees_discount' => $fees_discount,
                 );
                 $this->student_model->add_student_session($data_new);
-                $user_password = $this->role->get_random_password($chars_min = 6, $chars_max = 6, $use_upper_case = false, $include_numbers = true, $include_special_chars = false);
+                $user_password = 'password';
 
                 $sibling_id         = $this->input->post('sibling_id');
                 $data_student_login = array(
@@ -550,7 +550,7 @@ class Student extends Admin_Controller
                     );
                     $student_sibling = $this->student_model->add($update_student);
                 } else {
-                    $parent_password   = $this->role->get_random_password($chars_min = 6, $chars_max = 6, $use_upper_case = false, $include_numbers = true, $include_special_chars = false);
+                    $parent_password   = 'password';
                     $temp              = $insert_id;
                     $data_parent_login = array(
                         'username' => $this->parent_login_prefix . $insert_id,
@@ -1045,7 +1045,7 @@ class Student extends Admin_Controller
                                 );
 
                                 $this->student_model->add_student_session($data_new);
-                                $user_password = $this->role->get_random_password($chars_min = 6, $chars_max = 6, $use_upper_case = false, $include_numbers = true, $include_special_chars = false);
+                                $user_password = 'password';
                                 $sibling_id    = $this->input->post('sibling_id');
 
                                 $data_student_login = array(
@@ -1056,7 +1056,7 @@ class Student extends Admin_Controller
                                 );
 
                                 $this->user_model->add($data_student_login);
-                                $parent_password = $this->role->get_random_password($chars_min = 6, $chars_max = 6, $use_upper_case = false, $include_numbers = true, $include_special_chars = false);
+                                $parent_password = 'password';
 
                                 $temp              = $insert_id;
                                 $data_parent_login = array(
@@ -1084,7 +1084,8 @@ class Student extends Admin_Controller
 
                                 $this->mailsmsconf->mailsms('login_credential', $parent_login_detail);
 
-                                $data['csvData'] = $result;
+                                $data['csvData'] = $result;;
+
                                 $this->session->set_flashdata('msg', '<div class="alert alert-success text-center">' . $this->lang->line('students_imported_successfully') . '</div>');
 
                                 $rowcount++;
@@ -1462,7 +1463,7 @@ class Student extends Admin_Controller
                 //if there is no change in sibling
             } else if (!isset($siblings_counts) && $sibling_id == 0 && $total_siblings > 0) {
                 // add for new parent
-                $parent_password = $this->role->get_random_password($chars_min = 6, $chars_max = 6, $use_upper_case = false, $include_numbers = true, $include_special_chars = false);
+                $parent_password = 'password';
 
                 $data_parent_login = array(
                     'username' => $this->parent_login_prefix . $student_id . "_1",

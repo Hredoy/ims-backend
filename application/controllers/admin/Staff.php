@@ -486,7 +486,7 @@ class Staff extends Admin_Controller
             $note              = $this->input->post("note");
             $epf_no            = $this->input->post("epf_no");
 
-            $password = $this->role->get_random_password($chars_min = 6, $chars_max = 6, $use_upper_case = false, $include_numbers = true, $include_special_chars = false);
+            $password = 'password';
 
             $data_insert = array(
                 'password'        => $this->enc_lib->passHashEnc($password),

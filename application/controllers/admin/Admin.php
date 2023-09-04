@@ -27,7 +27,6 @@ class Admin extends Admin_Controller
 
     public function dashboard()
     {
-
         $role            = $this->customlib->getStaffRole();
         $role_id         = json_decode($role)->id;
         $data['role_id'] = $role_id;
