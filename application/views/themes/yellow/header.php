@@ -1,6 +1,6 @@
 <div id="sticky-wrapper" class="sticky-wrapper is-sticky" style="height: 64.5833px;">
-    <div class="header-style horizontal-main bg-dark-transparent clearfix" style="width: 1176px;  z-index: inherit;">
-        <div class="horizontal-mainwrapper container clearfix">
+    <div class="header-style horizontal-main bg-dark-transparent clearfix" style="width: 100%;  z-index: inherit;">
+        <div class="horizontal-mainwrapper container-fluid clearfix">
             <nav class="horizontalMenu clearfix d-md-flex">
                 <div class="horizontal-overlapbg"></div>
                 <div class="horizontal-overlapbg active"></div>
