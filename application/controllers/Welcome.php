@@ -21,7 +21,10 @@ class Welcome extends Front_Controller
         $this->perPage                = 12;
         $ban_notice_type              = $this->config->item('ci_front_notice_content');
         $this->sch_setting_detail     = $this->setting_model->getSetting();
+
         $this->data['banner_notices'] = $this->cms_program_model->getByCategory($ban_notice_type, array('start' => 0, 'limit' => 5));
+        $this->load->model(array('batchsubject_model', 'examgroup_model', 'exam_model', 'customfield_model', 'feecategory_model', 'subjecttimetable_model', 'staff_model', 'examsubject_model', 'examgroupstudent_model', 'feereminder_model', 'filetype_model', 'session_model', 'marksheet_model'));
+        $this->exam_type = $this->config->item('exam_type');
     }
 
     public function show_404()
@@ -356,10 +359,16 @@ class Welcome extends Front_Controller
 
     public function notice($id)
     {
-        $this->data['page_side_bar']  = false;
         $data = $this->db->get_where('send_notification', ['id' => $id])->row_array();
         $this->data['data'] = $data;
-        $this->data['page'] = "Notice";
+
+        $this->data['page']['title'] =  $data['title'];
+        $this->data['page']['meta_title'] =  $data['title'];
+        $this->data['page']['meta_keyword'] =   $data['title'];
+        $this->data['page']['meta_description'] =    $data['title'];
+        $this->data['sch_setting'] = $this->sch_setting_detail;
+        $this->data['active_menu']   = 'home';
+        $this->data['page_side_bar']  = false;
         $this->load_theme('pages/noticeView');
     }
 
@@ -367,9 +376,15 @@ class Welcome extends Front_Controller
     {
         $data = $this->db->get('send_notification')->result();
 
-        $this->data['page_side_bar']  = false;
         $this->data['datas'] = $data;
-        $this->data['page'] = "notice";
+        $this->data['page']['title'] =  'All Notices';
+        $this->data['page']['meta_title'] = "All Notices";
+        $this->data['page']['meta_keyword'] =  "All Notices";
+        $this->data['page']['meta_description'] =  "All Notices";
+        $this->data['sch_setting'] = $this->sch_setting_detail;
+        $this->data['active_menu']   = 'home';
+        $this->data['page_side_bar']  = false;
+
         $this->load_theme('pages/noticeList');
     }
 
@@ -378,8 +393,14 @@ class Welcome extends Front_Controller
         $this->data['category'] = $this->db->get_where('blogCategory', ['id' => $id])->row();
         $this->data['posts'] = $this->db->get_where('blog', ['category_id' => $id])->result();
 
+        $this->data['page']['title'] =  $this->data['category']->name;
+        $this->data['page']['meta_title'] =$this->data['category']->name;
+        $this->data['page']['meta_keyword'] =  $this->data['category']->name;
+        $this->data['page']['meta_description'] =  $this->data['category']->name;
+        $this->data['sch_setting'] = $this->sch_setting_detail;
+        $this->data['active_menu']   = 'home';
         $this->data['page_side_bar']  = false;
-        $this->data['page'] = "notice";
+
         $this->load_theme('pages/blogList');
     }
 
@@ -390,8 +411,15 @@ class Welcome extends Front_Controller
         $this->db->join('blogCategory', 'blogCategory.id = blog.category_id', 'inner');
         $this->db->where('blog.id', $id);
         $this->data['posts']  = $this->db->get('blog')->row();
-        $this->data['page_side_bar']  = false;
-        $this->data['page'] = "notice";
+
+        $this->data['page']['title'] = $this->data['posts']->title;
+        $this->data['page']['meta_title'] = $this->data['posts']->title;
+        $this->data['page']['meta_keyword'] = $this->data['posts']->title;
+        $this->data['page']['meta_description'] = $this->data['posts']->title;
+        $this->data['sch_setting'] = $this->sch_setting_detail;
+        $this->data['active_menu'] = 'home';
+        $this->data['page_side_bar'] = false;
+
         $this->load_theme('pages/blog');
     }
 
@@ -399,8 +427,293 @@ class Welcome extends Front_Controller
     {
         $this->db->where('id', $id);
         $this->data['msg']  = $this->db->get('academic_messages')->row();
+
+        $this->data['page']['title'] =  $this->data['msg']->title;
+        $this->data['page']['meta_title'] =$this->data['msg']->title;
+        $this->data['page']['meta_keyword'] =  $this->data['msg']->title;
+        $this->data['page']['meta_description'] =  $this->data['msg']->title;
+        $this->data['sch_setting'] = $this->sch_setting_detail;
+        $this->data['active_menu']   = 'home';
         $this->data['page_side_bar']  = false;
-        $this->data['page'] = "notice";
+
         $this->load_theme('pages/academicMessage');
+    }
+    public function examResult()
+    {
+
+        $examgroup_result = $this->examgroup_model->get();
+        $this->data['examgrouplist'] = $examgroup_result;
+
+        $marksheet_result = $this->marksheet_model->get();
+        $this->data['marksheetlist'] = $marksheet_result;
+
+        $class = $this->class_model->get();
+        $this->data['title'] = 'Add Batch';
+        $this->data['title_list'] = 'Recent Batch';
+        $this->data['examType'] = $this->exam_type;
+        $this->data['classlist'] = $class;
+        $session = $this->session_model->get();
+        $this->data['sessionlist'] = $session;
+        $this->form_validation->set_rules('class_id', $this->lang->line('class'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('section_id', $this->lang->line('section'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('session_id', $this->lang->line('session'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('exam_group_id', $this->lang->line('exam') . " " . $this->lang->line('group'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('exam_id', $this->lang->line('exam'), 'trim|required|xss_clean');
+
+        if ($this->form_validation->run() == false) {
+
+        } else {
+            $exam_group_id = $this->input->post('exam_group_id');
+            $exam_id = $this->input->post('exam_id');
+            $session_id = $this->input->post('session_id');
+            $class_id = $this->input->post('class_id');
+            $section_id = $this->input->post('section_id');
+
+            $marksheet_template = $this->input->post('marksheet');
+            $this->data['marksheet_template'] = $marksheet_template;
+            $exam_details = $this->examgroup_model->getExamByID($exam_id);
+
+            $studentList = $this->examgroupstudent_model->searchExamStudents($exam_group_id, $exam_id, $class_id, $section_id, $session_id);
+
+            $exam_subjects = $this->batchsubject_model->getExamSubjects($exam_id);
+            $this->data['subjectList'] = $exam_subjects;
+
+            if (!empty($studentList)) {
+                foreach ($studentList as $student_key => $student_value) {
+                    $studentList[$student_key]->subject_results = $this->examresult_model->getStudentResultByExam($exam_id, $student_value->exam_group_class_batch_exam_student_id);
+                }
+            }
+
+            $this->data['studentList'] = $studentList;
+
+            $exam_grades = $this->grade_model->getByExamType($exam_details->exam_group_type);
+            $this->data['exam_grades'] = $exam_grades;
+            $this->data['exam_details'] = $exam_details;
+            $this->data['exam_id'] = $exam_id;
+            $this->data['exam_group_id'] = $exam_group_id;
+        }
+        $this->data['sch_setting'] = $this->sch_setting_detail;
+
+        $this->data['page']['title'] =  'online exam result';
+        $this->data['page']['meta_title'] =  'online exam result';
+        $this->data['page']['meta_keyword'] =  'online exam result';
+        $this->data['page']['meta_description'] =  'online exam result';
+        $this->data['active_menu']   = 'home';
+        $this->data['page_side_bar']  = false;
+
+
+        $this->load_theme('pages/exam-result');
+    }
+
+    public function examRoutine()
+    {
+
+        $examgroup_result = $this->examgroup_model->get();
+        $this->data['examgrouplist'] = $examgroup_result;
+
+        $this->form_validation->set_rules('exam_group_id', $this->lang->line('exam') . " " . $this->lang->line('group'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('exam_id', $this->lang->line('exam'), 'trim|required|xss_clean');
+        if ($this->form_validation->run() == false) {
+
+        } else {
+
+            $id = $_POST['exam_id'];
+            $this->data['examgroupDetail'] = $this->examgroup_model->getExamByID($id);
+
+            $this->data['exam_subjects'] = $this->batchsubject_model->getExamSubjects($id);
+
+            $class = $this->class_model->get();
+            $this->data['classlist'] = $class;
+            $session = $this->session_model->get();
+            $this->data['sessionlist'] = $session;
+            $this->data['current_session'] = $this->setting_model->getCurrentSession();
+        }
+
+
+        $this->data['page']['title'] =  'exam routine';
+        $this->data['page']['meta_title'] =  'exam routine';
+        $this->data['page']['meta_keyword'] =  'exam routine';
+        $this->data['page']['meta_description'] =  'exam routine';
+        $this->data['sch_setting'] = $this->sch_setting_detail;
+        $this->data['active_menu']   = 'home';
+        $this->data['page_side_bar']  = false;
+
+
+        $this->load_theme('pages/exam-routine');
+    }
+
+    public function classRoutine()
+    {
+        $this->data['subject_id'] = "";
+        $this->data['class_id']   = "";
+        $this->data['section_id'] = "";
+        $exam               = $this->exam_model->get();
+        $class              = $this->class_model->get('', $classteacher = 'yes');
+        $this->data['examlist']   = $exam;
+        $this->data['classlist']  = $class;
+        $staff                   = $this->staff_model->getStaffbyrole(2);
+        $this->data['staff']           = $staff;
+        $this->data['subject']         = array();
+        $feecategory             = $this->feecategory_model->get();
+        $this->data['feecategorylist'] = $feecategory;
+        $this->form_validation->set_rules('class_id', $this->lang->line('class'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('section_id', $this->lang->line('section'), 'trim|required|xss_clean');
+
+        if ($this->form_validation->run() == true) {
+            if (isset($_POST['search'])) {
+
+                $class_id    = $this->input->post('class_id');
+                $section_id  = $this->input->post('section_id');
+                $days        = $this->customlib->getDaysname();
+                $days_record = array();
+                foreach ($days as $day_key => $day_value) {
+                    $class_id              = $this->input->post('class_id');
+                    $section_id            = $this->input->post('section_id');
+                    $days_record[$day_key] = $this->subjecttimetable_model->getSubjectByClassandSectionDay($class_id, $section_id, $day_key);
+                }
+
+                $this->data['timetable'] = $days_record;
+            }
+        }
+
+
+        $this->data['page']['title'] =  'class routine';
+        $this->data['page']['meta_title'] =  'class routine';
+        $this->data['page']['meta_keyword'] =  'class routine';
+        $this->data['page']['meta_description'] =  'class routine';
+        $this->data['sch_setting'] = $this->sch_setting_detail;
+        $this->data['active_menu']   = 'home';
+        $this->data['page_side_bar']  = false;
+
+
+        $this->load_theme('pages/class-routine');
+    }
+
+    public function library()
+    {
+        $listbook = $this->book_model->bookgetall();
+        $this->data['listbook'] = $listbook;
+
+        $this->data['page']['title'] =  'library';
+        $this->data['page']['meta_title'] =  'library';
+        $this->data['page']['meta_keyword'] =  'library';
+        $this->data['page']['meta_description'] =  'library';
+        $this->data['sch_setting'] = $this->sch_setting_detail;
+        $this->data['active_menu']   = 'home';
+        $this->data['page_side_bar']  = false;
+
+
+        $this->load_theme('pages/library');
+    }
+    public function studentList()
+    {
+        $this->data['title']           = 'Student Search';
+        $this->data['adm_auto_insert'] = $this->sch_setting_detail->adm_auto_insert;
+        $this->data['sch_setting']     = $this->sch_setting_detail;
+        $this->data['fields']          = $this->customfield_model->get_custom_fields('students', 1);
+        $class                   = $this->class_model->get();
+        $this->data['classlist']       = $class;
+
+        $userdata = $this->customlib->getUserData();
+        $carray   = array();
+
+        if (!empty($this->data["classlist"])) {
+            foreach ($this->data["classlist"] as $ckey => $cvalue) {
+
+                $carray[] = $cvalue["id"];
+            }
+        }
+
+        $button = $this->input->post('search');
+        if ($this->input->server('REQUEST_METHOD') != "GET") {
+            $class = $this->input->post('class_id');
+            $section = $this->input->post('section_id');
+            $search = $this->input->post('search');
+            $search_text = $this->input->post('search_text');
+            if (isset($search)) {
+                if ($search == 'search_filter') {
+                    $this->form_validation->set_rules('class_id', $this->lang->line('class'), 'trim|required|xss_clean');
+                    if ($this->form_validation->run() == false) {
+
+                    } else {
+                        $this->data['searchby'] = "filter";
+                        $this->data['class_id'] = $this->input->post('class_id');
+                        $this->data['section_id'] = $this->input->post('section_id');
+                        $this->data['search_text'] = $this->input->post('search_text');
+                        $resultlist = $this->student_model->searchByClassSection($class, $section);
+                        $this->data['resultlist'] = $resultlist;
+                        $title = $this->classsection_model->getDetailbyClassSection($this->data['class_id'], $this->data['section_id']);
+                        $this->data['title'] = 'Student Details for ' . $title['class'] . "(" . $title['section'] . ")";
+                    }
+                } else if ($search == 'search_full') {
+                    $this->data['searchby'] = "text";
+
+                    $this->data['search_text'] = trim($this->input->post('search_text'));
+                    $resultlist = $this->student_model->searchFullText($search_text, $carray);
+                    $this->data['resultlist'] = $resultlist;
+                    $this->data['title'] = 'Search Details: ' . $this->data['search_text'];
+                }
+            }
+        }
+
+        $this->data['page']['title'] =  'student list';
+        $this->data['page']['meta_title'] =  'student list';
+        $this->data['page']['meta_keyword'] =  'student list';
+        $this->data['page']['meta_description'] =  'student list';
+        $this->data['sch_setting'] = $this->sch_setting_detail;
+        $this->data['active_menu']   = 'home';
+        $this->data['page_side_bar']  = false;
+
+
+        $this->load_theme('pages/student-list');
+    }
+    public function teacherList()
+    {
+        $data['title']  = 'Staff Search';
+        $this->data['fields'] = $this->customfield_model->get_custom_fields('staff', 1);
+        $this->session->set_userdata('top_menu', 'HR');
+        $this->session->set_userdata('sub_menu', 'HR/staff');
+        $search             = $this->input->post("search");
+        $resultlist         = $this->staff_model->searchFullText("", 1);
+        $this->data['resultlist'] = $resultlist;
+        $staffRole          = $this->staff_model->getStaffRole();
+        $this->data["role"]       = $staffRole;
+        $this->data["role_id"]    = "";
+        $search_text        = $this->input->post('search_text');
+        if (isset($search)) {
+            if ($search == 'search_filter') {
+                $this->form_validation->set_rules('role', $this->lang->line('role'), 'trim|required|xss_clean');
+                if ($this->form_validation->run() == false) {
+
+                    $this->data["resultlist"] = array();
+                } else {
+                    $this->data['searchby']    = "filter";
+                    $role                = $this->input->post('role');
+                    $this->data['employee_id'] = $this->input->post('empid');
+                    $this->data["role_id"]     = $role;
+                    $this->data['search_text'] = $this->input->post('search_text');
+                    $resultlist          = $this->staff_model->getEmployee($role, 1);
+                    $this->data['resultlist']  = $resultlist;
+                }
+            } else if ($search == 'search_full') {
+                $this->data['searchby']    = "text";
+                $this->data['search_text'] = trim($this->input->post('search_text'));
+                $resultlist          = $this->staff_model->searchFullText($search_text, 1);
+
+                $this->data['resultlist'] = $resultlist;
+                $this->data['title']      = 'Search Details: ' . $data['search_text'];
+            }
+        }
+
+        $this->data['page']['title'] =  'library';
+        $this->data['page']['meta_title'] =  'library';
+        $this->data['page']['meta_keyword'] =  'library';
+        $this->data['page']['meta_description'] =  'library';
+        $this->data['sch_setting'] = $this->sch_setting_detail;
+        $this->data['active_menu']   = 'home';
+        $this->data['page_side_bar']  = false;
+
+
+        $this->load_theme('pages/teacher-list');
     }
 }

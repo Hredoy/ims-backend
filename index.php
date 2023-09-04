@@ -60,10 +60,10 @@
 	ini_set('post_max_size', '128M');
 	ini_set('file_uploads', 'On');
 	ini_set('file_uploads', 'On');
- 
 
-	define('ENVIRONMENT', 'production');
-	
+
+	define('ENVIRONMENT', 'development');
+
 	
 	if( ! ini_get('date.timezone') )
 	{

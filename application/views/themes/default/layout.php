@@ -10,6 +10,13 @@
     <meta name="description" content="<?php echo $page['meta_description']; ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="<?php echo base_url($front_setting->fav_icon); ?>" type="image/x-icon">
+    <!--print table-->
+    <link href="<?php echo base_url(); ?>backend/dist/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="<?php echo base_url(); ?>backend/dist/datatables/css/buttons.dataTables.min.css" rel="stylesheet">
+    <link href="<?php echo base_url(); ?>backend/dist/datatables/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <!--print table mobile support-->
+    <link href="<?php echo base_url(); ?>backend/dist/datatables/css/responsive.dataTables.min.css" rel="stylesheet">
+    <link href="<?php echo base_url(); ?>backend/dist/datatables/css/rowReorder.dataTables.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <link rel="stylesheet" href="<?php echo base_url() . 'frontend/'; ?>css/lightbox.css">
@@ -18,6 +25,7 @@
     <link rel="stylesheet" href="<?php echo base_url() . 'frontend/'; ?>css/color6.css">
     <link rel="stylesheet" href="<?php echo base_url() . 'frontend/'; ?>css/skin-modes.css">
     <link rel="stylesheet" href="<?php echo $base_assets_url; ?>datepicker/bootstrap-datepicker3.css" />
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <style>
         @import url('https://fonts.maateen.me/kalpurush/font.css');
 
@@ -193,7 +201,7 @@
                                                         </div>
                                                         <div class="col-lg-3 col-md-4 col-sm-6">
                                                             <div class="item-all-card text-dark text-center" style="height:160px!important;">
-                                                                <a href="<?= base_url('online_admission') ?>"></a>
+                                                                <a href="<?= base_url('exam-results') ?>"></a>
                                                                 <div class="iteam-all-icon">
                                                                     <img src="images/exam-results.png" alt="" width="57px" height="57px">
                                                                 </div>
@@ -204,7 +212,7 @@
                                                         </div>
                                                         <div class="col-lg-3 col-md-4 col-sm-6">
                                                             <div class="item-all-card text-dark text-center" style="height:160px!important;">
-                                                                <a href="#"></a>
+                                                                <a href="<?= base_url('student-list') ?>"></a>
                                                                 <div class="iteam-all-icon">
                                                                     <img src="images/personal-information.png" alt="" width="57px" height="57px">
                                                                 </div>
@@ -215,7 +223,7 @@
                                                         </div>
                                                         <div class="col-lg-3 col-md-4 col-sm-6">
                                                             <div class="item-all-card text-dark text-center" style="height:160px!important;">
-                                                                <a href="<?= base_url('page/a-group-of-teachers') ?>"></a>
+                                                                <a href="<?= base_url('teacher-stuff-list') ?>"></a>
                                                                 <div class="iteam-all-icon">
                                                                     <img src="images/information.png" alt="" width="57px" height="57px">
                                                                 </div>
@@ -226,7 +234,7 @@
                                                         </div>
                                                         <div class="col-lg-3 col-md-4 col-sm-6">
                                                             <div class="item-all-card text-dark text-center" style="height:160px!important;">
-                                                                <a href="#"></a>
+                                                                <a href="<?= base_url('library') ?>"></a>
                                                                 <div class="iteam-all-icon">
                                                                     <img src="images/library.png" alt="" width="57px" height="57px">
                                                                 </div>
@@ -259,7 +267,7 @@
                                                         </div>
                                                         <div class="col-lg-3 col-md-4 col-sm-6">
                                                             <div class="item-all-card text-dark text-center" style="height:160px!important;">
-                                                                <a href="#"></a>
+                                                                <a href="<?= base_url('class-routine')?>"></a>
                                                                 <div class="iteam-all-icon">
                                                                     <img src="images/calendar.png" alt="" width="57px" height="57px">
                                                                 </div>
@@ -270,7 +278,7 @@
                                                         </div>
                                                         <div class="col-lg-3 col-md-4 col-sm-6">
                                                             <div class="item-all-card text-dark text-center" style="height:160px!important;">
-                                                                <a href="#"></a>
+                                                                <a href="<?= base_url('exam-routine')?>"></a>
                                                                 <div class="iteam-all-icon">
                                                                     <img src="images/work-schedule.png" alt="" width="57px" height="57px">
                                                                 </div>
@@ -419,7 +427,7 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
     <script src="<?= base_url() . 'frontend/' ?>js/lightbox.js"></script>
 
