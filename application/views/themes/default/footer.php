@@ -78,7 +78,7 @@
                     <div class="row">
 
                         <div class="col-md-12 text-center">
-                            <a target="_blank" href="https://edufics.com/" style="display:inline-block;">
+                            <a target="_blank" href="https://vortexbytz.com/" style="display:inline-block;">
                                 <p style="padding: 0;margin: 0px;font-size: 14px;text-align: center;color: #fff;font-weight: 600;border-bottom: 1px solid white;">
                                     প্রযুক্তিগত সহায়তায়</p>
                                 <img src="<?= base_url() . 'images/footerlogo.png' ?>" style="width:150px; height:auto;">
