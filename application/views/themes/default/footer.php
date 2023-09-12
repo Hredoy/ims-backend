@@ -76,11 +76,14 @@
                         </div><!--./col-md-3-->
                     </div><!--./row-->
                     <div class="row">
-
                         <div class="col-md-12 text-center">
+                            <p style="padding: 0;margin: 0px;font-size: 14px;text-align: center;color: #fff;font-weight: 600;border-bottom: 1px solid white;width: 30%;margin: auto;">
+                                প্রযুক্তিগত সহায়তায়</p>
                             <a target="_blank" href="https://vortexbytz.com/" style="display:inline-block;">
-                                <p style="padding: 0;margin: 0px;font-size: 14px;text-align: center;color: #fff;font-weight: 600;border-bottom: 1px solid white;">
-                                    প্রযুক্তিগত সহায়তায়</p>
+                                <img src="<?= base_url() . 'images/146x44-dark.png' ?>" style="width:150px; height:auto;">
+                            </a>
+                            <span style="font-size: 27px;font-weight: bold;">&</span>
+                            <a target="_blank" href="https://vortexbytz.com/" style="display:inline-block;">
                                 <img src="<?= base_url() . 'images/footerlogo.png' ?>" style="width:150px; height:auto;">
                             </a>
                         </div>
