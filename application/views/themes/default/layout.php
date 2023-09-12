@@ -99,10 +99,10 @@
                                     <div class="top-bar-right">
                                         <ul class="custom mx-2">
                                             <li>
-                                                <a target="_blank" href="<?php echo site_url('site/userlogin') ?>" class="text-dark"><i class="fa fa-university" aria-hidden="true"></i><span class="mx-1">User</span></a>
+                                                <a target="_blank" href="<?php echo site_url('site/userlogin') ?>" class="text-dark"><i class="fa fa-university" aria-hidden="true"></i><span class="mx-1">User Login</span></a>
                                             </li>
                                             <li>
-                                                <a target="_blank" href="<?php echo site_url('site/login') ?>" class="text-dark"><i class="fa fa-university" aria-hidden="true"></i><span class="mx-1">Admin</span></a>
+                                                <a target="_blank" href="<?php echo site_url('site/login') ?>" class="text-dark"><i class="fa fa-university" aria-hidden="true"></i><span class="mx-1">Admin / Teacher Login</span></a>
                                             </li>
                                         </ul>
                                     </div>
@@ -115,13 +115,22 @@
                             <div class="row">
                                 <div class="col-lg-12 col-md-12">
                                     <div class="header-search-logo">
-                                        <a class="header-logo" style="margin-top: -20px;" href="#">
-                                            <img src="<?= base_url($front_setting->logo) ?>" style="height:136px; float:left" alt="">
-                                        </a>
-                                        <h2 style="width:100%;"><?= $school_setting->name ?>
-                                        </h2>
-                                        <h3><?= $school_setting->address ?>
-                                        </h3>
+                                        <div class="row">
+                                            <div class="col-sm-2">
+                                                <a class="header-logo" style="margin-top: -20px;" href="#">
+                                                    <img src="<?= base_url($front_setting->logo) ?>" style="height:136px;" alt="">
+                                                </a>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <h2 style="width:100%;"><?= $school_setting->name ?>
+                                                </h2>
+                                                <h3><?= $school_setting->address ?>
+                                                </h3>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <img src="<?= base_url('images/govt.png') ?>" style="height:136px;" alt="">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -267,7 +276,7 @@
                                                         </div>
                                                         <div class="col-lg-3 col-md-4 col-sm-6">
                                                             <div class="item-all-card text-dark text-center" style="height:160px!important;">
-                                                                <a href="<?= base_url('class-routine')?>"></a>
+                                                                <a href="<?= base_url('class-routine') ?>"></a>
                                                                 <div class="iteam-all-icon">
                                                                     <img src="images/calendar.png" alt="" width="57px" height="57px">
                                                                 </div>
@@ -278,7 +287,7 @@
                                                         </div>
                                                         <div class="col-lg-3 col-md-4 col-sm-6">
                                                             <div class="item-all-card text-dark text-center" style="height:160px!important;">
-                                                                <a href="<?= base_url('exam-routine')?>"></a>
+                                                                <a href="<?= base_url('exam-routine') ?>"></a>
                                                                 <div class="iteam-all-icon">
                                                                     <img src="images/work-schedule.png" alt="" width="57px" height="57px">
                                                                 </div>

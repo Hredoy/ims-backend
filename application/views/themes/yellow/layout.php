@@ -130,7 +130,7 @@
                                             <div class="col-sm-2">
 
 
-                                                <img src="<?= base_url('images/govt.jpg') ?>" style="height:136px;" alt="">
+                                                <img src="<?= base_url('images/govt.png') ?>" style="height:136px;" alt="">
                                             </div>
                                         </div>
                                     </div>
