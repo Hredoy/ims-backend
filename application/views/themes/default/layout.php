@@ -116,20 +116,27 @@
                                 <div class="col-lg-12 col-md-12">
                                     <div class="header-search-logo">
                                         <div class="row">
-                                            <div class="col-sm-2">
-                                                <a class="header-logo" style="margin-top: -20px;" href="#">
-                                                    <img src="<?= base_url($front_setting->logo) ?>" style="height:136px;" alt="">
-                                                </a>
-                                            </div>
-                                            <div class="col-sm-8">
-                                                <h2 style="width:100%;"><?= $school_setting->name ?>
-                                                </h2>
-                                                <h3><?= $school_setting->address ?>
-                                                </h3>
-                                            </div>
-                                            <div class="col-sm-2">
-                                                <img src="<?= base_url('images/govt.png') ?>" style="height:136px;" alt="">
-                                            </div>
+                                            <?php if ($school_setting->headerBanner) :  ?>
+                                                <div class="col-sm-12">
+                                                    <img src="<?= base_url('images/' . $school_setting->headerBanner) ?>" alt="<?= $school_setting->name ?>">
+                                                </div>
+                                            <?php else : ?>
+                                                <div class="col-sm-2">
+                                                    <a class="header-logo" style="margin-top: -20px;" href="#">
+                                                        <img src="<?= base_url($front_setting->logo) ?>" style="height:136px;" alt="<?= $school_setting->name ?>">
+                                                    </a>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <h2 style="width:100%;"><?= $school_setting->name ?>
+                                                    </h2>
+                                                    <h3><?= $school_setting->address ?>
+                                                    </h3>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <img src="<?= base_url('images/govt.png') ?>" style="height:136px;" alt="">
+                                                </div>
+                                            <?php endif; ?>
+
                                         </div>
                                     </div>
                                 </div>
