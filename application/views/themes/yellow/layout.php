@@ -178,7 +178,7 @@
                         <div class="row bg-white">
                             <?php if (empty($content) || current_url() == base_url()) { ?>
                                 <!-- Left Sidebar -->
-                                <div class="col-sm-3">
+                                <div class="col-sm-2">
                                     <?php
                                     $academic_message = $this->db->get('academic_messages')->result();
                                     foreach ($academic_message as $msg) :
@@ -188,7 +188,7 @@
                                                 <h3><?= $msg->title ?></h3>
                                             </div>
                                             <div class="card-body">
-                                                <img src="<?= $msg->image ?>" style="width:35%; height:auto; float:left; margin-right:5px; border:1px solid #999">
+                                                <img src="<?= $msg->image ?>" style="width:100%; height:auto; float:left; margin-right:5px; border:1px solid #999">
                                                 <p><?= $msg->name ?></p>
                                                 <p>ফোন <?= $msg->phone ?></p>
                                                 <p>ইমেইল <?= $msg->email ?></p>
@@ -202,9 +202,9 @@
                                 </div>
                             <?php } ?>
                             <!-- Main Content -->
-                            <div class="<?= empty($content) || current_url() == base_url() ?  'col-sm-9' : 'col-sm-12' ?>">
+                            <div class="<?= empty($content) || current_url() == base_url() ?  'col-sm-10' : 'col-sm-12' ?>">
                                 <div class="row">
-                                    <div class="col-sm-8">
+                                    <div class="col-sm-10">
                                         <?php if (empty($content) || current_url() == base_url()) { ?>
                                             <?php echo $slider; ?>
 
@@ -213,7 +213,7 @@
                                         <?php } ?>
                                     </div>
                                     <!-- Right Sidebar -->
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-2">
                                         <div class="card" style="height:430px;">
                                             <div class="card-header">
                                                 <h3 class="card-title">নোটিশ বোর্ড</h3>
