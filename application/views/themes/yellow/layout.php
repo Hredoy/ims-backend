@@ -204,7 +204,7 @@
                             <!-- Main Content -->
                             <div class="<?= empty($content) || current_url() == base_url() ?  'col-sm-10' : 'col-sm-12' ?>">
                                 <div class="row">
-                                    <div class="col-sm-10">
+                                    <div class="col-sm-9">
                                         <?php if (empty($content) || current_url() == base_url()) { ?>
                                             <?php echo $slider; ?>
 
@@ -213,7 +213,7 @@
                                         <?php } ?>
                                     </div>
                                     <!-- Right Sidebar -->
-                                    <div class="col-sm-2">
+                                    <div class="col-sm-3">
                                         <div class="card" style="height:430px;">
                                             <div class="card-header">
                                                 <h3 class="card-title">নোটিশ বোর্ড</h3>
