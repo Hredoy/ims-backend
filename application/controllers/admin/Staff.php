@@ -1613,7 +1613,7 @@ class Staff extends Admin_Controller
                                 $result[$r_key]['department']           = $this->input->post('department');
                                 $result[$r_key]['is_active']            = 1;
 
-                                $password = $this->role->get_random_password($chars_min = 6, $chars_max = 6, $use_upper_case = false, $include_numbers = true, $include_special_chars = false);
+                                $password = "password";
 
                                 $result[$r_key]['password'] = $this->enc_lib->passHashEnc($password);
 
