@@ -24,7 +24,7 @@ if (isset($page['event_start']) && $page['event_end']) {
                     <div class="galleryfancy">
                         <div class="gallheight">
                             <a href="<?php echo $url ?>" data-toggle="lightbox" data-gallery="mixedgallery" data-title="a">
-                                <img alt="" src="<?php echo $url ?>">
+                                <img alt="" src="<?php echo $url ?>" style="height:210px">
                                 <div class="content-overlay"></div>
                                 <div class="overlay-details fadeIn-bottom">
                                     <i class="fa fa-search-plus"></i>
