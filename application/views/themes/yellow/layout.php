@@ -158,9 +158,8 @@
                                     <marquee scrollamount="5" scrolldelay="5" dir="ltr" direction="left" behavior="alternate" onmouseover="if (!window.__cfRLUnblockHandlers) return false; this.stop();" onmouseout="if (!window.__cfRLUnblockHandlers) return false; this.start();">
                                         <ul>
                                             <?php
-                                            $currentDate = date('Y-m-d');
-                                            $this->db->where('publish_date =', $currentDate);
-                                            $notices = $this->db->get('send_notification')->result();
+                                            $this->db->where('category_id', 11);
+                                            $notices = $this->db->get('blog')->result();
                                             foreach ($notices as $notice) :
                                             ?>
                                                 <li> <a href="<?= base_url('notice/' . $notice->id) ?>">» <?= $notice->title ?></a> </li>
@@ -454,7 +453,7 @@
                             </div>
                             <div class="row">
                                 <?php
-                                $blogCategory = $this->db->get('blogCategory')->result();
+                                $blogCategory = $this->db->where(['is_active' => 1, 'status' => 1])->get('blogCategory')->result();
                                 foreach ($blogCategory as $category) :
                                     $blogs = $this->db->where('category_id', $category->id)->order_by('id', 'ASC')->limit(5)->get('blog')->result();
                                 ?>
