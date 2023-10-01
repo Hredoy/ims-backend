@@ -351,7 +351,7 @@
                                                             </div>
                                                             <div class="col-lg-3 col-md-4 col-sm-6">
                                                                 <div class="item-all-card text-dark text-center" style="height:160px!important;">
-                                                                    <a href="#"></a>
+                                                                    <a href="<?= base_url('page/governing-committee') ?>"></a>
                                                                     <div class="iteam-all-icon">
                                                                         <img src="images/group.png" alt="" width="57px" height="57px">
                                                                     </div>
