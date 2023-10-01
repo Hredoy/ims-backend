@@ -126,16 +126,19 @@
                                                         <img src="<?= base_url($front_setting->logo) ?>" style="height:136px;" alt="<?= $school_setting->name ?>">
                                                     </a>
                                                 </div>
-                                                <div class="col-sm-8">
-                                                    <h2 style="width:100%;"><?= $school_setting->name ?>
+                                                <div class="col-sm-7">
+                                                    <h2 style="width:100%;font-size: 23px;color: #096cf7;"><?= $school_setting->name ?>
                                                         <br>
+                                                    </h2>
+                                                    <h2 style="width:100%;font-size: 21px;color: #096cf7;">
                                                         <?= $school_setting->eng_name  ?>
                                                     </h2>
-                                                    <h3><?= $school_setting->address ?>
+                                                    <h3 style="font-size:20px;"><?= $school_setting->address ?>
                                                     </h3>
                                                 </div>
-                                                <div class="col-sm-2">
-                                                    <img src="<?= base_url('images/govt.png') ?>" style="height:136px;" alt="">
+                                                <div class="col-sm-3 text-right">
+                                                    <img src="<?= base_url('images/govt.png') ?>" style="height:120px;" alt="">
+                                                    <img src="<?= base_url('images/probortok.jpg') ?>" style="height:120px;" alt="">
                                                 </div>
                                             <?php endif; ?>
 
