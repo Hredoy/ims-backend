@@ -327,7 +327,7 @@
                                     <div class="row">
                                         <div class="col-sm-12">
                                             <div class="card">
-                                                <div class="card-header">
+                                                <div class="card-header" style="background-color: #609513 !important;color: #fff;">
                                                     <h2>
                                                         বিদ্যালয় পরিচিতি
 
@@ -355,7 +355,7 @@
                                         ?>
                                             <div class="col-lg-6">
                                                 <div class="card">
-                                                    <div class="card-header">
+                                                    <div class="card-header" style="background-color: #609513 !important;color: #fff;">
                                                         <h3 class="card-title"><?= $category->name ?></h3>
                                                     </div>
                                                     <div class="card-body pb-4">
@@ -391,7 +391,7 @@
                             </div>
                             <div class="col-sm-4">
                                 <div class="card" style="height:430px;">
-                                    <div class="card-header">
+                                    <div class="card-header" style="background-color: #609513 !important;color: #fff;">
                                         <h3 class="card-title">নোটিশ বোর্ড</h3>
                                     </div>
                                     <div class="card-body noticeboard" style="padding: 0 10px; height: 300px;">
@@ -417,18 +417,13 @@
                                 foreach ($academic_message as $msg) :
                                 ?>
                                     <div class="card">
-                                        <div class="card-header">
-                                            <h3><?= $msg->title ?></h3>
+                                        <img src="<?= $msg->image ?>" class="card-img-top" alt="...">
+                                        <div class="card-body text-center p-0">
+                                            <h2 style="background-color: #609513 !important;color: #fff; padding: 10px"><?= $msg->title ?></h2>
+                                            <h3 style="padding:15px"><?= $msg->name ?></h3>
                                         </div>
-                                        <div class="card-body">
-                                            <img src="<?= $msg->image ?>" style="width:35%; height:auto; float:left; margin-right:5px; border:1px solid #999">
-                                            <p><?= $msg->name ?></p>
-                                            <p>ফোন <?= $msg->phone ?></p>
-                                            <p>ইমেইল <?= $msg->email ?></p>
-
-                                        </div>
-                                        <div class="card-footer">
-                                            <a href="<?= base_url('academic-message/' . $msg->id) ?>"><?= $msg->title ?></a>
+                                        <div class="card-footer text-center">
+                                            <a href="<?= base_url('academic-message/' . $msg->id) ?>">বিস্তারিত</a>
                                         </div>
                                     </div>
                                 <?php endforeach; ?>
