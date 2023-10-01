@@ -26,7 +26,7 @@ class BlogCategory extends Admin_Controller
         $this->session->set_userdata('sub_menu', 'Blog/category');
         $class = $this->class_model->get();
 
-        $data['result'] = $this->db->get('blogCategory')->result();
+        $data['result'] = $this->db->where(['is_deleteable' => 1])->get('blogCategory')->result();
         $this->load->view('layout/header', $data);
         $this->load->view('admin/blog-category/category', $data);
         $this->load->view('layout/footer', $data);

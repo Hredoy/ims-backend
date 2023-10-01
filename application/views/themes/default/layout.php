@@ -126,16 +126,19 @@
                                                         <img src="<?= base_url($front_setting->logo) ?>" style="height:136px;" alt="<?= $school_setting->name ?>">
                                                     </a>
                                                 </div>
-                                                <div class="col-sm-8">
-                                                    <h2 style="width:100%;"><?= $school_setting->name ?>
+                                                <div class="col-sm-7">
+                                                    <h2 style="width:100%;font-size: 23px;color: #096cf7;"><?= $school_setting->name ?>
                                                         <br>
+                                                    </h2>
+                                                    <h2 style="width:100%;font-size: 21px;color: #096cf7;">
                                                         <?= $school_setting->eng_name  ?>
                                                     </h2>
-                                                    <h3><?= $school_setting->address ?>
+                                                    <h3 style="font-size:20px;"><?= $school_setting->address ?>
                                                     </h3>
                                                 </div>
-                                                <div class="col-sm-2">
-                                                    <img src="<?= base_url('images/govt.png') ?>" style="height:136px;" alt="">
+                                                <div class="col-sm-3 text-right">
+                                                    <img src="<?= base_url('images/govt.png') ?>" style="height:120px;" alt="">
+                                                    <img src="<?= base_url('images/probortok.jpg') ?>" style="height:120px;" alt="">
                                                 </div>
                                             <?php endif; ?>
 
@@ -153,12 +156,11 @@
                                     <marquee scrollamount="5" scrolldelay="5" dir="ltr" direction="left" behavior="alternate" onmouseover="if (!window.__cfRLUnblockHandlers) return false; this.stop();" onmouseout="if (!window.__cfRLUnblockHandlers) return false; this.start();">
                                         <ul>
                                             <?php
-                                            $currentDate = date('Y-m-d');
-                                            $this->db->where('publish_date =', $currentDate);
-                                            $notices = $this->db->get('send_notification')->result();
+                                            $this->db->where('category_id', 11);
+                                            $notices = $this->db->get('blog')->result();
                                             foreach ($notices as $notice) :
                                             ?>
-                                                <li> <a href="<?= base_url('notice/' . $notice->id) ?>">» <?= $notice->title ?></a> </li>
+                                                <li> <a href="<?= base_url('blog/' . $notice->id) ?>">» <?= $notice->title ?></a> </li>
                                             <?php endforeach; ?>
                                         </ul>
                                     </marquee>
@@ -347,7 +349,7 @@
                                             </div>
                                         </div>
                                         <?php
-                                        $blogCategory = $this->db->get('blogCategory')->result();
+                                        $blogCategory = $this->db->where(['is_active' => 1, 'status' => 1])->get('blogCategory')->result();
                                         foreach ($blogCategory as $category) :
                                             $blogs = $this->db->where('category_id', $category->id)->order_by('id', 'ASC')->limit(5)->get('blog')->result();
                                         ?>
