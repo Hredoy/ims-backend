@@ -128,6 +128,8 @@
                                                 </div>
                                                 <div class="col-sm-8">
                                                     <h2 style="width:100%;"><?= $school_setting->name ?>
+                                                        <br>
+                                                        <?= $school_setting->eng_name  ?>
                                                     </h2>
                                                     <h3><?= $school_setting->address ?>
                                                     </h3>
