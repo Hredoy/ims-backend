@@ -414,11 +414,21 @@
 
                         </div>
                         <?php if (empty($content) || current_url() == base_url()) { ?>
-                            <div class="row">
+                            <div class="row dark-blue">
+                                <div style="padding: 0;">
+                                    <svg id="" preserveAspectRatio="xMidYMax meet" class="svg-separator sep3" viewBox="0 0 1600 100" style="display: block;" data-height="100">
+                                        <path class="" style="opacity: 1;fill: #170944 !important;" d="M-40,71.627C20.307,71.627,20.058,32,80,32s60.003,40,120,40s59.948-40,120-40s60.313,40,120,40s60.258-40,120-40s60.202,40,120,40s60.147-40,120-40s60.513,40,120,40s60.036-40,120-40c59.964,0,60.402,40,120,40s59.925-40,120-40s60.291,40,120,40s60.235-40,120-40s60.18,40,120,40s59.82,0,59.82,0l0.18,26H-60V72L-40,71.627z"></path>
+                                        <path class="" style="opacity: 1;fill: #332072 !important;" d="M-40,83.627C20.307,83.627,20.058,44,80,44s60.003,40,120,40s59.948-40,120-40s60.313,40,120,40s60.258-40,120-40s60.202,40,120,40s60.147-40,120-40s60.513,40,120,40s60.036-40,120-40c59.964,0,60.402,40,120,40s59.925-40,120-40s60.291,40,120,40s60.235-40,120-40s60.18,40,120,40s59.82,0,59.82,0l0.18,14H-60V84L-40,83.627z"></path>
+                                        <path class="" style="fill: #170944 !important;" d="M-40,95.627C20.307,95.627,20.058,56,80,56s60.003,40,120,40s59.948-40,120-40s60.313,40,120,40s60.258-40,120-40s60.202,40,120,40s60.147-40,120-40s60.513,40,120,40s60.036-40,120-40c59.964,0,60.402,40,120,40s59.925-40,120-40s60.291,40,120,40s60.235-40,120-40s60.18,40,120,40s59.82,0,59.82,0l0.18,138H-60V96L-40,95.627z"></path>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div class="row" style="background: #170944 !important;padding-top: 30px;margin-top: 0px;border-top: 0px;">
                                 <div class="col-sm-8">
                                     <div class="row">
                                         <div class="col-sm-12">
-                                            <div class="card">
+                                            <div class="card" style="box-shadow: 1px 1px 10px #fff;">
                                                 <div class="card-header" style="background-color: #609513 !important;color: #fff;">
                                                     <h2>
                                                         বিদ্যালয় পরিচিতি
@@ -443,11 +453,20 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
-                                    <div class="card">
+                                    <div class="card" style="box-shadow: 1px 1px 10px #fff;">
                                         <div class="card-body">
                                             <iframe src="<?= $front_setting->google_map ?>" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="row dark-blue" style="transform: rotate(180deg);">
+                                <div style="padding: 0;">
+                                    <svg id="" preserveAspectRatio="xMidYMax meet" class="svg-separator sep3" viewBox="0 0 1600 100" style="display: block;" data-height="100">
+                                        <path class="" style="opacity: 1;fill: #170944 !important;" d="M-40,71.627C20.307,71.627,20.058,32,80,32s60.003,40,120,40s59.948-40,120-40s60.313,40,120,40s60.258-40,120-40s60.202,40,120,40s60.147-40,120-40s60.513,40,120,40s60.036-40,120-40c59.964,0,60.402,40,120,40s59.925-40,120-40s60.291,40,120,40s60.235-40,120-40s60.18,40,120,40s59.82,0,59.82,0l0.18,26H-60V72L-40,71.627z"></path>
+                                        <path class="" style="opacity: 1;fill: #332072 !important;" d="M-40,83.627C20.307,83.627,20.058,44,80,44s60.003,40,120,40s59.948-40,120-40s60.313,40,120,40s60.258-40,120-40s60.202,40,120,40s60.147-40,120-40s60.513,40,120,40s60.036-40,120-40c59.964,0,60.402,40,120,40s59.925-40,120-40s60.291,40,120,40s60.235-40,120-40s60.18,40,120,40s59.82,0,59.82,0l0.18,14H-60V84L-40,83.627z"></path>
+                                        <path class="" style="fill: #170944 !important;" d="M-40,95.627C20.307,95.627,20.058,56,80,56s60.003,40,120,40s59.948-40,120-40s60.313,40,120,40s60.258-40,120-40s60.202,40,120,40s60.147-40,120-40s60.513,40,120,40s60.036-40,120-40c59.964,0,60.402,40,120,40s59.925-40,120-40s60.291,40,120,40s60.235-40,120-40s60.18,40,120,40s59.82,0,59.82,0l0.18,138H-60V96L-40,95.627z"></path>
+                                    </svg>
                                 </div>
                             </div>
                             <div class="row">
