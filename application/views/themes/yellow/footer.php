@@ -1,7 +1,10 @@
+<div class="wave-red-gradiant">
+
+</div>
 <footer>
     <div>
-        <footer class="bg-dark text-white">
-            <div class="footer-main">
+        <footer class="bg-footer text-white">
+            <div class="footer-main" style="border-top:0px;">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-4 col-sm-6">

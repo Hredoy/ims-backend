@@ -36,7 +36,6 @@
             line-height: 1.5;
             color: #000;
             text-align: left;
-            background-color: #f2f5f9;
         }
 
         *:not(i) {
@@ -79,7 +78,7 @@
 
 </head>
 
-<body class="headerstyle1 container">
+<body class="headerstyle1 container" style="background: url(' <?= base_url('uploads/system/bg_main.gif') ?>') repeat-y scroll center top #fff !important;">
 
     <div class="horizontalMenucontainer" style="padding: 0;">
         <div class="card" style="margin: 0;">
