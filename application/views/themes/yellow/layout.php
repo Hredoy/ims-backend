@@ -158,7 +158,7 @@
                                         <div class="row">
                                             <?php if ($school_setting->headerBanner) :  ?>
                                                 <div class="col-sm-12">
-                                                    <img src="<?= base_url('images/' . $school_setting->headerBanner) ?>" alt="<?= $school_setting->name ?>" width="100%">
+                                                    <img src="<?= base_url('images/' . $school_setting->headerBanner) ?>" alt="<?= $school_setting->name ?>" width="100%" height="200px">
                                                 </div>
                                             <?php else : ?>
                                                 <div class="col-sm-2">
