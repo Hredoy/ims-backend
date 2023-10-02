@@ -198,7 +198,7 @@
                                             $notices = $this->db->get('blog')->result();
                                             foreach ($notices as $notice) :
                                             ?>
-                                                <li> <a href="<?= base_url('notice/' . $notice->id) ?>">» <?= $notice->title ?></a> </li>
+                                                <li> <a href="<?= base_url('blog/' . $notice->id) ?>">» <?= $notice->title ?></a> </li>
                                             <?php endforeach; ?>
                                         </ul>
                                     </marquee>
