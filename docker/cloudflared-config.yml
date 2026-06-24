@@ -1,0 +1,7 @@
+tunnel: 0ff28011-9ae3-4861-8692-5b57602d8e72
+credentials-file: /etc/cloudflared/cloudflared-credentials.json
+
+ingress:
+  - hostname: bkbkrghs.edu.bd
+    service: http://app:80
+  - service: http_status:404

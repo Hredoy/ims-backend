@@ -6,3 +6,4 @@ uploads/*
 .env
 docker/mysql-init/*.sql
 db.sql
+docker/cloudflared-credentials.json

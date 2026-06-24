@@ -35,9 +35,10 @@ services:
     image: cloudflare/cloudflared:latest
     container_name: ims_cloudflared
     restart: unless-stopped
-    command: tunnel --no-autoupdate run
-    environment:
-      TUNNEL_TOKEN: ${CLOUDFLARE_TUNNEL_TOKEN}
+    command: tunnel --no-autoupdate --config /etc/cloudflared/config.yml run
+    volumes:
+      - ./docker/cloudflared-config.yml:/etc/cloudflared/config.yml:ro
+      - ./docker/cloudflared-credentials.json:/etc/cloudflared/cloudflared-credentials.json:ro
     depends_on:
       - app
     networks:
