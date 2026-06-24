@@ -3,3 +3,6 @@ application/config/config.php
 uploads
 uploads/*
 *.log
+.env
+docker/mysql-init/*.sql
+db.sql
