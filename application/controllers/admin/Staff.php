@@ -439,6 +439,7 @@ class Staff extends Admin_Controller
         if ($this->form_validation->run() == true) {
 
             $custom_field_post  = $this->input->post("custom_fields[staff]");
+            $custom_field_post  = is_array($custom_field_post) ? $custom_field_post : array();
             $custom_value_array = array();
             if (!empty($custom_fields)) {
                 foreach ($custom_field_post as $key => $value) {
@@ -642,6 +643,48 @@ class Staff extends Admin_Controller
                 $data_insert['date_of_joining'] = date('Y-m-d', $this->customlib->datetostrtotime($date_of_joining));
             }
 
+            $staff_defaults = array(
+                'lang_id'              => 0,
+                'department'           => 0,
+                'designation'          => 0,
+                'qualification'        => '',
+                'work_exp'             => '',
+                'surname'              => '',
+                'father_name'          => '',
+                'mother_name'          => '',
+                'contact_no'           => '',
+                'emergency_contact_no' => '',
+                'marital_status'       => '',
+                'date_of_joining'      => '0000-00-00',
+                'date_of_leaving'      => '0000-00-00',
+                'local_address'        => '',
+                'permanent_address'    => '',
+                'note'                 => '',
+                'image'                => '',
+                'account_title'        => '',
+                'bank_account_no'      => '',
+                'bank_name'            => '',
+                'ifsc_code'            => '',
+                'bank_branch'          => '',
+                'basic_salary'         => '',
+                'epf_no'               => '',
+                'contract_type'        => '',
+                'shift'                => '',
+                'location'             => '',
+                'facebook'             => '',
+                'twitter'              => '',
+                'linkedin'             => '',
+                'instagram'            => '',
+                'resume'               => '',
+                'joining_letter'       => '',
+                'resignation_letter'   => '',
+                'other_document_name'  => '',
+                'other_document_file'  => '',
+                'user_id'              => 0,
+                'verification_code'    => '',
+            );
+            $data_insert = array_merge($staff_defaults, $data_insert);
+
             $leave_type  = $this->input->post('leave_type');
             $leave_array = array();
             if (!empty($leave_array)) {
@@ -664,14 +707,14 @@ class Staff extends Admin_Controller
 
             if ($this->sch_setting_detail->staffid_auto_insert) {
                 if ($this->sch_setting_detail->staffid_update_status) {
+                    $last_student         = $this->staff_model->lastRecordByEmployeeIdPrefix($this->sch_setting_detail->staffid_prefix);
+                    $last_admission_digit = 0;
+                    if (!empty($last_student) && preg_match('/^' . preg_quote($this->sch_setting_detail->staffid_prefix, '/') . '(\d+)$/', $last_student->employee_id, $matches)) {
+                        $last_admission_digit = (int) $matches[1];
+                    }
 
-                    $employee_id = $this->sch_setting_detail->staffid_prefix . $this->sch_setting_detail->staffid_start_from;
-
-                    $last_student = $this->staff_model->lastRecord();
-
-                    $last_admission_digit = str_replace($this->sch_setting_detail->staffid_prefix, "", $last_student->employee_id);
-
-                    $employee_id                = $this->sch_setting_detail->staffid_prefix . sprintf("%0" . $this->sch_setting_detail->staffid_no_digit . "d", $last_admission_digit + 1);
+                    $next_staff_id_number       = max((int) $this->sch_setting_detail->staffid_start_from, $last_admission_digit + 1);
+                    $employee_id                = $this->sch_setting_detail->staffid_prefix . sprintf("%0" . $this->sch_setting_detail->staffid_no_digit . "d", $next_staff_id_number);
                     $data_insert['employee_id'] = $employee_id;
                 } else {
                     $employee_id                = $this->sch_setting_detail->staffid_prefix . $this->sch_setting_detail->staffid_start_from;
@@ -1341,6 +1384,9 @@ class Staff extends Admin_Controller
         $sessionData = $this->session->userdata('admin');
         $userdata    = $this->customlib->getUserData();
         $staff       = $this->staff_model->get($id);
+        if (empty($staff)) {
+            show_404();
+        }
         if ($staff["role_id"] == 7) {
             $a = 0;
             if ($userdata["email"] == $staff["email"]) {
@@ -1353,10 +1399,22 @@ class Staff extends Admin_Controller
         if ($a != 1) {
             access_denied();
         }
-        $data = array('id' => $id, 'disable_at' => date('Y-m-d', $this->customlib->datetostrtotime($_POST['date'])), 'is_active' => 0);
+        $disable_date = $this->input->post('date');
+        if ($disable_date != "") {
+            $disable_date = date('Y-m-d', $this->customlib->datetostrtotime($disable_date));
+        } else {
+            $disable_date = date('Y-m-d');
+        }
+
+        $data = array('id' => $id, 'disable_at' => $disable_date, 'is_active' => 0);
         $this->staff_model->disablestaff($data);
-        $array = array('status' => 'success', 'error' => '', 'message' => $this->lang->line('success_message'));
-        echo json_encode($array);
+        if ($this->input->is_ajax_request()) {
+            $array = array('status' => 'success', 'error' => '', 'message' => $this->lang->line('success_message'));
+            echo json_encode($array);
+        } else {
+            $this->session->set_flashdata('msg', '<div class="alert alert-success">' . $this->lang->line('success_message') . '</div>');
+            redirect('admin/staff');
+        }
     }
 
     public function enablestaff($id)

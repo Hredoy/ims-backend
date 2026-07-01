@@ -9,6 +9,19 @@ class Section_model extends MY_Model {
         parent::__construct();
     }
 
+    public function getAllClassSections() {
+        $query = $this->db->select('class_sections.class_id, class_sections.section_id, sections.section')
+            ->from('class_sections')
+            ->join('sections', 'sections.id = class_sections.section_id')
+            ->order_by('class_sections.class_id, class_sections.id')
+            ->get();
+        $result = array();
+        foreach ($query->result_array() as $row) {
+            $result[$row['class_id']][] = array('section_id' => $row['section_id'], 'section' => $row['section']);
+        }
+        return $result;
+    }
+
     public function get($id = null) {
         $this->db->select()->from('sections');
         if ($id != null) {

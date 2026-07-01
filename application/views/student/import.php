@@ -159,59 +159,34 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
             </div>
 
             <script type="text/javascript">
-                function getSectionByClass(class_id, section_id) {
-                    if (class_id != "" && section_id != "") {
-                        $('#section_id').html("");
-                        var base_url = '<?php echo base_url() ?>';
-                        var div_data = '<option value=""><?php echo $this->lang->line('select'); ?></option>';
-                        $.ajax({
-                            type: "GET",
-                            url: base_url + "sections/getByClass",
-                            data: {'class_id': class_id},
-                            dataType: "json",
-                            success: function (data) {
-                                $.each(data, function (i, obj)
-                                {
-                                    var sel = "";
-                                    if (section_id == obj.section_id) {
-                                        sel = "selected";
-                                    }
-                                    div_data += "<option value=" + obj.section_id + " " + sel + ">" + obj.section + "</option>";
-                                });
-                                $('#section_id').append(div_data);
-                            }
+                var allSections = <?php echo json_encode($all_sections); ?>;
+
+                function loadSectionsByClass(class_id, selected_id) {
+                    var $sel = $('#section_id');
+                    $sel.html('<option value=""><?php echo $this->lang->line('select'); ?></option>');
+                    if (class_id && allSections[class_id]) {
+                        $.each(allSections[class_id], function (i, obj) {
+                            var sel = (selected_id && obj.section_id == selected_id) ? ' selected' : '';
+                            $sel.append('<option value="' + obj.section_id + '"' + sel + '>' + obj.section + '</option>');
                         });
                     }
                 }
+
                 $(document).ready(function () {
                     $("#sampledata").DataTable({
                         searching: false,
                         ordering: false,
                         paging: false,
                         bSort: false,
-                        info: false, });
+                        info: false,
+                    });
 
-                    var class_id = $('#class_id').val();
+                    var class_id   = $('#class_id').val();
                     var section_id = '<?php echo set_value('section_id') ?>';
-                    getSectionByClass(class_id, section_id);
-                    $(document).on('change', '#class_id', function (e) {
-                        $('#section_id').html("");
-                        var class_id = $(this).val();
-                        var base_url = '<?php echo base_url() ?>';
-                        var div_data = '<option value=""><?php echo $this->lang->line('select'); ?></option>';
-                        $.ajax({
-                            type: "GET",
-                            url: base_url + "sections/getByClass",
-                            data: {'class_id': class_id},
-                            dataType: "json",
-                            success: function (data) {
-                                $.each(data, function (i, obj)
-                                {
-                                    div_data += "<option value=" + obj.section_id + ">" + obj.section + "</option>";
-                                });
-                                $('#section_id').append(div_data);
-                            }
-                        });
+                    loadSectionsByClass(class_id, section_id);
+
+                    $(document).on('change', '#class_id', function () {
+                        loadSectionsByClass($(this).val(), null);
                     });
                 });
             </script>

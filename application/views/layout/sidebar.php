@@ -110,6 +110,7 @@
                             ?>
 
                                 <li class="<?php echo set_Submenu('student/create'); ?>"><a href="<?php echo base_url(); ?>student/create"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('student_admission'); ?></a></li>
+                                <li class="<?php echo set_Submenu('student/quick_add_page'); ?>"><a href="<?php echo base_url(); ?>student/quick_add_page"><i class="fa fa-bolt"></i> Quick Add Student</a></li>
                                 <?php } ?><?php
                                             if ($this->module_lib->hasActive('online_admission')) {
                                                 if ($this->rbac->hasPrivilege('online_admission', 'can_view')) {
@@ -368,8 +369,13 @@
 
                             <?php if ($this->rbac->hasPrivilege('exam_group', 'can_view')) { ?>
                                 <li class="<?php echo set_Submenu('Examinations/examgroup'); ?>"><a href="<?php echo site_url('admin/examgroup'); ?>"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('exam') . " " . $this->lang->line('group') ?></a></li>
-                            <?php }
-                            ?>
+                            <?php } ?>
+                            <?php if ($this->rbac->hasPrivilege('exam_group', 'can_add')) { ?>
+                                <li class="<?php echo set_Submenu('Examinations/quick_exam_setup'); ?>"><a href="<?php echo site_url('admin/examgroup/quick_exam_setup'); ?>"><i class="fa fa-bolt"></i> Quick Exam Setup</a></li>
+                            <?php } ?>
+                            <?php if ($this->rbac->hasPrivilege('exam_marks', 'can_edit')) { ?>
+                                <li class="<?php echo set_Submenu('Examinations/quick_marks'); ?>"><a href="<?php echo site_url('admin/examgroup/quick_marks'); ?>"><i class="fa fa-pencil-square-o"></i> Quick Marks Entry</a></li>
+                            <?php } ?>
                             <li class="<?php echo set_Submenu('Examinations/Examschedule'); ?>"><a href="<?php echo site_url('admin/exam_schedule'); ?>"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('exam_schedule'); ?></a></li>
                             <?php if ($this->rbac->hasPrivilege('exam_result', 'can_view')) {
                             ?>

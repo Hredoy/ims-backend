@@ -832,6 +832,14 @@ class Staff_model extends MY_Model
         return $last_row;
     }
 
+    public function lastRecordByEmployeeIdPrefix($prefix)
+    {
+        $escaped_prefix = $this->db->escape_like_str($prefix);
+        $prefix_length  = strlen($prefix);
+        $sql            = "SELECT * FROM staff WHERE employee_id LIKE '" . $escaped_prefix . "%' ESCAPE '!' AND SUBSTRING(employee_id, " . ($prefix_length + 1) . ") REGEXP '^[0-9]+$' ORDER BY CAST(SUBSTRING(employee_id, " . ($prefix_length + 1) . ") AS UNSIGNED) DESC LIMIT 1";
+        return $this->db->query($sql)->row();
+    }
+
     public function ratingapr($id, $approve)
     {
         $this->db->trans_start(); # Starting Transaction

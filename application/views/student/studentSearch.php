@@ -23,6 +23,13 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                 <div class="box box-primary">
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-search"></i> <?php echo $this->lang->line('select_criteria'); ?></h3>
+                        <?php if ($this->rbac->hasPrivilege('student', 'can_add')) { ?>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#quickAddStudentModal">
+                                <i class="fa fa-bolt"></i> Quick Add Student
+                            </button>
+                        </div>
+                        <?php } ?>
                     </div>
                     <div class="box-body">
                         
@@ -359,3 +366,174 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                                 });
                                                             });
                                                         </script>
+
+<!-- Quick Add Student Modal -->
+<?php if ($this->rbac->hasPrivilege('student', 'can_add')) { ?>
+<div class="modal fade" id="quickAddStudentModal" tabindex="-1" role="dialog" aria-labelledby="quickAddStudentModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-green">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="quickAddStudentModalLabel"><i class="fa fa-bolt"></i> Quick Add Student</h4>
+            </div>
+            <div class="modal-body">
+                <div id="quickAddMsg"></div>
+                <form id="quickAddForm">
+                    <?php echo $this->customlib->getCSRF(); ?>
+                    <div class="row">
+                        <?php if (!$adm_auto_insert) { ?>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label><?php echo $this->lang->line('admission_no'); ?> <small class="req">*</small></label>
+                                <input type="text" name="admission_no" id="qa_admission_no" class="form-control" placeholder="<?php echo $this->lang->line('admission_no'); ?>">
+                            </div>
+                        </div>
+                        <?php } ?>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label><?php echo $this->lang->line('first_name'); ?> <small class="req">*</small></label>
+                                <input type="text" name="firstname" id="qa_firstname" class="form-control" placeholder="<?php echo $this->lang->line('first_name'); ?>">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label><?php echo $this->lang->line('last_name'); ?></label>
+                                <input type="text" name="lastname" id="qa_lastname" class="form-control" placeholder="<?php echo $this->lang->line('last_name'); ?>">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label><?php echo $this->lang->line('gender'); ?> <small class="req">*</small></label>
+                                <select name="gender" id="qa_gender" class="form-control">
+                                    <option value=""><?php echo $this->lang->line('select'); ?></option>
+                                    <?php foreach ($genderList as $gk => $gv) { ?>
+                                    <option value="<?php echo $gk; ?>"><?php echo $gv; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label><?php echo $this->lang->line('date_of_birth'); ?> <small class="req">*</small></label>
+                                <input type="text" name="dob" id="qa_dob" class="form-control date" placeholder="<?php echo $this->lang->line('date_of_birth'); ?>">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label><?php echo $this->lang->line('mobile_no'); ?></label>
+                                <input type="text" name="mobileno" id="qa_mobileno" class="form-control" placeholder="<?php echo $this->lang->line('mobile_no'); ?>">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label><?php echo $this->lang->line('class'); ?> <small class="req">*</small></label>
+                                <select name="class_id" id="qa_class_id" class="form-control">
+                                    <option value=""><?php echo $this->lang->line('select'); ?></option>
+                                    <?php foreach ($classlist as $cl) { ?>
+                                    <option value="<?php echo $cl['id']; ?>"><?php echo $cl['class']; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label><?php echo $this->lang->line('section'); ?></label>
+                                <select name="section_id" id="qa_section_id" class="form-control">
+                                    <option value=""><?php echo $this->lang->line('select'); ?></option>
+                                </select>
+                            </div>
+                        </div>
+                        <?php if ($sch_setting->guardian_name) { ?>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label><?php echo $this->lang->line('guardian_name'); ?> <small class="req">*</small></label>
+                                <input type="text" name="guardian_name" id="qa_guardian_name" class="form-control" placeholder="<?php echo $this->lang->line('guardian_name'); ?>">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label><?php echo $this->lang->line('guardian'); ?> <small class="req">*</small></label>
+                                <select name="guardian_is" id="qa_guardian_is" class="form-control">
+                                    <option value=""><?php echo $this->lang->line('select'); ?></option>
+                                    <option value="Father">Father</option>
+                                    <option value="Mother">Mother</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <?php } if ($sch_setting->guardian_phone) { ?>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label><?php echo $this->lang->line('guardian_phone'); ?> <small class="req">*</small></label>
+                                <input type="text" name="guardian_phone" id="qa_guardian_phone" class="form-control" placeholder="<?php echo $this->lang->line('guardian_phone'); ?>">
+                            </div>
+                        </div>
+                        <?php } ?>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo $this->lang->line('cancel'); ?></button>
+                <button type="button" class="btn btn-success" id="quickAddSubmitBtn"><i class="fa fa-save"></i> Save Student</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function () {
+    var base_url = '<?php echo base_url(); ?>';
+    var allSectionsModal = <?php echo json_encode($all_sections ?? []); ?>;
+
+    function loadModalSections(class_id) {
+        var $sel = $('#qa_section_id');
+        $sel.html('<option value=""><?php echo $this->lang->line('select'); ?></option>');
+        if (class_id && allSectionsModal[class_id]) {
+            $.each(allSectionsModal[class_id], function (i, obj) {
+                $sel.append('<option value="' + obj.section_id + '">' + obj.section + '</option>');
+            });
+        }
+    }
+
+    $(document).on('change', '#qa_class_id', function () {
+        loadModalSections($(this).val());
+    });
+
+    $('#quickAddStudentModal').on('hidden.bs.modal', function () {
+        $('#quickAddForm')[0].reset();
+        loadModalSections('');
+        $('#quickAddMsg').html('');
+    });
+
+    $('#quickAddSubmitBtn').on('click', function () {
+        var btn = $(this);
+        btn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Saving...');
+        $('#quickAddMsg').html('');
+
+        var formData = $('#quickAddForm').serialize();
+        $.ajax({
+            type: 'POST',
+            url: base_url + 'student/quick_add',
+            data: formData,
+            dataType: 'json',
+            success: function (res) {
+                if (res.status === 'success') {
+                    $('#quickAddMsg').html('<div class="alert alert-success">' + res.message + '</div>');
+                    $('#quickAddForm')[0].reset();
+                    $('#qa_section_id').html('<option value=""><?php echo $this->lang->line('select'); ?></option>');
+                    setTimeout(function () { $('#quickAddStudentModal').modal('hide'); }, 1200);
+                } else {
+                    $('#quickAddMsg').html('<div class="alert alert-danger">' + res.message + '</div>');
+                }
+            },
+            error: function () {
+                $('#quickAddMsg').html('<div class="alert alert-danger">An error occurred. Please try again.</div>');
+            },
+            complete: function () {
+                btn.prop('disabled', false).html('<i class="fa fa-save"></i> Save Student');
+            }
+        });
+    });
+});
+</script>
+<?php } ?>

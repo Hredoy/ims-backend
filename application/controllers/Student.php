@@ -686,6 +686,135 @@ class Student extends Admin_Controller
         }
     }
 
+    public function quick_add_page()
+    {
+        if (!$this->rbac->hasPrivilege('student', 'can_add')) {
+            access_denied();
+        }
+        $this->session->set_userdata('top_menu', 'Student Information');
+        $this->session->set_userdata('sub_menu', 'student/quick_add_page');
+        $data['title']           = 'Quick Add Student';
+        $data['adm_auto_insert'] = $this->sch_setting_detail->adm_auto_insert;
+        $data['sch_setting']     = $this->sch_setting_detail;
+        $data['genderList']      = $this->customlib->getGender();
+        $data['classlist']       = $this->class_model->get();
+        $data['all_sections']    = $this->section_model->getAllClassSections();
+        $this->load->view('layout/header', $data);
+        $this->load->view('student/studentQuickAdd', $data);
+        $this->load->view('layout/footer', $data);
+    }
+
+    public function quick_add()
+    {
+        if (!$this->rbac->hasPrivilege('student', 'can_add')) {
+            echo json_encode(['status' => 'error', 'message' => 'Access denied']);
+            return;
+        }
+
+        $this->form_validation->set_rules('firstname', $this->lang->line('first_name'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('gender', $this->lang->line('gender'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('dob', $this->lang->line('date_of_birth'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('class_id', $this->lang->line('class'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('section_id', $this->lang->line('section'), 'trim|xss_clean');
+
+        if ($this->sch_setting_detail->guardian_name) {
+            $this->form_validation->set_rules('guardian_name', $this->lang->line('guardian_name'), 'trim|required|xss_clean');
+            $this->form_validation->set_rules('guardian_is', $this->lang->line('guardian'), 'trim|required|xss_clean');
+        }
+        if ($this->sch_setting_detail->guardian_phone) {
+            $this->form_validation->set_rules('guardian_phone', $this->lang->line('guardian_phone'), 'trim|required|xss_clean');
+        }
+        if (!$this->sch_setting_detail->adm_auto_insert) {
+            $this->form_validation->set_rules('admission_no', $this->lang->line('admission_no'), 'trim|required|xss_clean|is_unique[students.admission_no]');
+        }
+
+        if ($this->form_validation->run() == false) {
+            echo json_encode(['status' => 'error', 'message' => validation_errors()]);
+            return;
+        }
+
+        $class_id   = $this->input->post('class_id');
+        $section_id = $this->input->post('section_id');
+        $session    = $this->setting_model->getCurrentSession();
+
+        $gender = $this->input->post('gender');
+        $data_insert = array(
+            'firstname'     => $this->input->post('firstname'),
+            'lastname'      => $this->input->post('lastname'),
+            'gender'        => $gender,
+            'dob'           => date('Y-m-d', $this->customlib->datetostrtotime($this->input->post('dob'))),
+            'mobileno'      => $this->input->post('mobileno'),
+            'guardian_name' => $this->input->post('guardian_name'),
+            'guardian_phone'=> $this->input->post('guardian_phone'),
+            'guardian_is'   => $this->input->post('guardian_is'),
+            'is_active'     => 'yes',
+            'image'         => ($gender == 'Female') ? 'uploads/student_images/default_female.jpg' : 'uploads/student_images/default_male.jpg',
+        );
+
+        $data_setting = array(
+            'id'                => $this->sch_setting_detail->id,
+            'adm_auto_insert'   => $this->sch_setting_detail->adm_auto_insert,
+            'adm_update_status' => $this->sch_setting_detail->adm_update_status,
+        );
+
+        $insert       = true;
+        $admission_no = 0;
+
+        if ($this->sch_setting_detail->adm_auto_insert) {
+            if ($this->sch_setting_detail->adm_update_status) {
+                $last_student         = $this->student_model->lastRecord();
+                $last_admission_digit = str_replace($this->sch_setting_detail->adm_prefix, '', $last_student->admission_no);
+                $admission_no         = $this->sch_setting_detail->adm_prefix . sprintf("%0" . $this->sch_setting_detail->adm_no_digit . "d", $last_admission_digit + 1);
+            } else {
+                $admission_no = $this->sch_setting_detail->adm_prefix . $this->sch_setting_detail->adm_start_from;
+            }
+            $data_insert['admission_no'] = $admission_no;
+            if ($this->student_model->check_adm_exists($admission_no)) {
+                $insert = false;
+            }
+        } else {
+            $data_insert['admission_no'] = $this->input->post('admission_no');
+        }
+
+        if (!$insert) {
+            echo json_encode(['status' => 'error', 'message' => $this->lang->line('admission_no') . ' ' . $admission_no . ' ' . $this->lang->line('already_exists')]);
+            return;
+        }
+
+        $insert_id = $this->student_model->add($data_insert, $data_setting);
+
+        $data_new = array(
+            'student_id' => $insert_id,
+            'class_id'   => $class_id,
+            'section_id' => $section_id,
+            'session_id' => $session,
+            'fees_discount' => 0,
+        );
+        $this->student_model->add_student_session($data_new);
+
+        $data_student_login = array(
+            'username' => $this->student_login_prefix . $insert_id,
+            'password' => 'password',
+            'user_id'  => $insert_id,
+            'role'     => 'student',
+        );
+        $this->user_model->add($data_student_login);
+
+        $temp              = $insert_id;
+        $data_parent_login = array(
+            'username' => $this->parent_login_prefix . $insert_id,
+            'password' => 'password',
+            'user_id'  => 0,
+            'role'     => 'parent',
+            'childs'   => $temp,
+        );
+        $ins_parent_id  = $this->user_model->add($data_parent_login);
+        $update_student = array('id' => $insert_id, 'parent_id' => $ins_parent_id);
+        $this->student_model->add($update_student);
+
+        echo json_encode(['status' => 'success', 'message' => $this->lang->line('success_message'), 'student_id' => $insert_id]);
+    }
+
     public function create_doc()
     {
 
@@ -952,6 +1081,7 @@ class Student extends Admin_Controller
         $session            = $this->setting_model->getCurrentSession();
         $class              = $this->class_model->get('', $classteacher = 'yes');
         $data['classlist']  = $class;
+        $data['all_sections'] = $this->section_model->getAllClassSections();
         $userdata           = $this->customlib->getUserData();
 
         $category = $this->category_model->get();
@@ -1534,6 +1664,8 @@ class Student extends Admin_Controller
         $data['adm_auto_insert'] = $this->sch_setting_detail->adm_auto_insert;
         $data['sch_setting']     = $this->sch_setting_detail;
         $data['fields']          = $this->customfield_model->get_custom_fields('students', 1);
+        $data['genderList']      = $this->customlib->getGender();
+        $data['all_sections']    = $this->section_model->getAllClassSections();
         $class                   = $this->class_model->get();
         $data['classlist']       = $class;
 

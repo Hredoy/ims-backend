@@ -1,4 +1,4 @@
- <?php
+<?php
 
     if (!defined('BASEPATH')) {
         exit('No direct script access allowed');
@@ -302,7 +302,7 @@
             echo json_encode($data);
         }
 
-        public function addexam($id)
+        public function addexam($id = null)
         {
             $this->auth->is_logged_in();
             if (!$this->rbac->hasPrivilege('exam', 'can_view')) {
@@ -323,6 +323,11 @@
 
             $data['current_session'] = $this->sch_current_session;
             $data['examgroup'] = $this->examgroup_model->get($id);
+
+            if (empty($id) || empty($data['examgroup'])) {
+                $this->session->set_flashdata('msg', '<div class="alert alert-danger text-left">Please select a valid exam group first.</div>');
+                redirect('admin/examgroup');
+            }
 
             $this->load->view('layout/header', $data);
             $this->load->view('admin/examgroup/addexam', $data);
@@ -931,5 +936,131 @@
 
                 echo json_encode($array);
             }
+        }
+
+        public function quick_exam_setup()
+        {
+            $this->auth->is_logged_in();
+            if (!$this->rbac->hasPrivilege('exam_group', 'can_add')) {
+                access_denied();
+            }
+            $this->session->set_userdata('top_menu', 'Examinations');
+            $this->session->set_userdata('sub_menu', 'Examinations/quick_exam_setup');
+
+            $data['title']           = 'Quick Exam Setup';
+            $data['examType']        = $this->exam_type;
+            $data['sessionlist']     = $this->session_model->get();
+            $data['current_session'] = $this->sch_current_session;
+            $data['classlist']       = $this->class_model->get();
+            $data['subjectlist']     = $this->subject_model->get();
+            $data['all_sections']    = $this->section_model->getAllClassSections();
+
+            $this->load->view('layout/header', $data);
+            $this->load->view('admin/examgroup/quickExamSetup', $data);
+            $this->load->view('layout/footer', $data);
+        }
+
+        public function quick_exam_setup_save()
+        {
+            $this->auth->is_logged_in();
+            if (!$this->rbac->hasPrivilege('exam_group', 'can_add')) {
+                echo json_encode(['status' => 0, 'message' => 'Access denied']);
+                return;
+            }
+
+            $group_name = $this->input->post('group_name');
+            $exam_type  = $this->input->post('exam_type');
+            $exam_name  = $this->input->post('exam_name');
+            $session_id = $this->input->post('session_id');
+            $description= $this->input->post('description');
+
+            if (empty($group_name) || empty($exam_type) || empty($exam_name) || empty($session_id)) {
+                echo json_encode(['status' => 0, 'message' => 'Please fill all required fields.']);
+                return;
+            }
+
+            // Create exam group
+            $group_id = $this->examgroup_model->add(array(
+                'name'        => $group_name,
+                'exam_type'   => $exam_type,
+                'is_active'   => 0,
+                'description' => $description,
+            ));
+
+            if (empty($group_id)) {
+                echo json_encode(['status' => 0, 'message' => 'Unable to create exam group. Please try again.']);
+                return;
+            }
+
+            // Create exam under the group
+            $exam_id = $this->examgroup_model->add_exam(array(
+                'exam'          => $exam_name,
+                'exam_group_id' => $group_id,
+                'session_id'    => $session_id,
+                'is_active'     => 0,
+                'is_publish'    => 0,
+            ));
+
+            if (empty($exam_id)) {
+                echo json_encode(['status' => 0, 'message' => 'Exam group created, but the exam could not be created. Please add the exam manually.']);
+                return;
+            }
+
+            echo json_encode([
+                'status'   => 1,
+                'message'  => 'Exam group and exam created! Now assign students and subjects.',
+                'group_id' => $group_id,
+                'exam_id'  => $exam_id,
+                'redirect' => site_url('admin/examgroup/addexam/' . $group_id),
+            ]);
+        }
+
+        public function quick_marks()
+        {
+            $this->auth->is_logged_in();
+            $this->session->set_userdata('top_menu', 'Examinations');
+            $this->session->set_userdata('sub_menu', 'Examinations/quick_marks');
+
+            $data['title']           = 'Quick Marks Entry';
+            $data['examgrouplist']   = $this->examgroup_model->get();
+            $data['sessionlist']     = $this->session_model->get();
+            $data['current_session'] = $this->sch_current_session;
+            $data['classlist']       = $this->class_model->get();
+            $data['all_sections']    = $this->section_model->getAllClassSections();
+            $data['attendence_exam'] = $this->attendence_exam;
+
+            $this->load->view('layout/header', $data);
+            $this->load->view('admin/examgroup/quickMarks', $data);
+            $this->load->view('layout/footer', $data);
+        }
+
+        public function getExamsByGroup()
+        {
+            $group_id = $this->input->post('group_id');
+            $data     = $this->examgroup_model->getExamByExamGroup($group_id);
+            echo json_encode($data);
+        }
+
+        public function getSubjectsByExam()
+        {
+            $exam_id = $this->input->post('exam_id');
+            $data    = $this->batchsubject_model->getExamSubjects($exam_id);
+            echo json_encode($data);
+        }
+
+        public function getStudentsForMarks()
+        {
+            $exam_subject_id = $this->input->post('exam_subject_id');
+            $class_id        = $this->input->post('class_id');
+            $section_id      = $this->input->post('section_id');
+            $session_id      = $this->input->post('session_id');
+
+            $resultlist     = $this->examgroupstudent_model->examGroupSubjectResult($exam_subject_id, $class_id, $section_id, $session_id);
+            $subject_detail = $this->batchsubject_model->getExamSubject($exam_subject_id);
+
+            echo json_encode([
+                'students'       => $resultlist,
+                'subject_detail' => $subject_detail,
+            ]);
         }
     }

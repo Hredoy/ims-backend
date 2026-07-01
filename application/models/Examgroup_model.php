@@ -68,6 +68,7 @@ class Examgroup_model extends MY_Model {
      * @param $data
      */
     public function add($data) {
+        $record_id = false;
         $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
@@ -96,7 +97,7 @@ class Examgroup_model extends MY_Model {
             $this->db->trans_rollback();
             return false;
         } else {
-            //return $return_value;
+            return $record_id;
         }
     }
 
@@ -124,6 +125,7 @@ class Examgroup_model extends MY_Model {
             $action = "Update";
             $record_id = $data['id'];
             $this->log($message, $record_id, $action);
+            return $record_id;
         } else {
             $this->db->trans_start(); # Starting Transaction
             $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
@@ -162,7 +164,7 @@ class Examgroup_model extends MY_Model {
                 # Everything is Perfect.
                 # Committing data to the database.
                 $this->db->trans_commit();
-                return true;
+                return $insert_id;
             }
         }
     }
